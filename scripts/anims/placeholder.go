@@ -6,72 +6,53 @@ import (
 	"image/gif"
 	"log"
 	"math"
-	"math/rand"
 	"os"
-	"time"
 )
 
 func main() {
-	// Set up the image dimensions to match typical notebook proportions
 	width, height := 300, 400
-	numFrames := 24 // Increased for smoother breathing animation
+	numFrames := 36 // Increased for smoother sequential animation
 
-	// Golden ratio ≈ 1.618033988749895
 	goldenRatio := 1.618033988749895
+	stripePosition := int(float64(height) * (1 / goldenRatio))
 
-	// Calculate stripe position using inverse golden ratio (1/φ ≈ 0.618034)
-	// This positions the stripe at the more pleasing lower position
-	stripePosition := int(float64(height) * (1 - 1/goldenRatio))
+	// Animation squares parameters
+	squareSize := width / 30
+	squareSpacing := squareSize * 2
+	squareY := stripePosition - squareSize*3
+	squaresStartX := (width / 2) - (3*squareSize+2*squareSpacing)/2
 
-	// Create the output file
 	outFile, err := os.Create("notebook.gif")
 	if err != nil {
 		panic(err)
 	}
 	defer outFile.Close()
 
-	// Initialize the GIF
 	anim := gif.GIF{}
 
 	// Define colors
-	notebookBlack := color.RGBA{40, 40, 40, 255} // Slightly softer than pure black
-	ribbonColors := []color.Color{
-		color.RGBA{255, 193, 7, 255},  // Golden yellow
-		color.RGBA{233, 30, 99, 255},  // Pink
-		color.RGBA{156, 39, 176, 255}, // Purple
-		color.RGBA{33, 150, 243, 255}, // Blue
-		color.RGBA{76, 175, 80, 255},  // Green
-		color.RGBA{255, 87, 34, 255},  // Deep Orange
-		color.RGBA{0, 188, 212, 255},  // Cyan
-		color.RGBA{255, 152, 0, 255},  // Orange
-	}
+	notebookBlack := color.RGBA{40, 40, 40, 255}
+	ribbonYellow := color.RGBA{255, 193, 7, 255}
 
-	// Seed the random number generator
-	rand.Seed(time.Now().UnixNano())
-
-	// Generate frames
 	for i := 0; i < numFrames; i++ {
-		// Create a palette for this frame
 		palette := []color.Color{
-			color.White,                       // Background (index 0)
-			notebookBlack,                     // Notebook color (index 1)
-			ribbonColors[i%len(ribbonColors)], // Ribbon color (index 2)
+			color.White,   // Background (index 0)
+			notebookBlack, // Notebook color (index 1)
+			ribbonYellow,  // Ribbon color (index 2)
 		}
 
-		// Create a new image with the palette
 		img := image.NewPaletted(image.Rect(0, 0, width, height), palette)
 
-		// Fill the background
+		// Draw notebook body
 		for x := 0; x < width; x++ {
 			for y := 0; y < height; y++ {
-				// Draw the main notebook body in black
 				if x > width/8 && x < width-width/16 {
 					img.Set(x, y, palette[1])
 				}
 			}
 		}
 
-		// Draw the ribbon
+		// Draw static ribbon
 		ribbonHeight := height / 12
 		for x := width/8 + 1; x < width-width/16; x++ {
 			for y := stripePosition - ribbonHeight/2; y < stripePosition+ribbonHeight/2; y++ {
@@ -79,30 +60,57 @@ func main() {
 			}
 		}
 
-		// Draw the elastic band (vertical line closer to center)
-		bandX := width - width/6 // Moved more towards center
-		bandWidth := width / 40  // Made thicker
+		// Draw elastic band
+		bandX := width - width/6
+		bandWidth := width / 40
 		for x := bandX; x < bandX+bandWidth; x++ {
 			for y := 0; y < height; y++ {
 				img.Set(x, y, palette[1])
 			}
 		}
 
-		// Calculate breathing-like delay using sine wave
-		// Normal breathing rate is about 12-20 breaths per minute
-		// We'll aim for around 15 breaths per minute = 4 seconds per cycle
-		breatheCycle := math.Sin(2 * math.Pi * float64(i) / float64(numFrames))
+		// Draw animated squares with sequential animation
+		for sq := 0; sq < 3; sq++ {
+			// Calculate sequential timing
+			// Each square takes 1/3 of the total animation cycle
+			cycleLength := float64(numFrames) / 3
+			squarePhase := float64(i) - (float64(sq) * cycleLength)
 
-		// Convert the sine wave to a delay between 20 and 80 centiseconds
-		// This gives us a range of 0.2 to 0.8 seconds per frame
-		delay := int(50 + 30*breatheCycle)
+			// Normalize phase to 0-1 range for current square's cycle
+			normalizedPhase := squarePhase / cycleLength
 
-		// Append the frame to the GIF
+			// Calculate brightness factor using sine wave
+			// Only animate when in this square's phase
+			var factor float64
+			if normalizedPhase >= 0 && normalizedPhase <= 1 {
+				factor = math.Sin(normalizedPhase * math.Pi)
+			} else {
+				factor = 0
+			}
+
+			// Create interpolated color
+			r := uint8(float64(ribbonYellow.R) * factor)
+			g := uint8(float64(ribbonYellow.G) * factor)
+			b := uint8(float64(ribbonYellow.B) * factor)
+			squareColor := color.RGBA{r, g, b, 255}
+
+			// Add the interpolated color to the palette
+			paletteIndex := len(palette)
+			img.Palette = append(img.Palette, squareColor)
+
+			// Draw the square
+			squareX := squaresStartX + sq*(squareSize+squareSpacing)
+			for x := squareX; x < squareX+squareSize; x++ {
+				for y := squareY; y < squareY+squareSize; y++ {
+					img.Set(x, y, img.Palette[paletteIndex])
+				}
+			}
+		}
+
 		anim.Image = append(anim.Image, img)
-		anim.Delay = append(anim.Delay, delay)
+		anim.Delay = append(anim.Delay, 4) // About 40ms per frame
 	}
 
-	// Encode and save the GIF
 	err = gif.EncodeAll(outFile, &anim)
 	if err != nil {
 		log.Fatal(err)
