@@ -163,7 +163,9 @@ func main() {
 	}
 	defer outFile.Close()
 
-	anim := gif.GIF{}
+	anim := gif.GIF{
+		LoopCount: 0, // 0 means loop forever
+	}
 
 	// Define base colors
 	notebookBlack := color.RGBA{40, 40, 40, 255}

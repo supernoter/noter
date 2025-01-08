@@ -1,5 +1,8 @@
 SHELL := /bin/bash
 
+.PHONY: all
+all: notebook.webm notebook.webp
+
 notebook.webm: notebook.gif
 	ffmpeg -i notebook.gif -c vp9 -b:v 0 -crf 40 notebook.webm
 
