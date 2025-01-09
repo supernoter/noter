@@ -168,7 +168,8 @@ func main() {
 	}
 
 	// Define base colors
-	notebookBlack := color.RGBA{40, 40, 40, 255}
+	notebookBlack := color.RGBA{48, 44, 44, 255}
+	elasticBandColor := color.RGBA{0, 0, 0, 255}
 
 	for frame := 0; frame < numFrames; frame++ {
 		// Update segments
@@ -215,11 +216,11 @@ func main() {
 		}
 
 		// Draw elastic band
-		bandX := width - width/6
-		bandWidth := width / 40
+		bandX := width - width/5 // 6
+		bandWidth := width / 20  // 40
 		for x := bandX; x < bandX+bandWidth; x++ {
 			for y := 0; y < height; y++ {
-				img.Set(x, y, palette[1])
+				img.Set(x, y, elasticBandColor)
 			}
 		}
 
