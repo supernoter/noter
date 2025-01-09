@@ -9,5 +9,5 @@ notebook.webm: notebook.gif Makefile
 notebook.webp: notebook.gif Makefile
 	ffmpeg -y -f gif -i notebook.gif -loop 0 -c libwebp notebook.webp
 
-notebook.gif: placeholder.go Makefile
-	go run placeholder.go
+notebook.gif: notebook.go Makefile
+	go run notebook.go
