@@ -17,10 +17,13 @@ class Editor {
 * Markdown formatting is supported
 
 ## Keyboard Shortcuts
+* **CTRL-n**: Create a New file
+* **CTRL-o**: Open a file
 * **CTRL-p**: Toggle preview mode
 * **CTRL-h** or **F1**: Toggle this help view
 * **CTRL-+**: Increase font size
 * **CTRL--**: Decrease font size
+* **CTRL-s**: Save the file
 
 ## Markdown Tips
 * Use # for headers
@@ -48,7 +51,7 @@ The status bar shows:
     this.textarea.setAttribute("spellcheck", "false");
     this.textarea.setAttribute(
       "placeholder",
-      "Let's go … and type CTRL-p to toggle preview, and CTRL-h for help",
+      "Let's go … and type CTRL-p to toggle preview, and CTRL-h for help"
     );
     this.textarea.id = "note-textarea";
 
@@ -81,7 +84,7 @@ The status bar shows:
 
     // keyboard shortcuts
     document.addEventListener("keydown", (e) =>
-      this.handleKeyboardShortcuts(e),
+      this.handleKeyboardShortcuts(e)
     );
   }
 
@@ -176,7 +179,7 @@ The status bar shows:
   changeFontSize(delta) {
     const currentSize = parseInt(
       window.getComputedStyle(this.textarea).fontSize,
-      10,
+      10
     );
     const newSize = Math.max(10, currentSize + delta);
     this.textarea.style.fontSize = `${newSize}px`;
