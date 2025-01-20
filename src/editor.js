@@ -189,48 +189,56 @@ The status bar shows:
 
   /* typeEffect is here for an initial typing sequence, giving an impression of
    * a autonomous typing entity */
-  typeEffect(text, callback) {
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index < text.length) {
-        this.textarea.value += text[index];
-        index++;
-        this.updateStatusBar();
-      } else {
-        clearInterval(interval);
-        const highlightStart = text.indexOf("together");
-        const highlightEnd = highlightStart + "together".length;
-        this.textarea.setSelectionRange(highlightStart, highlightEnd);
-        this.textarea.focus();
+  typeEffect(text) {
+    return new Promise((resolve) => {
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index < text.length) {
+          this.textarea.value += text[index];
+          index++;
+          this.updateStatusBar();
+        } else {
+          clearInterval(interval);
+          const highlightStart = text.indexOf("together");
+          const highlightEnd = highlightStart + "together".length;
+          this.textarea.setSelectionRange(highlightStart, highlightEnd);
+          this.textarea.focus();
 
-        setTimeout(() => {
-          this.textarea.setSelectionRange(0, 0);
-          this.deleteEffect(text, callback);
-        }, this.typingPause);
-      }
-    }, this.typingDelay);
+          setTimeout(() => {
+            this.textarea.setSelectionRange(0, 0);
+            resolve(text);
+          }, this.typingPause);
+        }
+      }, this.typingDelay);
+    });
   }
 
   /* deleteEffect takes back some text, part of the initial sequence */
-  deleteEffect(text, callback) {
-    let index = text.length;
-    const interval = setInterval(() => {
-      if (index > 0) {
-        this.textarea.value = this.textarea.value.slice(0, -1);
-        index--;
-        this.updateStatusBar();
-      } else {
-        clearInterval(interval);
-        callback();
-      }
-    }, this.typingDelay);
+  deleteEffect(text) {
+    return new Promise((resolve) => {
+      let index = text.length;
+      const interval = setInterval(() => {
+        if (index > 0) {
+          this.textarea.value = this.textarea.value.slice(0, -1);
+          index--;
+          this.updateStatusBar();
+        } else {
+          clearInterval(interval);
+          resolve();
+        }
+      }, this.typingDelay);
+    });
   }
 
   init() {
     this.textarea.value = "";
     const introText = "noter: write together";
-    this.typeEffect(introText, () => {
+
+    return new Promise(async (resolve) => {
+      await this.typeEffect(introText);
+      await this.deleteEffect(introText);
       this.textarea.focus();
+      resolve();
     });
   }
 
