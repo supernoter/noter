@@ -15,10 +15,15 @@
       import Editor from "./editor.js";
       document.addEventListener("DOMContentLoaded", () => {
         const editor = new Editor("editor-container");
-        editor.init().then(() => {
-          console.log("editor.init() done");
-          console.log(window.api.hey);
-        });
+        editor
+          .init()
+          .then(() => {
+            console.log("editor.init() done");
+            console.log(window.api.hey);
+          })
+          .catch((error) => {
+            console.error("editor.init() failed: ", error);
+          });
       });
     </script>
   </body>
