@@ -1,3 +1,4 @@
+import { marked } from "./node_modules/marked/lib/marked.esm.js";
 // Editor implements the basic editing function for NOTER.
 class Editor {
   constructor(containerId) {
@@ -51,7 +52,7 @@ The status bar shows:
     this.textarea.setAttribute("spellcheck", "false");
     this.textarea.setAttribute(
       "placeholder",
-      "Let's go … and type CTRL-p to toggle preview, and CTRL-h for help"
+      "Let's go … and type CTRL-p to toggle preview, and CTRL-h for help",
     );
     this.textarea.id = "note-textarea";
 
@@ -84,7 +85,7 @@ The status bar shows:
 
     // keyboard shortcuts
     document.addEventListener("keydown", (e) =>
-      this.handleKeyboardShortcuts(e)
+      this.handleKeyboardShortcuts(e),
     );
   }
 
@@ -179,7 +180,7 @@ The status bar shows:
   changeFontSize(delta) {
     const currentSize = parseInt(
       window.getComputedStyle(this.textarea).fontSize,
-      10
+      10,
     );
     const newSize = Math.max(10, currentSize + delta);
     this.textarea.style.fontSize = `${newSize}px`;
