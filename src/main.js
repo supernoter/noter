@@ -1,5 +1,6 @@
-const { app, BrowserWindow } = require("electron/main");
+const { app, BrowserWindow, Menu } = require("electron/main");
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
 
 let window;
