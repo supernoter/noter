@@ -5,16 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Super Noter</title>
     <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+      }
       .video-container {
         margin: auto;
         width: 100%;
         text-align: center;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       #intro {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 68%;
+        width: 100%;
+        height: 100vh;
+        object-fit: contain;
       }
     </style>
   </head>
@@ -22,19 +32,9 @@
     <div class="video-container">
       <video loop muted autoplay playsinline id="intro">
         <source src="intro-fast.ogg" type="video/ogg" />
+        <source src="intro-fast.mp4" type="video/mp4" />
         <source src="intro-fast.webm" type="video/webm" />
       </video>
     </div>
-    <!--
-    <p>
-      Hello, <a href="https://github.com/supernoter/noter">noter</a>! Coming
-      soon!
-    </p>
-    <picture>
-      <source srcset="/images/notebook.webp" type="image/webp" />
-      <source srcset="/images/notebook.gif" type="image/gif" />
-      <img src="/images/notebook.gif" alt="Notebook" />
-    </picture>
-    -->
   </body>
 </html>
