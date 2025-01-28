@@ -180,6 +180,10 @@ class EditState extends EditorState {
             this.editor.setState(new HelpState(this.editor))
             return true
         }
+        if (e.ctrlKey && e.key === 'b') {
+            e.preventDefault()
+            this.editor.toggleNavigationBar()
+        }
 
         // Only count single alphanumeric keystrokes
         if (
@@ -332,6 +336,45 @@ The status bar shows:
         this.#pdf_font_style = 'Arial'
     }
 
+    // initializeEventListeners attaches event listener to elements, e.g. we want
+    // to update the status bar at every keystroke.
+    initializeEventListeners() {
+        // text-related events
+        this.textarea.addEventListener('input', () => this.updateStatusBar())
+        this.textarea.addEventListener('keyup', () => this.updateStatusBar())
+        this.textarea.addEventListener('click', () => this.updateStatusBar())
+        this.textarea.addEventListener('select', () => this.updateStatusBar())
+        this.textarea.addEventListener('mousemove', () =>
+            this.updateStatusBar()
+        )
+
+        // keyboard shortcuts
+        document.addEventListener('keydown', (e) =>
+            this.handleKeyboardShortcuts(e)
+        )
+    }
+
+    /* the status bar can track some basic textarea info, later also indicate API
+     * access to LLM and other information */
+    updateStatusBar() {
+        const charCount = this.textarea.value.length
+        const text = this.textarea.value.substring(
+            0,
+            this.textarea.selectionStart
+        )
+        const row = text.split('\n').length
+        const column = text.split('\n').pop().length + 1
+        const fontSize = window.getComputedStyle(this.textarea).fontSize
+        let mode = 'E'
+        if (this.isPreviewMode) {
+            mode = 'P'
+        }
+        if (this.isHelpMode) {
+            mode = 'H'
+        }
+        this.statusBar.textContent = `${charCount} · ${row}:${column} · ${fontSize} · ${mode}`
+    }
+
     // attach DOM elements to HTML
     initializeElements() {
         // create textarea
@@ -358,6 +401,12 @@ The status bar shows:
         this.container.appendChild(this.textarea)
         this.container.appendChild(this.preview)
         this.container.appendChild(this.statusBar)
+
+        // create navigation side bar
+        this.navigationBar = document.createElement('div')
+        this.navigationBar.className = 'navigation-bar'
+        this.navigationBar.id = 'navigation-bar'
+        this.navigationBar.style.width = '250px'
     }
 
     // initializeEventListeners attaches event listener to elements, e.g. we want
@@ -560,6 +609,19 @@ The status bar shows:
             y: top_margin,
             margin: [top_margin, pdf_margin, pdf_margin, pdf_margin],
         })
+    }
+
+    // Set new content for the editor
+    setContent(content) {
+        this.textarea.value = content
+        this.updateStatusBar()
+    }
+
+    toggleNavigationBar() {
+        const navigationBar = document.getElementById('navigation-bar')
+        const editorContainer = document.getElementById('editor-container')
+        navigationBar.classList.toggle('open')
+        editorContainer.classList.toggle('shifted')
     }
 }
 

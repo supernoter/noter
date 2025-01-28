@@ -34,6 +34,7 @@ body {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    transition: margin-left 0.3s ease;
 }
 
 /* styling the text area of the container */
@@ -63,6 +64,18 @@ body {
 }
 
 /* styling the status bar */
+
+#note-textarea,
+#preview {
+    flex: 1;
+    width: 100%;
+    resize: none;
+    border: none;
+    padding: 1rem;
+    outline: none;
+    overflow-y: auto;
+    font-size: 16px;
+}
 
 .status-bar {
     padding: 0.5rem 1rem;
@@ -166,4 +179,24 @@ body {
     overflow: auto;
     white-space: pre-wrap;
     font-family: 'Courier New', Courier, monospace;
+}
+
+#navigation-bar {
+    background-color: #2f3b52;
+    color: #fff;
+    position: fixed;
+    left: -250px;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    padding: 0px;
+    transition: left 0.3s ease;
+}
+
+#navigation-bar.open {
+    left: 0;
+}
+
+#editor-container.shifted {
+    margin-left: 250px;
 }
