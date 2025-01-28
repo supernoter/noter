@@ -45,6 +45,10 @@
     </style>
   </head>
   <body>
+    <video id="slide-video" poster="{% static 'intro-fast.jpg'%}" preload="auto" loop muted>
+        <source src="{% static 'intro-fast.webm' %}" type='video/webm' />
+    </video>
+    <!--
     <p>
       Hello, <a href="https://github.com/supernoter/noter">noter</a>! Coming
       soon!
@@ -54,5 +58,6 @@
       <source srcset="/images/notebook.gif" type="image/gif" />
       <img src="/images/notebook.gif" alt="Notebook" />
     </picture>
+    -->
   </body>
 </html>
