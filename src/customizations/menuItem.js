@@ -160,16 +160,29 @@ class menuItem {
   };
 
   //open folder where file is saved.
-  openDiary = async (window) => {
-    dialog
-      .showOpenDialog(window, {
-        properties: ["openFile", "openDirectory"],
-      })
-      .then((result) => {
-        if (result.canceled) return;
-        //open the selected folder.
-        shell.openPath(result.filePaths[0]);
-      });
+  openNewFile = () => {
+    const deskTopPath = os.homedir();
+    const filePath = path.join(deskTopPath, "New Document.txt");
+    let data = "Hello World";
+
+    // Open the save dialog with the default path set to the desktop
+    // filePath = dialog.showSaveDialog(mainWindow, {
+    //   title: "Save File",
+    //   defaultPath: defaultFilePath,
+    //   buttonLabel: "Save",
+    //   filters: [
+    //     { name: "Text Files", extensions: ["txt"] },
+    //     { name: "All Files", extensions: ["*"] },
+    //   ],
+    // });
+
+    fs.open(filePath, "w+", (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log(`File created at: ${filePath}`);
+    });
   };
 }
 

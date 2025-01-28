@@ -1,10 +1,10 @@
-const { app, BrowserWindow, Menu } = require("electron/main");
+const { app, BrowserWindow } = require("electron");
+const menuitem = require("./customizations/menuItem.js");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
 
 let window;
-
 const createWindow = () => {
   window = new BrowserWindow({
     width: 800,
@@ -19,10 +19,6 @@ const createWindow = () => {
   menuitem.createMenu(window);
   window.loadFile("index.html");
 };
-
-// Many of Electron's core modules are Node.js event emitters that adhere to
-// Node's asynchronous event-driven architecture. The app module is one of
-// these emitters.
 
 app.whenReady().then(() => {
   createWindow();
