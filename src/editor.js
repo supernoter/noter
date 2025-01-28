@@ -67,10 +67,17 @@ The status bar shows:
     this.statusBar.className = "status-bar";
     this.statusBar.id = "status-bar";
 
+    // create navigation side bar
+    this.navigationBar = document.createElement("div");
+    this.navigationBar.className = "navigation-bar";
+    this.navigationBar.id = "navigation-bar";
+    this.navigationBar.style.width = "250px";
+
     // append elements to container
     this.container.appendChild(this.textarea);
     this.container.appendChild(this.preview);
     this.container.appendChild(this.statusBar);
+    this.container.appendChild(this.navigationBar);
   }
 
   // initializeEventListeners attaches event listener to elements, e.g. we want
@@ -103,6 +110,9 @@ The status bar shows:
     } else if (e.ctrlKey && e.key === "-") {
       e.preventDefault();
       this.changeFontSize(-1);
+    } else if (e.ctrlKey && e.key === "b") {
+      e.preventDefault();
+      this.toggleNavigationBar(); 
     }
   }
 
@@ -251,6 +261,13 @@ The status bar shows:
   setContent(content) {
     this.textarea.value = content;
     this.updateStatusBar();
+  }
+
+  toggleNavigationBar() {
+    const navigationBar = document.getElementById("navigation-bar");
+    const editorContainer = document.getElementById("editor-container");
+    navigationBar.classList.toggle("open");
+    editorContainer.classList.toggle("shifted");
   }
 }
 
