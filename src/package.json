@@ -5,15 +5,47 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "electron-builder --mac --windows --linux"
   },
-  "author": "",
+  "author": "ASP-G30-T7 <universe@supernoter.xyz>",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/npm/cli.git"
+  },
   "devDependencies": {
     "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "electron-icon-maker": "^0.0.5",
     "prettier": "3.4.2"
   },
   "dependencies": {
     "marked": "^15.0.6"
+  },
+  "build": {
+    "appId": "xyz.supernoter.noter",
+    "productName": "Noter",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "target": [
+        "zip"
+      ],
+      "category": "public.app-category.utilities",
+      "icon": "build/icons/mac/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "build/icons/png/512x512.png"
+    },
+    "win": {
+      "target": "zip",
+      "icon": "build/icons/win/icon.ico"
+    }
   }
 }
