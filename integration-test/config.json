@@ -1,0 +1,20 @@
+{
+    "window": {
+        "opacity": 1,
+        "width": 1000,
+        "height": 500
+    },
+
+    "font": {
+        "colour": "green",
+        "size" : "20px",
+        "family": "Arial"
+    },
+
+    "background": {
+        "colour": "pink", 
+        "gradient": null,
+        "image": null,
+        "opacity": "100%"
+    }
+}
