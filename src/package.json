@@ -15,7 +15,7 @@
     "url": "git+https://github.com/npm/cli.git"
   },
   "devDependencies": {
-    "electron": "^33.2.1",
+    "electron": "^33.3.2",
     "electron-builder": "^25.1.8",
     "electron-icon-maker": "^0.0.5",
     "prettier": "3.4.2"

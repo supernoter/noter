@@ -103,6 +103,9 @@ The status bar shows:
     } else if (e.ctrlKey && e.key === "-") {
       e.preventDefault();
       this.changeFontSize(-1);
+    } else if (e.ctrlKey && e.key === "e") {
+      e.preventDefault();
+      this.exportMarkdown("pdf");
     }
   }
 
@@ -251,6 +254,11 @@ The status bar shows:
   setContent(content) {
     this.textarea.value = content;
     this.updateStatusBar();
+  }
+
+  /* export the markdown code into pdf */
+  exportMarkdown(fileType) {
+    console.log(fileType);
   }
 }
 
