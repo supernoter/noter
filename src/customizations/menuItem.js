@@ -122,6 +122,7 @@ class menuItem {
   };
 
   // Function to create a new file in the user's desktop directory.
+
   createNewFile = async (window) => {
     //open save dialog from electron.
     dialog
