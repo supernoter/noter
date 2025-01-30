@@ -578,22 +578,123 @@ The status bar shows:
     const pdf_margin = 10;
     const top_margin = 20;
     const line_height = 10;
+
     let max_line_width = this.#pdf_page_width - pdf_margin * 2;
-    let exportStream = this.textarea.value;
+    let importStream = this.textarea.value;
+    let htmlContent = marked(importStream);
 
     this.#pdf_doc.setFont(this.#pdf_font_style);
     this.#pdf_doc.setFontSize(12);
-    let lines = this.#pdf_doc.splitTextToSize(exportStream, max_line_width);
 
-    for (let i = 0, y_shift = 0; i < lines.length; i++, y_shift++) {
-      let y = top_margin + y_shift * line_height;
+    let dummyDiv = document.createElement("div");
+    dummyDiv.innerHTML = htmlContent;
+    let domElements = dummyDiv.childNodes;
+    console.log(htmlContent);
 
-      if (y > this.#pdf_doc.internal.pageSize.height - pdf_margin) {
-        this.#pdf_doc.addPage();
-        y = top_margin;
-        y_shift = 0;
+    let currentY = top_margin;
+
+    for (let i = 0; i < domElements.length; i++) {
+      let node = domElements[i];
+
+      // Check if the node is a text node
+      if (node.nodeType === Node.TEXT_NODE) {
+        const textLines = this.#pdf_doc.splitTextToSize(
+          node.textContent,
+          max_line_width,
+        );
+        for (let line of textLines) {
+          if (currentY > this.#pdf_doc.internal.pageSize.height - pdf_margin) {
+            this.#pdf_doc.addPage();
+            currentY = top_margin;
+          }
+          this.#pdf_doc.text(line, pdf_margin, currentY);
+          currentY += line_height;
+        }
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        // Process various HTML elements
+        switch (node.tagName.toLowerCase()) {
+          // bold **
+          case "strong":
+          case "b":
+            this.#pdf_doc.setFont(this.#pdf_font_style, "bold");
+            this.#pdf_doc.text(node.textContent, pdf_margin, currentY);
+            this.#pdf_doc.setFont(this.#pdf_font_style, "normal");
+            break;
+
+          // italic *
+          case "em":
+          case "i":
+            this.#pdf_doc.setFont(this.#pdf_font_style, "italic");
+            this.#pdf_doc.text(node.textContent, pdf_margin, currentY);
+            this.#pdf_doc.setFont(this.#pdf_font_style, "normal");
+            break;
+
+          // header 1
+          case "h1":
+            this.#pdf_doc.setFontSize(20);
+            this.#pdf_doc.setFont(this.#pdf_font_style, "bold");
+            this.#pdf_doc.text(node.textContent, pdf_margin, currentY);
+            this.#pdf_doc.setFont(this.#pdf_font_style, "normal");
+            this.#pdf_doc.setFontSize(12);
+            break;
+
+          // header 2
+          case "h2":
+            this.#pdf_doc.setFontSize(16);
+            this.#pdf_doc.setFont(this.#pdf_font_style, "italic");
+            this.#pdf_doc.text(node.textContent, pdf_margin, currentY);
+            this.#pdf_doc.setFont(this.#pdf_font_style, "normal");
+            this.#pdf_doc.setFontSize(12);
+            break;
+
+          // header 3
+          case "h3":
+            this.#pdf_doc.setFontSize(14);
+            this.#pdf_doc.text(node.textContent, pdf_margin, currentY);
+            this.#pdf_doc.setFontSize(12);
+            break;
+
+          // paragraph and div panel
+          case "p":
+          case "div":
+            const paragraphLines = this.#pdf_doc.splitTextToSize(
+              node.textContent,
+              max_line_width,
+            );
+            for (let line of paragraphLines) {
+              if (
+                currentY >
+                this.#pdf_doc.internal.pageSize.height - pdf_margin
+              ) {
+                this.#pdf_doc.addPage();
+                currentY = top_margin;
+              }
+              this.#pdf_doc.text(line, pdf_margin, currentY);
+              currentY += line_height;
+            }
+            break;
+
+          // Add more cases for other tags as necessary
+          default:
+            const defaultLines = this.#pdf_doc.splitTextToSize(
+              node.textContent,
+              max_line_width,
+            );
+            for (let line of defaultLines) {
+              if (
+                currentY >
+                this.#pdf_doc.internal.pageSize.height - pdf_margin
+              ) {
+                this.#pdf_doc.addPage();
+                currentY = top_margin;
+              }
+
+              this.#pdf_doc.text(line, pdf_margin, currentY);
+              currentY += line_height;
+            }
+            break;
+        }
       }
-      this.#pdf_doc.text(lines[i], pdf_margin, y);
     }
     this.#pdf_doc.save("testing.pdf");
   }
