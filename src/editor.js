@@ -276,6 +276,7 @@ class Editor {
 * **CTRL-+**: Increase font size
 * **CTRL--**: Decrease font size
 * **CTRL-s**: Save the file
+* **CTRL-e**: Export notes to PDF
 
 ## Markdown Tips
 * Use # for headers
@@ -303,7 +304,7 @@ The status bar shows:
       format: "a4", // Possible values: 'a3', 'a4' (default), 'a5', 'letter', 'legal'
     });
     this.#pdf_page_width = this.#pdf_doc.internal.pageSize.width;
-    this.#pdf_font_style = "sans-serif";
+    this.#pdf_font_style = "Arial";
   }
 
   // attach DOM elements to HTML
@@ -366,7 +367,7 @@ The status bar shows:
       this.changeFontSize(-1);
     } else if (e.ctrlKey && e.key === "e") {
       e.preventDefault();
-      this.exportMarkdown("pdf");
+      this.exportMarkdown();
     }
   }
 
@@ -573,28 +574,28 @@ The status bar shows:
   }
 
   /* export the markdown code into pdf */
-  exportMarkdown(fileType) {
+  exportMarkdown() {
     const pdf_margin = 10;
     const top_margin = 20;
     const line_height = 10;
-    console.log(this.#pdf_doc);
-    const max_line_width = this.#pdf_page_width - pdf_margin * 2;
+    let max_line_width = this.#pdf_page_width - pdf_margin * 2;
     let exportStream = this.textarea.value;
 
     this.#pdf_doc.setFont(this.#pdf_font_style);
     this.#pdf_doc.setFontSize(12);
     let lines = this.#pdf_doc.splitTextToSize(exportStream, max_line_width);
-    /*this.#pdf_doc.text(lines, pdf_margin, 10);*/
 
-    lines.forEach((line, index) => {
-      let y = top_margin + index * line_height;
-      if (y > this.#pdf_page_width - pdf_margin) {
+    for (let i = 0, y_shift = 0; i < lines.length; i++, y_shift++) {
+      let y = top_margin + y_shift * line_height;
+
+      if (y > this.#pdf_doc.internal.pageSize.height - pdf_margin) {
         this.#pdf_doc.addPage();
         y = top_margin;
+        y_shift = 0;
       }
-      this.#pdf_doc.text(line, pdf_margin, y);
-    });
-    this.#pdf_doc.save("texting.pdf");
+      this.#pdf_doc.text(lines[i], pdf_margin, y);
+    }
+    this.#pdf_doc.save("testing.pdf");
   }
 }
 
