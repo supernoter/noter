@@ -1,12 +1,23 @@
 /* overall styling */
 
+/* font styling */
+
+.noto-sans-jp-400 {
+  font-family: "Noto Sans JP", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* for all HTML elements */
+
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-family: Arial, sans-serif;
+  font-family: "Noto Sans JP", "Arial", sans-serif;
 }
 
 /* styling the editor container */
@@ -46,6 +57,6 @@ body {
   padding: 0.5rem 1rem;
   background-color: #f5f5f5;
   border-top: 1px solid #ddd;
-  font-family: Arial, sans-serif;
+  font-family: "Arial", sans-serif;
   font-size: 14px;
 }
