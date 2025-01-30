@@ -235,6 +235,7 @@ class HelpState extends EditorState {
 // Editor implements the basic editing function for NOTER.
 class Editor {
   constructor(containerId, llm = null) {
+  #pdf_doc;
     this.container = document.getElementById(containerId);
     // Store original textarea content when help is shown (TODO: do we need
     // this at all)
@@ -292,6 +293,8 @@ The status bar shows:
     // Set the first state
     this.state = new EditState(this);
     this.state.enterState();
+    this.updateStatusBar();
+    this.#pdf_doc = new jsPDF();
   }
 
   // attach DOM elements to HTML
@@ -562,7 +565,10 @@ The status bar shows:
 
   /* export the markdown code into pdf */
   exportMarkdown(fileType) {
-    console.log(this.textarea.value);
+    let exportStream = this.textarea.value;
+
+    this.#pdf_doc.text(exportStream, 10, 10);
+    this.#pdf_doc.save("texting.pdf");
   }
 }
 
