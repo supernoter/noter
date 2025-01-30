@@ -2,6 +2,8 @@ import { marked } from "./node_modules/marked/lib/marked.esm.js";
 // Editor implements the basic editing function for NOTER.
 class Editor {
   #pdf_doc;
+  #pdf_font_style;
+  #pdf_page_width;
 
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -45,7 +47,13 @@ The status bar shows:
     this.initializeElements();
     this.initializeEventListeners();
     this.updateStatusBar();
-    this.#pdf_doc = new jsPDF();
+    this.#pdf_doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4", // Possible values: 'a3', 'a4' (default), 'a5', 'letter', 'legal'
+    });
+    this.#pdf_page_width = this.#pdf_doc.internal.pageSize.width;
+    this.#pdf_font_style = "sans-serif";
   }
 
   // attach DOM elements to HTML
@@ -261,9 +269,26 @@ The status bar shows:
 
   /* export the markdown code into pdf */
   exportMarkdown(fileType) {
+    const pdf_margin = 10;
+    const top_margin = 20;
+    const line_height = 10;
+    console.log(this.#pdf_doc);
+    const max_line_width = this.#pdf_page_width - pdf_margin * 2;
     let exportStream = this.textarea.value;
 
-    this.#pdf_doc.text(exportStream, 10, 10);
+    this.#pdf_doc.setFont(this.#pdf_font_style);
+    this.#pdf_doc.setFontSize(12);
+    let lines = this.#pdf_doc.splitTextToSize(exportStream, max_line_width);
+    /*this.#pdf_doc.text(lines, pdf_margin, 10);*/
+
+    lines.forEach((line, index) => {
+      let y = top_margin + index * line_height;
+      if (y > this.#pdf_page_width - pdf_margin) {
+        this.#pdf_doc.addPage();
+        y = top_margin;
+      }
+      this.#pdf_doc.text(line, pdf_margin, y);
+    });
     this.#pdf_doc.save("texting.pdf");
   }
 }
