@@ -1,10 +1,13 @@
-const { app, Menu } = require("electron");
+const { app, Menu, dialog } = require("electron");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
 
 class menuItem {
-  createMenu = () => {
+  // constructor(window) {
+  //   this.window = window;
+  // }
+  createMenu = (window) => {
     const isMac = process.platform === "darwin";
     const template = [
       // { role: 'appMenu' }
@@ -31,8 +34,8 @@ class menuItem {
         label: "File",
         submenu: [
           {
-            label: "New File...",
-            click: this.openNewFile(),
+            label: "Create new file",
+            click: () => this.openNewFile(window),
           },
           // isMac ? [{ role: "close" }] : [{ role: "quit" }],
         ],
@@ -119,29 +122,41 @@ class menuItem {
   };
 
   // Function to create a new file in the user's desktop directory.
-  openNewFile = () => {
-    const deskTopPath = os.homedir();
-    const filePath = path.join(deskTopPath, "New Document.txt");
-    let data = "Hello World";
-
-    // Open the save dialog with the default path set to the desktop
-    // filePath = dialog.showSaveDialog(mainWindow, {
-    //   title: "Save File",
-    //   defaultPath: defaultFilePath,
-    //   buttonLabel: "Save",
-    //   filters: [
-    //     { name: "Text Files", extensions: ["txt"] },
-    //     { name: "All Files", extensions: ["*"] },
-    //   ],
-    // });
-
-    fs.open(filePath, "w+", (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log(`File created at: ${filePath}`);
-    });
+  openNewFile = async (window) => {
+    //open save dialog from electron.
+    dialog
+      .showSaveDialog(window, {
+        //set default file path to the download folder and default file name to Untitled.
+        defaultPath: path.join(app.getPath("downloads"), "Untitled.txt"),
+        filters: [
+          { name: "Text Files", extensions: ["txt"] },
+          { name: "All Files", extensions: ["*"] },
+        ],
+      })
+      .then((result) => {
+        //If user selects cancel return.
+        if (result.canceled) return;
+        //set file path.
+        const filePath = result.filePath;
+        //write the file with the name the user has selected.
+        fs.writeFile(filePath, "", (err) => {
+          if (err) {
+            console.error("Failed to create file:", err);
+            dialog.showErrorBox("Error", "Could not create the file.");
+          } else {
+            //message dialoge showing where the user has saved the file.
+            dialog.showMessageBox(
+              window,
+              {
+                type: "info",
+                title: "File Created",
+                message: `File created at: ${filePath}`,
+              },
+              () => {}
+            );
+          }
+        });
+      });
   };
 }
 

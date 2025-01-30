@@ -9,7 +9,7 @@ const createWindow = () => {
     width: 800,
     height: 600,
   });
-  menuitem.createMenu();
+  menuitem.createMenu(window);
   window.loadFile("index.html");
 };
 
