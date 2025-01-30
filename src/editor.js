@@ -258,7 +258,7 @@ The status bar shows:
 
   /* export the markdown code into pdf */
   exportMarkdown(fileType) {
-    console.log(fileType);
+    console.log(this.textarea.value);
   }
 }
 
