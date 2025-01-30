@@ -1,6 +1,8 @@
 import { marked } from "./node_modules/marked/lib/marked.esm.js";
 // Editor implements the basic editing function for NOTER.
 class Editor {
+  #pdf_doc;
+
   constructor(containerId) {
     this.container = document.getElementById(containerId);
     this.isPreviewMode = false;
@@ -43,6 +45,7 @@ The status bar shows:
     this.initializeElements();
     this.initializeEventListeners();
     this.updateStatusBar();
+    this.#pdf_doc = new jsPDF();
   }
 
   // attach DOM elements to HTML
@@ -258,7 +261,10 @@ The status bar shows:
 
   /* export the markdown code into pdf */
   exportMarkdown(fileType) {
-    console.log(this.textarea.value);
+    let exportStream = this.textarea.value;
+
+    this.#pdf_doc.text(exportStream, 10, 10);
+    this.#pdf_doc.save("texting.pdf");
   }
 }
 
