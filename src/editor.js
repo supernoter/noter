@@ -301,7 +301,7 @@ The status bar shows:
     this.state.enterState();
     this.updateStatusBar();
     const { jsPDF } = window.jspdf;
-    this.#pdf_doc = new jsPDF("p", "mm", "a4", {
+    this.#pdf_doc = new jsPDF({
       orientation: "portrait",
       unit: "mm",
       format: "a4", // Possible values: 'a3', 'a4' (default), 'a5', 'letter', 'legal'
@@ -578,16 +578,12 @@ The status bar shows:
 
   /* export the markdown code into pdf */
   exportMarkdown() {
-    const pdf_margin = 10;
-    const top_margin = 20;
-    const line_height = 10;
+    const pdf_margin = 5;
+    const top_margin = 2;
 
     let max_line_width = this.#pdf_page_width - pdf_margin * 2;
     let importStream = this.textarea.value;
     let htmlContent = marked(importStream);
-
-    //this.#pdf_doc.setFont(this.#pdf_font_style);
-    //this.#pdf_doc.setFontSize(10);
 
     let dummyDiv = document.createElement("div");
     dummyDiv.innerHTML = htmlContent;
@@ -598,11 +594,18 @@ The status bar shows:
     this.#pdf_doc.html(dummyDiv, {
       callback: (doc) => {
         doc.save("document.pdf");
+
+        // clear the pdf generation caches
+        document.body.removeChild(dummyDiv);
+        const canvases = document.querySelectorAll("canvas");
+        canvases.forEach((canvas) => {
+          canvas.remove();
+        });
       },
       x: pdf_margin,
       y: top_margin,
+      margin: [top_margin, pdf_margin, pdf_margin, pdf_margin],
     });
-    document.body.removeChild(dummyDiv);
   }
 }
 
