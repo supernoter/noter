@@ -336,6 +336,46 @@ The status bar shows:
         this.#pdf_font_style = 'Arial'
     }
 
+    // attach DOM elements to HTML
+    initializeElements() {
+        // create textarea
+        this.textarea = document.createElement('textarea')
+        this.textarea.setAttribute('spellcheck', 'false')
+        this.textarea.setAttribute(
+            'placeholder',
+            "Let's go … and type CTRL-p to toggle preview, and CTRL-h for help"
+        )
+        this.textarea.id = 'note-textarea'
+
+        // create preview div
+        this.preview = document.createElement('div')
+        this.preview.className = 'preview'
+        this.preview.id = 'preview'
+        this.preview.style.display = 'none'
+
+        // create status bar
+        this.statusBar = document.createElement('div')
+        this.statusBar.className = 'status-bar'
+        this.statusBar.id = 'status-bar'
+
+        // create navigation side bar
+        this.navigationBar = document.createElement('div')
+        this.navigationBar.className = 'navigation-bar'
+        this.navigationBar.id = 'navigation-bar'
+        this.navigationBar.style.width = '200px'
+
+        // Inside initializeElements()
+        this.noteList = document.createElement('ul')
+        this.noteList.id = 'note-list'
+
+        // append elements to container
+        this.container.appendChild(this.textarea)
+        this.container.appendChild(this.preview)
+        this.container.appendChild(this.statusBar)
+        this.container.appendChild(this.navigationBar)
+        this.navigationBar.appendChild(this.noteList)
+    }
+
     // initializeEventListeners attaches event listener to elements, e.g. we want
     // to update the status bar at every keystroke.
     initializeEventListeners() {
@@ -354,59 +394,85 @@ The status bar shows:
         )
     }
 
-    /* the status bar can track some basic textarea info, later also indicate API
-     * access to LLM and other information */
-    updateStatusBar() {
-        const charCount = this.textarea.value.length
-        const text = this.textarea.value.substring(
-            0,
-            this.textarea.selectionStart
-        )
-        const row = text.split('\n').length
-        const column = text.split('\n').pop().length + 1
-        const fontSize = window.getComputedStyle(this.textarea).fontSize
-        let mode = 'E'
-        if (this.isPreviewMode) {
-            mode = 'P'
+    // handleKeyboardShortcuts takes and event and dispatches various actions.
+    handleKeyboardShortcuts(e) {
+        if (e.ctrlKey && e.key === 'p' && !this.isHelpMode) {
+            e.preventDefault()
+            this.togglePreviewMode()
+        } else if ((e.ctrlKey && e.key === 'h') || e.key === 'F1') {
+            e.preventDefault()
+            this.toggleHelpMode()
+        } else if (e.ctrlKey && (e.key === '=' || e.key === '+')) {
+            e.preventDefault()
+            this.changeFontSize(1)
+        } else if (e.ctrlKey && e.key === '-') {
+            e.preventDefault()
+            this.changeFontSize(-1)
+        } else if (e.ctrlKey && e.key === 'b') {
+            e.preventDefault()
+            this.toggleNavigationBar()
         }
-        if (this.isHelpMode) {
-            mode = 'H'
-        }
-        this.statusBar.textContent = `${charCount} · ${row}:${column} · ${fontSize} · ${mode}`
     }
 
-    // attach DOM elements to HTML
-    initializeElements() {
-        // create textarea
-        this.textarea = document.createElement('textarea')
-        this.textarea.setAttribute('spellcheck', 'false')
-        this.textarea.setAttribute(
-            'placeholder',
-            "Let's go - CTRL-h for keyboard shortcuts"
+    toggleNavigationBar() {
+        const navigationBar = document.getElementById('navigation-bar')
+        const editorContainer = document.getElementById('editor-container')
+        navigationBar.classList.toggle('open')
+        editorContainer.classList.toggle('shifted')
+    }
+
+    async openNote(filename) {
+        console.log('Opening note:', filename) // ✅ Debugging step
+        const content = await window.api.readNote(filename)
+        this.setContent(content)
+    }
+
+    async loadNotes() {
+        const noteFiles = await window.api.getNotes()
+        console.log('Loaded Notes:', noteFiles)
+        this.noteList.innerHTML = '' // Clear the list before adding new items
+
+        noteFiles.forEach((file) => {
+            const listItem = document.createElement('li')
+            listItem.textContent = file.replace('.md', '') // Remove .md extension
+            listItem.addEventListener('click', () => this.openNote(file))
+            this.noteList.appendChild(listItem)
+        })
+    }
+
+    async openNote(filename) {
+        console.log('Opening note:', filename) // ✅ Debugging step
+        const content = await window.api.readNote(filename)
+        this.setContent(content)
+    }
+
+    // initializeEventListeners attaches event listener to elements, e.g. we want
+    // to update the status bar at every keystroke.
+    initializeEventListeners() {
+        // text-related events
+        this.textarea.addEventListener('input', () => this.updateStatusBar())
+        this.textarea.addEventListener('keyup', () => this.updateStatusBar())
+        this.textarea.addEventListener('click', () => this.updateStatusBar())
+        this.textarea.addEventListener('select', () => this.updateStatusBar())
+        this.textarea.addEventListener('mousemove', () =>
+            this.updateStatusBar()
         )
-        this.textarea.id = 'note-textarea'
 
-        // create preview div
-        this.preview = document.createElement('div')
-        this.preview.className = 'preview'
-        this.preview.id = 'preview'
-        this.preview.style.display = 'none'
+        // keyboard shortcuts
+        document.addEventListener('keydown', (e) =>
+            this.handleKeyboardShortcuts(e)
+        )
+    }
 
-        // create status bar
-        this.statusBar = document.createElement('div')
-        this.statusBar.className = 'status-bar'
-        this.statusBar.id = 'status-bar'
-
-        // append elements to container
-        this.container.appendChild(this.textarea)
-        this.container.appendChild(this.preview)
-        this.container.appendChild(this.statusBar)
-
-        // create navigation side bar
-        this.navigationBar = document.createElement('div')
-        this.navigationBar.className = 'navigation-bar'
-        this.navigationBar.id = 'navigation-bar'
-        this.navigationBar.style.width = '250px'
+    /* font size, with some limits */
+    changeFontSize(delta) {
+        const currentSize = parseInt(
+            window.getComputedStyle(this.textarea).fontSize,
+            10
+        )
+        const newSize = Math.max(10, currentSize + delta)
+        this.textarea.style.fontSize = `${newSize}px`
+        this.updateStatusBar()
     }
 
     // initializeEventListeners attaches event listener to elements, e.g. we want
@@ -622,6 +688,11 @@ The status bar shows:
         const editorContainer = document.getElementById('editor-container')
         navigationBar.classList.toggle('open')
         editorContainer.classList.toggle('shifted')
+    }
+    // Set new content for the editor
+    setContent(content) {
+        this.textarea.value = content
+        this.updateStatusBar()
     }
 }
 

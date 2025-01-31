@@ -1,6 +1,32 @@
-const { app, BrowserWindow } = require('electron/main')
+const { app, BrowserWindow, ipcMain } = require('electron/main')
 const windowHandler = require('./WindowHandler')
 const process = require('process')
+const fs = require('fs')
+const path = require('path')
+
+const notesDir = path.join(
+    '/Users',
+    'gioriz',
+    'Desktop',
+    'noter',
+    'src',
+    'user-notes'
+)
+
+ipcMain.handle('get-notes', async () => {
+    if (!fs.existsSync(notesDir)) {
+        fs.mkdirSync(notesDir)
+    }
+    return fs.readdirSync(notesDir) // Returns filenames
+})
+
+ipcMain.handle('read-note', async (event, filename) => {
+    const filePath = path.join(notesDir, filename)
+    if (fs.existsSync(filePath)) {
+        return fs.readFileSync(filePath, 'utf8') // Return note content
+    }
+    return ''
+})
 
 // Many of Electron's core modules are Node.js event emitters that adhere to
 // Node's asynchronous event-driven architecture. The app module is one of
