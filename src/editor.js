@@ -298,6 +298,7 @@ The status bar shows:
     this.state = new EditState(this);
     this.state.enterState();
     this.updateStatusBar();
+    const { jsPDF } = window.jspdf;
     this.#pdf_doc = new jsPDF({
       orientation: "portrait",
       unit: "mm",
@@ -588,10 +589,19 @@ The status bar shows:
 
     let dummyDiv = document.createElement("div");
     dummyDiv.innerHTML = htmlContent;
-    let domElements = dummyDiv.childNodes;
+    //let domElements = dummyDiv.childNodes;
     console.log(htmlContent);
 
-    let currentY = top_margin;
+    this.#pdf_doc.html(dummyDiv, {
+      callback: (doc) => {
+        doc.save("document.pdf");
+      },
+      x: pdf_margin,
+      y: top_margin,
+      margin: 0,
+    });
+
+    /*let currentY = top_margin;
 
     for (let i = 0; i < domElements.length; i++) {
       let node = domElements[i];
@@ -696,7 +706,7 @@ The status bar shows:
         }
       }
     }
-    this.#pdf_doc.save("testing.pdf");
+      this.#pdf_doc.save("testing.pdf");*/
   }
 }
 
