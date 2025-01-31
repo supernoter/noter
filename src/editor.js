@@ -18,6 +18,7 @@ class Editor {
 * Markdown formatting is supported
 
 ## Keyboard Shortcuts
+* **CTRL-b**: Open Navigation Sidebar
 * **CTRL-n**: Create a New file
 * **CTRL-o**: Open a file
 * **CTRL-p**: Toggle preview mode
@@ -132,7 +133,6 @@ The status bar shows:
 
 
   async openNote(filename) {
-    console.log("Opening note:", filename);  // ✅ Debugging step
     const content = await window.api.readNote(filename);
     this.setContent(content);
 }
@@ -140,18 +140,17 @@ The status bar shows:
   async loadNotes() {
     const noteFiles = await window.api.getNotes();
     console.log("Loaded Notes:", noteFiles);
-    this.noteList.innerHTML = ""; // Clear the list before adding new items
+    this.noteList.innerHTML = ""; 
 
     noteFiles.forEach((file) => {
       const listItem = document.createElement("li");
-      listItem.textContent = file.replace(".md", ""); // Remove .md extension
+      listItem.textContent = file.replace(".md", "");
       listItem.addEventListener("click", () => this.openNote(file));
       this.noteList.appendChild(listItem);
     });
   }
 
   async openNote(filename) {
-    console.log("Opening note:", filename);  // ✅ Debugging step
     const content = await window.api.readNote(filename);
     this.setContent(content);
 }

@@ -18,16 +18,20 @@ const createWindow = () => {
   win.loadFile("index.html");
 };
 
-
-// const notesDir = path.join(app.getPath("userData"), "notes");
-const notesDir = path.join("/Users", "gioriz", "Desktop", "noter", "src", "user-notes");
+// Create path for all the user notes
+const notesDir = path.join(app.getPath("userData"), "user-notes");
 
 ipcMain.handle("get-notes", async () => {
   if (!fs.existsSync(notesDir)) {
-    fs.mkdirSync(notesDir);
+    fs.mkdirSync(notesDir, { recursive: true }); 
+
+    // Create an example markdown file
+    const defaultNotePath = path.join(notesDir, "welcome.md");
+    const defaultNoteContent = "Hello, this is your first note!"; 
+
+    fs.writeFileSync(defaultNotePath, defaultNoteContent, "utf-8");
   }
-  return fs.readdirSync(notesDir); // Returns filenames
-  
+  return fs.readdirSync(notesDir); 
 });
 
 ipcMain.handle("read-note", async (event, filename) => {
