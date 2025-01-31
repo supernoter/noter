@@ -24,7 +24,7 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-family: "Noto Sans JP", "Arial", sans-serif;
+  font-family: "Noto Sans JP", Arial, sans-serif;
 }
 
 /* styling the editor container */
@@ -96,16 +96,10 @@ body {
 /*** styles for exported pdf */
 
 .pdf-content {
-  font-family: "Noto Sans JP", "Arial", sans-serif;
-  margin: 0;
+  font-family: Garamond, Arial, sans-serif;
+  padding-right: 5px;
   font-size: 4px;
   color: #000000;
-}
-
-.pdf-content body {
-  height: 100%;
-  width: 100%;
-  margin: 5px;
 }
 
 .pdf-content h1 {
@@ -126,6 +120,8 @@ body {
 
 .pdf-content p {
   line-height: 8px;
+  margin-right: 10px;
+  word-wrap: break-word;
 }
 
 .pdf-content strong {

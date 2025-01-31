@@ -585,11 +585,16 @@ The status bar shows:
     let importStream = this.textarea.value;
     let htmlContent = marked(importStream);
 
+    const cleanHtmlContent = htmlContent.replace(/<pre><\/pre>/g, "");
+    const html = cleanHtmlContent;
+
     let dummyDiv = document.createElement("div");
-    dummyDiv.innerHTML = htmlContent;
+    dummyDiv.innerHTML = html;
     dummyDiv.className = "pdf-content";
+    dummyDiv.style.width = `${max_line_width}px`;
+    dummyDiv.style.height = "auto";
+    dummyDiv.style.fontFamily = "Garamond, Arial, sans-serif";
     document.body.appendChild(dummyDiv);
-    console.log(htmlContent);
 
     this.#pdf_doc.html(dummyDiv, {
       callback: (doc) => {
