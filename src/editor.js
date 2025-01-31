@@ -291,6 +291,7 @@ The status bar shows:
     dummyDiv.style.height = "auto";
     dummyDiv.style.fontFamily = "Garamond, Arial, sans-serif";
     document.body.appendChild(dummyDiv);
+    console.log(html);
 
     this.#pdf_doc.html(dummyDiv, {
       callback: (doc) => {
