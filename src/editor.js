@@ -75,7 +75,13 @@ The status bar shows:
     this.navigationBar.id = "navigation-bar";
     this.navigationBar.style.width = "200px";
 
-    // Inside initializeElements()
+    // create note list header
+    this.noteHeader = document.createElement("h3");
+    this.noteHeader.id = "note-list-header";
+    this.noteHeader.textContent = "Your Notes: ";
+    this.navigationBar.appendChild(this.noteHeader);
+
+    // create note list
     this.noteList = document.createElement("ul");
     this.noteList.id = "note-list";
 

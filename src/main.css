@@ -63,3 +63,7 @@ body {
 .note-item:hover {
   background: #ddd;
 }
+
+#note-list-header {
+  margin: 10px;
+}
