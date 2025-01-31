@@ -2,6 +2,11 @@
 
 /* font styling */
 
+@font-face {
+  font-family: "Noto Sans JP";
+  src: url("./fonts/Noto_Sans_JP/static/NotoSansJP-Regular.ttf");
+}
+
 .noto-sans-jp-400 {
   font-family: "Noto Sans JP", serif;
   font-optical-sizing: auto;
@@ -66,27 +71,34 @@ body {
 .pdf-content {
   font-family: "Noto Sans JP", "Arial", sans-serif;
   margin: 0;
-  font-size: 8px;
+  font-size: 4px;
+  color: #000000;
+}
+
+.pdf-content body {
+  height: 100%;
+  width: 100%;
+  margin: 5px;
 }
 
 .pdf-content h1 {
-  font-size: 24px;
+  font-size: 12px;
   color: #0a1172;
   font-weight: bold;
 }
 
 .pdf-content h2 {
-  font-size: 20px;
+  font-size: 10px;
   color: green;
 }
 
 .pdf-content h3 {
-  font-size: 16px;
+  font-size: 8px;
   color: blue;
 }
 
 .pdf-content p {
-  color: black;
+  line-height: 8px;
 }
 
 .pdf-content strong {
@@ -95,4 +107,9 @@ body {
 
 .pdf-content em {
   font-style: italic;
+}
+
+.pdf-content img {
+  max-width: 150px;
+  margin: auto;
 }
