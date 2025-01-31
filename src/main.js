@@ -28,6 +28,30 @@ ipcMain.handle('read-note', async (event, filename) => {
     return ''
 })
 
+// Create path for all the user notes
+const notesDir = path.join(app.getPath("userData"), "user-notes");
+
+ipcMain.handle("get-notes", async () => {
+  if (!fs.existsSync(notesDir)) {
+    fs.mkdirSync(notesDir, { recursive: true });
+
+    // Create an example markdown file
+    const defaultNotePath = path.join(notesDir, "welcome.md");
+    const defaultNoteContent = "Hello, this is your first note!";
+
+    fs.writeFileSync(defaultNotePath, defaultNoteContent, "utf-8");
+  }
+  return fs.readdirSync(notesDir);
+});
+
+ipcMain.handle("read-note", async (event, filename) => {
+  const filePath = path.join(notesDir, filename);
+  if (fs.existsSync(filePath)) {
+      return fs.readFileSync(filePath, "utf8"); // Return note content
+  }
+  return "";
+});
+
 // Many of Electron's core modules are Node.js event emitters that adhere to
 // Node's asynchronous event-driven architecture. The app module is one of
 // these emitters.
