@@ -36,10 +36,13 @@ ipcMain.handle("get-notes", async () => {
     fs.mkdirSync(notesDir, { recursive: true });
 
     // Create an example markdown file
-    const defaultNotePath = path.join(notesDir, "welcome.md");
-    const defaultNoteContent = "Hello, this is your first note!";
+    const defaultNotePath1 = path.join(notesDir, "First note.md");
+    const defaultNotePath2 = path.join(notesDir, "Second note.md");
+    const exampleNote1 = "Hello, this is your first note!";
+    const exampleNote2 = "This is your second note!";
 
-    fs.writeFileSync(defaultNotePath, defaultNoteContent, "utf-8");
+    fs.writeFileSync(defaultNotePath1, exampleNote1, "utf-8");
+    fs.writeFileSync(defaultNotePath2, exampleNote2, "utf-8");
   }
   return fs.readdirSync(notesDir);
 });

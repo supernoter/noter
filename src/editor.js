@@ -375,6 +375,12 @@ The status bar shows:
     this.noteList = document.createElement("ul");
     this.noteList.id = "note-list";
 
+    // Create search input
+    this.searchInput = document.createElement("input");
+    this.searchInput.type = "text";
+    this.searchInput.id = "search-notes";
+    this.searchInput.placeholder = "Search notes...";
+    this.searchInput.className = "search-bar";
 
     // append elements to container
     this.container.appendChild(this.textarea);
@@ -382,6 +388,7 @@ The status bar shows:
     this.container.appendChild(this.statusBar);
     this.container.appendChild(this.navigationBar);
     this.navigationBar.appendChild(this.noteList);
+    this.navigationBar.appendChild(this.searchInput);
   }
 
   // initializeEventListeners attaches event listener to elements, e.g. we want
@@ -393,6 +400,7 @@ The status bar shows:
     this.textarea.addEventListener("click", () => this.updateStatusBar());
     this.textarea.addEventListener("select", () => this.updateStatusBar());
     this.textarea.addEventListener("mousemove", () => this.updateStatusBar());
+    this.searchInput.addEventListener("input", () => this.filterNotes());
 
     // keyboard shortcuts
     document.addEventListener("keydown", (e) =>
@@ -433,19 +441,28 @@ The status bar shows:
     this.setContent(content);
 }
 
-  async loadNotes() {
-    const noteFiles = await window.api.getNotes();
-    console.log("Loaded Notes:", noteFiles);
-    this.noteList.innerHTML = "";
+filterNotes() {
+  const query = this.searchInput.value.toLowerCase();
+  const noteItems = this.noteList.getElementsByTagName("li");
 
-    noteFiles.forEach((file) => {
-      const listItem = document.createElement("li");
-      listItem.textContent = file.replace(".md", "");
-      listItem.addEventListener("click", () => this.openNote(file));
-      this.noteList.appendChild(listItem);
-    });
-  }
+  Array.from(noteItems).forEach((item) => {
+    const noteName = item.textContent.toLowerCase();
+    item.style.display = noteName.includes(query) ? "block" : "none";
+  });
+}
 
+async loadNotes() {
+  const noteFiles = await window.api.getNotes();
+  this.noteList.innerHTML = "";
+
+  noteFiles.forEach((file) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = file.replace(".md", "");
+    listItem.addEventListener("click", () => this.openNote(file));
+    this.noteList.appendChild(listItem);
+  });
+  this.filterNotes();
+}
   async openNote(filename) {
     const content = await window.api.readNote(filename);
     this.setContent(content);
