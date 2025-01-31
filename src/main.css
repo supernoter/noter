@@ -60,3 +60,39 @@ body {
   font-family: "Arial", sans-serif;
   font-size: 14px;
 }
+
+/*** styles for exported pdf */
+
+.pdf-content {
+  font-family: "Noto Sans JP", "Arial", sans-serif;
+  margin: 0;
+  font-size: 8px;
+}
+
+.pdf-content h1 {
+  font-size: 24px;
+  color: #0a1172;
+  font-weight: bold;
+}
+
+.pdf-content h2 {
+  font-size: 20px;
+  color: green;
+}
+
+.pdf-content h3 {
+  font-size: 16px;
+  color: blue;
+}
+
+.pdf-content p {
+  color: black;
+}
+
+.pdf-content strong {
+  font-weight: bold;
+}
+
+.pdf-content em {
+  font-style: italic;
+}

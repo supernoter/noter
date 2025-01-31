@@ -21,6 +21,8 @@
     "prettier": "3.4.2"
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.2",
     "marked": "^15.0.6"
   },
   "build": {

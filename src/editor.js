@@ -1,4 +1,6 @@
 import { marked } from "./node_modules/marked/lib/marked.esm.js";
+import * as jsPDF from "./node_modules/jspdf/dist/jsPDF.umd.min.js";
+import * as html2canvas from "./node_modules/html2canvas/dist/html2canvas.min.js";
 
 // Editor implements the basic editing function for NOTER.
 class Editor {
@@ -50,7 +52,7 @@ The status bar shows:
     this.initializeEventListeners();
     this.updateStatusBar();
     const { jsPDF } = window.jspdf;
-    this.#pdf_doc = new jsPDF({
+    this.#pdf_doc = new jsPDF("p", "mm", "a4", {
       orientation: "portrait",
       unit: "mm",
       format: "a4", // Possible values: 'a3', 'a4' (default), 'a5', 'letter', 'legal'
@@ -280,12 +282,13 @@ The status bar shows:
     let importStream = this.textarea.value;
     let htmlContent = marked(importStream);
 
-    this.#pdf_doc.setFont(this.#pdf_font_style);
-    this.#pdf_doc.setFontSize(12);
+    //this.#pdf_doc.setFont(this.#pdf_font_style);
+    //this.#pdf_doc.setFontSize(10);
 
     let dummyDiv = document.createElement("div");
     dummyDiv.innerHTML = htmlContent;
-    //let domElements = dummyDiv.childNodes;
+    dummyDiv.className = "pdf-content";
+    document.body.appendChild(dummyDiv);
     console.log(htmlContent);
 
     this.#pdf_doc.html(dummyDiv, {
@@ -294,115 +297,8 @@ The status bar shows:
       },
       x: pdf_margin,
       y: top_margin,
-      margin: 0,
     });
-
-    /*let currentY = top_margin;
-
-    for (let i = 0; i < domElements.length; i++) {
-      let node = domElements[i];
-
-      // Check if the node is a text node
-      if (node.nodeType === Node.TEXT_NODE) {
-        const textLines = this.#pdf_doc.splitTextToSize(
-          node.textContent,
-          max_line_width,
-        );
-        for (let line of textLines) {
-          if (currentY > this.#pdf_doc.internal.pageSize.height - pdf_margin) {
-            this.#pdf_doc.addPage();
-            currentY = top_margin;
-          }
-          this.#pdf_doc.text(line, pdf_margin, currentY);
-          currentY += line_height;
-        }
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        // Process various HTML elements
-        switch (node.tagName.toLowerCase()) {
-          // bold **
-          case "strong":
-          case "b":
-            this.#pdf_doc.setFont(this.#pdf_font_style, "bold");
-            this.#pdf_doc.text(node.textContent, pdf_margin, currentY);
-            this.#pdf_doc.setFont(this.#pdf_font_style, "normal");
-            break;
-
-          // italic *
-          case "em":
-          case "i":
-            this.#pdf_doc.setFont(this.#pdf_font_style, "italic");
-            this.#pdf_doc.text(node.textContent, pdf_margin, currentY);
-            this.#pdf_doc.setFont(this.#pdf_font_style, "normal");
-            break;
-
-          // header 1
-          case "h1":
-            this.#pdf_doc.setFontSize(20);
-            this.#pdf_doc.setFont(this.#pdf_font_style, "bold");
-            this.#pdf_doc.text(node.textContent, pdf_margin, currentY);
-            this.#pdf_doc.setFont(this.#pdf_font_style, "normal");
-            this.#pdf_doc.setFontSize(12);
-            break;
-
-          // header 2
-          case "h2":
-            this.#pdf_doc.setFontSize(16);
-            this.#pdf_doc.setFont(this.#pdf_font_style, "italic");
-            this.#pdf_doc.text(node.textContent, pdf_margin, currentY);
-            this.#pdf_doc.setFont(this.#pdf_font_style, "normal");
-            this.#pdf_doc.setFontSize(12);
-            break;
-
-          // header 3
-          case "h3":
-            this.#pdf_doc.setFontSize(14);
-            this.#pdf_doc.text(node.textContent, pdf_margin, currentY);
-            this.#pdf_doc.setFontSize(12);
-            break;
-
-          // paragraph and div panel
-          case "p":
-          case "div":
-            const paragraphLines = this.#pdf_doc.splitTextToSize(
-              node.textContent,
-              max_line_width,
-            );
-            for (let line of paragraphLines) {
-              if (
-                currentY >
-                this.#pdf_doc.internal.pageSize.height - pdf_margin
-              ) {
-                this.#pdf_doc.addPage();
-                currentY = top_margin;
-              }
-              this.#pdf_doc.text(line, pdf_margin, currentY);
-              currentY += line_height;
-            }
-            break;
-
-          // Add more cases for other tags as necessary
-          default:
-            const defaultLines = this.#pdf_doc.splitTextToSize(
-              node.textContent,
-              max_line_width,
-            );
-            for (let line of defaultLines) {
-              if (
-                currentY >
-                this.#pdf_doc.internal.pageSize.height - pdf_margin
-              ) {
-                this.#pdf_doc.addPage();
-                currentY = top_margin;
-              }
-
-              this.#pdf_doc.text(line, pdf_margin, currentY);
-              currentY += line_height;
-            }
-            break;
-        }
-      }
-    }
-      this.#pdf_doc.save("testing.pdf");*/
+    document.body.removeChild(dummyDiv);
   }
 }
 
