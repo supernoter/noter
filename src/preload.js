@@ -5,5 +5,6 @@ const path = require("path");
 const os = require("os");
 
 contextBridge.exposeInMainWorld("api", {
-  hey: "greetings from preload.js", // just a dummy string
+  getNotes: () => ipcRenderer.invoke("get-notes"),
+  readNote: (filename) => ipcRenderer.invoke("read-note", filename),
 });

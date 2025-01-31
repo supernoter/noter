@@ -38,10 +38,10 @@ body {
   background-color: #2f3b52;
   color: #fff;
   position: fixed;
-  left: -250px;
+  left: -200px;
   top: 0;
   bottom: 0;
-  width: 250px;
+  width: 200px;
   padding: 0px;
   transition: left 0.3s ease; 
 }
@@ -51,5 +51,15 @@ body {
 }
 
 #editor-container.shifted {
-  margin-left: 250px;
+  margin-left: 200px;
+}
+
+.note-item {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ccc;
+}
+
+.note-item:hover {
+  background: #ddd;
 }

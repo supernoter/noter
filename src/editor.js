@@ -45,6 +45,7 @@ The status bar shows:
     this.updateStatusBar();
   }
 
+
   // attach DOM elements to HTML
   initializeElements() {
     // create textarea
@@ -71,13 +72,19 @@ The status bar shows:
     this.navigationBar = document.createElement("div");
     this.navigationBar.className = "navigation-bar";
     this.navigationBar.id = "navigation-bar";
-    this.navigationBar.style.width = "250px";
+    this.navigationBar.style.width = "200px";
+
+    // Inside initializeElements()
+    this.noteList = document.createElement("ul");
+    this.noteList.id = "note-list";
+
 
     // append elements to container
     this.container.appendChild(this.textarea);
     this.container.appendChild(this.preview);
     this.container.appendChild(this.statusBar);
     this.container.appendChild(this.navigationBar);
+    this.navigationBar.appendChild(this.noteList);
   }
 
   // initializeEventListeners attaches event listener to elements, e.g. we want
@@ -115,6 +122,39 @@ The status bar shows:
       this.toggleNavigationBar(); 
     }
   }
+
+  toggleNavigationBar() {
+    const navigationBar = document.getElementById("navigation-bar");
+    const editorContainer = document.getElementById("editor-container");
+    navigationBar.classList.toggle("open");
+    editorContainer.classList.toggle("shifted");
+  }
+
+
+  async openNote(filename) {
+    console.log("Opening note:", filename);  // ✅ Debugging step
+    const content = await window.api.readNote(filename);
+    this.setContent(content);
+}
+
+  async loadNotes() {
+    const noteFiles = await window.api.getNotes();
+    console.log("Loaded Notes:", noteFiles);
+    this.noteList.innerHTML = ""; // Clear the list before adding new items
+
+    noteFiles.forEach((file) => {
+      const listItem = document.createElement("li");
+      listItem.textContent = file.replace(".md", ""); // Remove .md extension
+      listItem.addEventListener("click", () => this.openNote(file));
+      this.noteList.appendChild(listItem);
+    });
+  }
+
+  async openNote(filename) {
+    console.log("Opening note:", filename);  // ✅ Debugging step
+    const content = await window.api.readNote(filename);
+    this.setContent(content);
+}
 
   /* the status bar can track some basic textarea info, later also indicate API
    * access to LLM and other information */
@@ -186,6 +226,7 @@ The status bar shows:
     this.updateStatusBar();
   }
 
+
   /* font size, with some limits */
   changeFontSize(delta) {
     const currentSize = parseInt(
@@ -240,17 +281,20 @@ The status bar shows:
     });
   }
 
+
   init() {
     this.textarea.value = "";
     const introText = "noter: write together";
-
+    
     return new Promise(async (resolve) => {
+      await this.loadNotes();
       await this.typeEffect(introText);
       await this.deleteEffect(introText);
       this.textarea.focus();
       resolve();
     });
   }
+  
 
   // Get the current content of the editor
   getContent() {
@@ -261,13 +305,6 @@ The status bar shows:
   setContent(content) {
     this.textarea.value = content;
     this.updateStatusBar();
-  }
-
-  toggleNavigationBar() {
-    const navigationBar = document.getElementById("navigation-bar");
-    const editorContainer = document.getElementById("editor-container");
-    navigationBar.classList.toggle("open");
-    editorContainer.classList.toggle("shifted");
   }
 }
 
