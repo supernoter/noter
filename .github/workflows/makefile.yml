@@ -12,4 +12,5 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Run build
-      run: make build
+      run: |
+        cd src && make build
