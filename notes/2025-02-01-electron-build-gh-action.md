@@ -6,6 +6,8 @@ https://stackoverflow.com/questions/46571742/electron-builder-release-tries-to-p
 
 We need both wine and wine32 and for that we need to enable the arch with `dpkg`.
 
-GitHub may offer a MacOS runner, so we can actually build dmg files.
+GitHub may offer a MacOS runner, so we can actually build dmg files; https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners
 
 TODO: figure out code signing.
+
+
