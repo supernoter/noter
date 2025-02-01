@@ -15,7 +15,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install --yes wine libwine
-        sudo dpkg --add-architecture i386 && apt-get update && apt-get install --yes wine32
+        sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install --yes wine32
     - name: Run build
       run: |
         cd src
