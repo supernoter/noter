@@ -11,8 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - name: Install wine
+      run: |
+        sudo apt-get update
+        sudo apt-get install --yes wine libwine
+        sudo dpkg --add-architecture i386 && apt-get update && apt-get install --yes wine32
     - name: Run build
       run: |
         cd src
-        npm install --include=dev 
+        npm install --include=dev
         make build
