@@ -1,9 +1,11 @@
-name: Makefile CI
+name: Create platform packager for NOTER
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
+    # Building packages is expensive (it takes about 5 minutes), so only do
+    # this, if we push a version like tag.
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
     branches: [ "main" ]
 
 jobs:
