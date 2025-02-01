@@ -329,7 +329,7 @@ The status bar shows:
     this.updateStatusBar();
   }
 
-  /* switch off the app window */
+  // switch off the app window
   switchOffProgram() {
     window.close();
   }
