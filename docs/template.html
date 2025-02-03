@@ -74,6 +74,31 @@
         color: var(--text-color);
       }
 
+      h1,
+      h2 {
+        position: relative;
+      }
+
+      h1 .anchor,
+      h2 .anchor {
+        position: absolute;
+        left: -1em;
+        padding-right: 0.5em;
+        opacity: 0;
+        text-decoration: none;
+      }
+
+      h1 .anchor::before,
+      h2 .anchor::before {
+        content: "#";
+        color: var(--primary-color);
+      }
+
+      h1:hover .anchor,
+      h2:hover .anchor {
+        opacity: 0.7;
+      }
+
       h1 {
         color: var(--primary-color);
         margin-bottom: 0.4rem;

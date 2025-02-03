@@ -1,3 +1,11 @@
+# Makefile to generate index.html from a template (template.html) and markdown
+# (index.md). You will need prettier command line tool for HTML formatting and
+# pandoc for the conversion.
+#
+# ┏━┓╻ ╻┏━┓┏━╸┏━┓┏┓╻┏━┓╺┳╸┏━╸┏━┓ ╻ ╻╻ ╻╺━┓
+# ┗━┓┃ ┃┣━┛┣╸ ┣┳┛┃┗┫┃ ┃ ┃ ┣╸ ┣┳┛ ┏╋┛┗┳┛┏━┛
+# ┗━┛┗━┛╹  ┗━╸╹┗╸╹ ╹┗━┛ ╹ ┗━╸╹┗╸╹╹ ╹ ╹ ┗━╸
+#
 SHELL = /bin/bash
 
 index.html: index.md template.html
