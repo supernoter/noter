@@ -1,4 +1,17 @@
-name: Create platform packager for NOTER
+# This is a GitHub Actions CI workflow definition
+# -----------------------------------------------
+#
+# Builds packages with the same "make build" command that can be used locally,
+# then creates a new release.
+#
+# Only triggered, when a tag of the form v1.2.3 will be pushed. The default
+# branch "main" is checked out and built.
+#
+# A possible improvement: Caching dependencies; would speed up things, makes
+# the workflow more complicated, see also:
+# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/caching-dependencies-to-speed-up-workflows
+
+name: Create packages for NOTER
 
 on:
   push:
@@ -8,6 +21,7 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
 # https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#permissions
+# TODO: make this a bit more fine-grained
 permissions: write-all
 
 jobs:
@@ -27,16 +41,21 @@ jobs:
           npm install --include=dev
           make build
       - name: Checksum
+        # This is not strictly required, but it does not hurt either.
         run: echo ${{ github.sha }} > release.txt
-      - name: Debug
-        run: echo ${{ github.token }}
       - name: Release
+        # https://github.com/softprops/action-gh-release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          # This token gets automatically populated when the workflow starts.
+          # What we need it specify the permissions.
           token: ${{ github.token }}
+          # This can be set to false, one we are out of our "alpha" release
+          # stage.
           prerelease: true
           make_latest: true
+          # Just make it so we notice, if any of the artifacts are missing.
           fail_on_unmatched_files: true
           files: |
             src/dist/noter_*_amd64.deb
