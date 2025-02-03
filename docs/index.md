@@ -6,7 +6,7 @@ header: NOTER is a minimalistic, themable markdown editor that seamlessly integr
 
 # About
 
-NOTER is a [open source](https://github.com/supernoter/noter), minimalistic,
+NOTER is an [open source](https://github.com/supernoter/noter), minimalistic,
 themable markdown editor that seamlessly integrates with large-language models.
 If you happen to run [ollama](https://ollama.com/) locally, NOTER will
 automatically connect to the instance.
