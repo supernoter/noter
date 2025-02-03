@@ -1,0 +1,42 @@
+---
+title: NOTER - write together
+date: February 3, 2025
+header: NOTER is a minimalistic, themable markdown editor that seamlessly integrates with large-language models, while respecting your privacy.
+---
+
+# About
+
+NOTER is a minimalistic, themable markdown editor that seamlessly integrates
+with large-language models.
+
+# Installation
+
+NOTER is available for MacOS, Windows and Linux. Download links coming soon.
+
+
+# Demo
+
+<div class="video-container">
+  <video loop muted autoplay playsinline preload="auto" poster="/static/intro-fast.jpg" id="intro">
+    <source src="/static/intro-fast.webm" type="video/webm" />
+    <source src="/static/intro-fast.mp4" type="video/mp4" />
+    <source src="/static/intro-fast.ogg" type="video/ogg" />
+  </video>
+</div>
+
+# Reference
+
+Access help within the editor with CTRL-h or F1.
+
+## Keyboard Shortcuts
+
+| Keyboard Shortcut | Functionality                                                   |
+|-------------------|-----------------------------------------------------------------|
+| CTRL-g            | Call out to the configured LLM and insert response to a prompt. |
+| CTRL-h, F1        | Toggle help                                                     |
+| CTRL-n            | Create a new file                                               |
+| CTRL-o            | Open an existing file                                           |
+| CTRL-p            | Toggle preview                                                  |
+| CTRL-s            | Save file                                                       |
+| CTRL-+            | Increase font size                                              |
+| CTRL-- (minus)    | Decreate font size                                              |
