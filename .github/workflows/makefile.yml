@@ -11,29 +11,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Install wine
-      run: |
-        sudo apt-get update
-        sudo apt-get install --yes wine libwine
-        sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install --yes wine32
-    - name: Run build
-      run: |
-        cd src
-        npm install --include=dev
-        make build
-    - name: Checksum
-      run: echo ${{ github.sha }} > release.txt
-    - name: Release
-      uses: softprops/action-gh-release@v2
-      if: startsWith(github.ref, 'refs/tags/')
-      prerelease: true
-      make_latest: true
-      fail_on_unmatched_files: true
-      with:
-        files: |
-          src/dist/noter_*_amd64.deb
-          src/dist/Noter-*.AppImage
-          src/dist/Noter-*-mac.zip
-          src/dist/Noter-*-win.zip
-          release.txt
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install wine
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes wine libwine
+          sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install --yes wine32
+      - name: Run build
+        run: |
+          cd src
+          npm install --include=dev
+          make build
+      - name: Checksum
+        run: echo ${{ github.sha }} > release.txt
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          prerelease: true
+          make_latest: true
+          fail_on_unmatched_files: true
+          files: |
+            src/dist/noter_*_amd64.deb
+            src/dist/Noter-*.AppImage
+            src/dist/Noter-*-mac.zip
+            src/dist/Noter-*-win.zip
+            release.txt
