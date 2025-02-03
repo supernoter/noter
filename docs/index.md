@@ -11,7 +11,8 @@ with large-language models.
 
 # Installation
 
-NOTER is available for MacOS, Windows and Linux. Download links coming soon.
+NOTER is available for MacOS, Windows and Linux - you can download it from our
+[releases page](https://github.com/supernoter/noter/releases/latest).
 
 
 # Demo
