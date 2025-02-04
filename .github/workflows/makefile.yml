@@ -42,13 +42,20 @@ jobs:
           npm install --include=dev
           make build
       - name: Checksum
-        # This is not strictly required, but it does not hurt either.
         run: echo ${{ github.sha }} > release.txt
+      - name: Generate changelog
+        run: |
+          echo '# NOTER ${{ github.ref_name }}
+
+          This is the latest release of NOTER, the simple, themable,
+          llm-enhanced markdown editor.
+          ' > ${{ github.workspace }}-CHANGELOG.txt
       - name: Release
         # https://github.com/softprops/action-gh-release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          body_path: ${{ github.workspace }}-CHANGELOG.txt
           # This token gets automatically populated when the workflow starts.
           # What we need it specify the permissions.
           token: ${{ github.token }}
