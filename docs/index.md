@@ -9,7 +9,10 @@ header: NOTER is a minimalistic, themable markdown editor that seamlessly integr
 NOTER is an [open source](https://github.com/supernoter/noter), minimalistic,
 themable markdown editor that seamlessly integrates with large-language models.
 If you happen to run [ollama](https://ollama.com/) locally, NOTER will
-automatically connect to the instance.
+automatically connect to the instance. It is currently in
+[alpha](https://en.wikipedia.org/wiki/Software_release_life_cycle#Alpha) stage:
+you can download it and run it, but most functionality is still missing and the
+code is not thoroughly tested yet.
 
 # Installation
 
