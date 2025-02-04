@@ -21,8 +21,9 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
 # https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#permissions
-# TODO: make this a bit more fine-grained
-permissions: write-all
+# https://github.com/softprops/action-gh-release?tab=readme-ov-file#permissions
+permissions:
+  contents: write
 
 jobs:
   build:
