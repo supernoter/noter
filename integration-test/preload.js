@@ -1,3 +1,3 @@
 const customizationHandler = require("./CustomizationHandler");
 
-customizationHandler.applyCustomizationsToDOM();
+customizationHandler.applyCustomizationsToEditor();

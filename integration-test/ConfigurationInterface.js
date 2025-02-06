@@ -1,36 +1,38 @@
+const fileSystem = require("fs");
+
 class ConfigurationInterface
 {
 
-    // ==================
-    // | PRIVATE FIELDS | 
-    // ==================
+    /**
+     * PRIVATE FIELDS
+     */
 
     #filePath = "./config.json";
-    #configurationData = {};
 
-    // ==================
-    // | PUBLIC METHODS | 
-    // ==================
+    #defaultConfiguration = {
+        "window": { "opacity": 1, "width": 900, "height": 550 },
+        "font": { "colour": "blue", "size" : "25px", "family": "Arial" },
+        "background": { "colour": "white",  "gradient": null, "image": null, "opacity": "100%" }
+    };
 
     /**
-     * retrieves the configuration data  
-     */  
+     * PUBLIC METHODS
+     */
+
+    // retrieves the configuration data object
     getConfigurationData(){
-        this.#loadConfigurations();
-        return this.#configurationData;
+        this.#ensureConfigurationFileExistence();
+        const configurationDataObject = this.#loadConfigurations();
+        return configurationDataObject;
     }
 
-    // ===================
-    // | PRIVATE METHODS | 
-    // ===================
-    
     /**
-     * opens the configuration file and retrieves its data
-     * @param {String} filePath
-     * @returns {String} fileData
+     * PRIVATE METHODS
      */
+    
+    // opens a configuration file and returns its data  
     #openConfigurationFile(filePath) {
-        const fileSystem = require("fs");
+        // const fileSystem = require("fs");
 
         const fileData = fileSystem.readFileSync(filePath, "binary", (error, fileData) => {
 
@@ -45,11 +47,7 @@ class ConfigurationInterface
         return fileData;
     }
 
-    /**
-     * parses the file data into an object
-     * @param {String} fileData 
-     * @returns {JSON} configurationData
-     */
+    // receives a JS object as a string and converts it to a JSON
     #parseFileData(fileData) {
         if (fileData == null || fileData.trim() === "") {
             console.error("The file data is empty.");
@@ -59,16 +57,19 @@ class ConfigurationInterface
         return JSON.parse(fileData);
     }
     
-    /**
-     * loads the configuration data
-     * (i.e.) opens and parses the file into an object
-     */
+    // opens the configuration file and returns its data as an object
     #loadConfigurations() {
         const fileData = this.#openConfigurationFile(this.#filePath);
-        this.#configurationData = this.#parseFileData(fileData);
+        return this.#parseFileData(fileData);
     }
 
-    // TODO: CREATE A METHOD TO VERIFY THE JSON FILE EXISTANCE AND STRUCTURE
+    // verifies if the configuration file exists in the specified path
+    // if not, it'll be created there
+    #ensureConfigurationFileExistence() {
+        if (!fileSystem.existsSync(this.#filePath)) {
+            fileSystem.writeFileSync(this.#filePath, JSON.stringify(this.#defaultConfiguration, null, 2));
+        }
+    }
 
 }
 

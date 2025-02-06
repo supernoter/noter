@@ -7,18 +7,14 @@ class CustomizationHandler {
 
     constructor() {
         const {window, font, background} = configurationInterface.getConfigurationData();
-        [
-            this.window,
-            this.font,
-            this.background
-        ] =  [
-            window,
-            font,
-            background
-        ];
+        
+        this.window = window;
+        this.font = font;
+        this.background = background;
     }
 
-    applyCustomizationsToDOM() {
+    // apply customizations to the editor 
+    applyCustomizationsToEditor() {
         window.addEventListener("DOMContentLoaded", () => {
             const content = document.getElementById('content');
 
@@ -26,13 +22,12 @@ class CustomizationHandler {
             content.style.fontSize = this.font["size"];
             content.style.fontFamily = this.font["family"];
 
-            // todo: handle image and gradient (define a priority order)
-            // should be part of configuration module?
             content.style.backgroundColor = this.background["colour"];
             content.style.opacity = this.background["opacity"];
         });
     }
 
+    // generates a window object with configurations set by the user
     getWindowOptions() {
         return {
             width: this.window["width"], 
