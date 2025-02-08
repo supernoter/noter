@@ -35,7 +35,7 @@ class menuItem {
         submenu: [
           {
             label: "Create new file",
-            click: () => this.openNewFile(window),
+            click: () => this.createNewFile(window),
           },
           // isMac ? [{ role: "close" }] : [{ role: "quit" }],
         ],
@@ -122,7 +122,7 @@ class menuItem {
   };
 
   // Function to create a new file in the user's desktop directory.
-  openNewFile = async (window) => {
+  createNewFile = async (window) => {
     //open save dialog from electron.
     dialog
       .showSaveDialog(window, {
@@ -156,6 +156,19 @@ class menuItem {
             );
           }
         });
+      });
+  };
+
+  //open folder where file is saved.
+  openDiary = async (window) => {
+    dialog
+      .showOpenDialog(window, {
+        properties: ["openFile", "openDirectory"],
+      })
+      .then((result) => {
+        if (result.canceled) return;
+        //open the selected folder.
+        shell.openPath(result.filePaths[0]);
       });
   };
 }
