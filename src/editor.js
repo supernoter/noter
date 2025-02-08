@@ -1,3 +1,7 @@
+/**
+ * Author: Martin
+ */
+
 import { marked } from "./node_modules/marked/lib/marked.esm.js";
 // Editor implements the basic editing function for NOTER.
 class Editor {

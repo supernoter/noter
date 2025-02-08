@@ -9,6 +9,14 @@
     "build": "electron-builder --mac --windows --linux --publish never"
   },
   "author": "ASP-G30-T7 <universe@supernoter.xyz>",
+  "contributors": [
+    {
+      "name": "Guilherme Elias Marinho"
+    },
+    {
+      "name": "Martin Czygan"
+    }
+  ],
   "license": "ISC",
   "repository": {
     "type": "git",
