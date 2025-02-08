@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noter</title>
+    <link rel="stylesheet" href="./main.css" />
+</head>
+<body id="content">
+
+    <!-- Author: Martin -->
+    <div id="editor-container"></div>
+    
+    <script type="module">
+
+        import Editor from "./editor.js";
+        
+        document.addEventListener("DOMContentLoaded", () => {
+        
+            const editor = new Editor("editor-container");
+            
+            editor.init().then(() => {
+                console.log("editor.init() done");
+                console.log(window.api.hey);
+            });
+        
+        });
+    
+    </script>
+</body>
+</html>
