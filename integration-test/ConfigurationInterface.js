@@ -12,7 +12,9 @@ class ConfigurationInterface
     #defaultConfiguration = {
         "window": { "opacity": 1, "width": 900, "height": 550 },
         "font": { "colour": "blue", "size" : "25px", "family": "Arial" },
-        "background": { "colour": "white",  "gradient": null, "image": null, "opacity": "100%" }
+        "background": { "colour": "white",  "gradient": null, "image": null, "opacity": "100%" },
+        "status-bar": { "font": { "colour": "black", "size": "15px", "family": "Arial" }, "background": { "colour": "white" } },
+        "preview": { "font": { "colour": "black", "size":"20px", "family": "Arial" }, "background": { "colour": "blue" } }
     };
 
     /**

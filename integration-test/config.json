@@ -1,20 +1,47 @@
 {
   "window": {
     "opacity": 1,
-    "width": 900,
-    "height": 550
+    "width": 1000,
+    "height": 650
   },
   
   "font": {
-    "colour": "blue",
-    "size": "25px",
+    "colour": "green",
+    "size": "30px",
     "family": "Arial"
   },
 
   "background": {
-    "colour": "white",
+    "colour": "purple",
     "gradient": null,
     "image": null,
     "opacity": "100%"
+  },
+
+  "statusbar": {
+
+    "font": {
+      "colour": "yellow",
+      "size": "15px",
+      "family": "Arial"
+    },
+
+    "background": {
+      "colour": "black"
+    }
+
+  },
+
+  "preview": {
+    
+    "font": {
+      "colour": "red",
+      "size":"20px",
+      "family": "Times"
+    },
+
+    "background": {
+      "colour": "blue"
+    }
   }
 }

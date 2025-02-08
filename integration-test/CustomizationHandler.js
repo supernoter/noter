@@ -6,24 +6,39 @@ const configurationInterface = require("./ConfigurationInterface");
 class CustomizationHandler {
 
     constructor() {
-        const {window, font, background} = configurationInterface.getConfigurationData();
+
+        const {window, font, background, statusbar, preview} = configurationInterface.getConfigurationData();
         
         this.window = window;
         this.font = font;
         this.background = background;
+        this.statusBar = statusbar;
+        this.preview = preview;
     }
 
     // apply customizations to the editor 
     applyCustomizationsToEditor() {
         window.addEventListener("DOMContentLoaded", () => {
-            const content = document.getElementById('content');
 
+            const content = document.querySelector('#note-textarea'); // editor
             content.style.color = this.font["colour"];
             content.style.fontSize = this.font["size"];
-            content.style.fontFamily = this.font["family"];
-
+            content.style.fontFamily = this.font["family"]; 
             content.style.backgroundColor = this.background["colour"];
             content.style.opacity = this.background["opacity"];
+
+            const statusBar = document.querySelector('.status-bar'); // status bar
+            statusBar.style.backgroundColor = this.statusBar["background"]["colour"];
+            statusBar.style.color = this.statusBar["font"]["colour"];
+            statusBar.style.fontSize = this.statusBar["font"]["size"];
+            statusBar.style.fontFamily = this.statusBar["font"]["family"];
+        
+            const preview = document.querySelector("#preview"); // preview mode
+            preview.style.backgroundColor = this.preview["background"]["colour"];
+            preview.style.color = this.preview["font"]["colour"];
+            preview.style.fontSize = this.preview["font"]["size"];
+            preview.style.fontFamily = this.preview["font"]["family"];
+
         });
     }
 
