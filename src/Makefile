@@ -30,3 +30,6 @@ build:
 clean:
 	rm -rf dist
 
+.PHONY: test
+test:
+	npm test

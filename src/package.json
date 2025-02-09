@@ -1,59 +1,89 @@
 {
-  "name": "noter",
-  "version": "0.1.7",
-  "description": "noter note-taking application with a dash of AI",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "electron-builder --mac --windows --linux --publish never"
-  },
-  "author": "ASP-G30-T7 <universe@supernoter.xyz>",
-  "contributors": [
-    {
-      "name": "Guilherme Elias Marinho"
+    "name": "noter",
+    "version": "0.1.7",
+    "description": "noter note-taking application with a dash of AI",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "test": "jest",
+        "build": "electron-builder --mac --windows --linux --publish never"
     },
-    {
-      "name": "Martin Czygan"
+    "author": "ASP-G30-T7 <universe@supernoter.xyz>",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/supernoter/noter.git"
+    },
+    "contributors": [
+        {
+            "name": "Guilherme Elias Marinho"
+        },
+        {
+            "name": "Martin Czygan"
+        }
+    ],
+    "devDependencies": {
+        "@babel/core": "^7.26.7",
+        "@babel/preset-env": "^7.26.7",
+        "babel-jest": "^29.7.0",
+        "electron": "^33.2.1",
+        "electron-builder": "^25.1.8",
+        "electron-icon-maker": "^0.0.5",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
+        "prettier": "3.4.2",
+        "whatwg-fetch": "^3.6.20"
+    },
+    "dependencies": {
+        "marked": "^15.0.6"
+    },
+    "build": {
+        "appId": "xyz.supernoter.noter",
+        "productName": "Noter",
+        "directories": {
+            "output": "dist"
+        },
+        "mac": {
+            "target": [
+                "zip"
+            ],
+            "category": "public.app-category.utilities",
+            "icon": "build/icons/mac/icon.icns"
+        },
+        "linux": {
+            "target": [
+                "AppImage",
+                "deb"
+            ],
+            "icon": "build/icons/png/512x512.png"
+        },
+        "win": {
+            "target": "zip",
+            "icon": "build/icons/win/icon.ico"
+        }
+    },
+    "jest": {
+        "transform": {
+            "^.+\\.js$": "babel-jest"
+        },
+        "transformIgnorePatterns": [
+            "node_modules/(?!(electron|other-es-modules)/)"
+        ],
+        "testEnvironment": "jsdom",
+        "roots": [
+            "<rootDir>"
+        ],
+        "modulePaths": [
+            "<rootDir>"
+        ],
+        "moduleDirectories": [
+            "node_modules"
+        ]
+    },
+    "prettier": {
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "semi": false,
+        "singleQuote": true
     }
-  ],
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/npm/cli.git"
-  },
-  "devDependencies": {
-    "electron": "^33.2.1",
-    "electron-builder": "^25.1.8",
-    "electron-icon-maker": "^0.0.5",
-    "prettier": "3.4.2"
-  },
-  "dependencies": {
-    "marked": "^15.0.6"
-  },
-  "build": {
-    "appId": "xyz.supernoter.noter",
-    "productName": "Noter",
-    "directories": {
-      "output": "dist"
-    },
-    "mac": {
-      "target": [
-        "zip"
-      ],
-      "category": "public.app-category.utilities",
-      "icon": "build/icons/mac/icon.icns"
-    },
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ],
-      "icon": "build/icons/png/512x512.png"
-    },
-    "win": {
-      "target": "zip",
-      "icon": "build/icons/win/icon.ico"
-    }
-  }
 }
