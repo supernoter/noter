@@ -3,7 +3,7 @@
  */
 
 import { marked } from "./node_modules/marked/lib/marked.esm.js";
-import * as jsPDF from "./node_modules/jspdf/dist/jsPDF.umd.min.js";
+import * as jsPDF from "./node_modules/jspdf/dist/jspdf.umd.min.js";
 import * as html2canvas from "./node_modules/html2canvas/dist/html2canvas.min.js";
 
 // EditorState encapsulates the different modes the editor can be in, like edit,
