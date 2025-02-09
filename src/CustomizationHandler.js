@@ -46,9 +46,10 @@ class CustomizationHandler {
         return {
             width: this.window['width'],
             height: this.window['height'],
-            transparent: true,
+            transparent: this.window['opacity'] < 1,
             opacity: this.window['opacity'],
             webPreferences: {
+                // TODO: check if we need all these options
                 nodeIntegration: true,
                 preload: path.join(__dirname, 'preload.js'),
                 contextIsolation: true,
