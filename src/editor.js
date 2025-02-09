@@ -4,7 +4,7 @@
 
 import { marked } from "./node_modules/marked/lib/marked.esm.js";
 import * as jsPDF from "./node_modules/jspdf/dist/jspdf.umd.min.js";
-import * as html2canvas from "./node_modules/html2canvas/dist/html2canvas.min.js";
+import * as html2canvas from "./node_modules/html2canvas/dist/html2canvas.esm.js";
 
 // EditorState encapsulates the different modes the editor can be in, like edit,
 // preview, help and potentially others.
@@ -164,6 +164,11 @@ class EditState extends EditorState {
       this.editor.setState(new PreviewState(this.editor));
       return true;
     }
+    if (e.ctrlKey && e.key == "e") {
+      e.preventDefault();
+	  this.editor.exportMarkdown();
+      return true;
+    }
     if ((e.ctrlKey && e.key == "h") || e.key == "F1") {
       e.preventDefault();
       this.editor.setState(new HelpState(this.editor));
@@ -236,10 +241,12 @@ class HelpState extends EditorState {
 
 // Editor implements the basic editing function for NOTER.
 class Editor {
+    // XXX: the jsPDF cannot handle non-english words, like jap, kor, cn
+    #pdf_doc = null;
+    #pdf_font_style = null;
+    #pdf_page_width = null;
+
   constructor(containerId, llm = null) {
-  #pdf_doc;
-  #pdf_font_style;
-  #pdf_page_width;
 
     this.container = document.getElementById(containerId);
     // Store original textarea content when help is shown (TODO: do we need
@@ -295,6 +302,11 @@ The status bar shows:
 * Current font size`;
 
     this.initializeElements();
+
+    // dispatch an event, so customization could be applied
+    const event = new Event("NoterEditorElementsLoaded");
+    window.dispatchEvent(event);
+
     this.initializeEventListeners();
     // Set the first state
     this.state = new EditState(this);
@@ -310,33 +322,36 @@ The status bar shows:
     this.#pdf_font_style = "Arial";
   }
 
-  // attach DOM elements to HTML
-  initializeElements() {
-    // create textarea
-    this.textarea = document.createElement("textarea");
-    this.textarea.setAttribute("spellcheck", "false");
-    this.textarea.setAttribute(
-      "placeholder",
-      "Let's go … and type CTRL-p to toggle preview, and CTRL-h for help",
-    );
-    this.textarea.id = "note-textarea";
 
-    // create preview div
-    this.preview = document.createElement("div");
-    this.preview.className = "preview";
-    this.preview.id = "preview";
-    this.preview.style.display = "none";
+    // attach DOM elements to HTML
+    initializeElements() {
+        // create textarea
+        this.textarea = document.createElement('textarea')
+        this.textarea.setAttribute('spellcheck', 'false')
+        this.textarea.setAttribute(
+            'placeholder',
+            "Let's go - CTRL-h for keyboard shortcuts"
+        )
+        this.textarea.id = 'note-textarea'
 
-    // create status bar
-    this.statusBar = document.createElement("div");
-    this.statusBar.className = "status-bar";
-    this.statusBar.id = "status-bar";
+        // create preview div
+        this.preview = document.createElement('div')
+        this.preview.className = 'preview'
+        this.preview.id = 'preview'
+        this.preview.style.display = 'none'
 
-    // append elements to container
-    this.container.appendChild(this.textarea);
-    this.container.appendChild(this.preview);
-    this.container.appendChild(this.statusBar);
-  }
+        // create status bar
+        this.statusBar = document.createElement('div')
+        this.statusBar.className = 'status-bar'
+        this.statusBar.id = 'status-bar'
+
+        // append elements to container
+        this.container.appendChild(this.textarea)
+        this.container.appendChild(this.preview)
+        this.container.appendChild(this.statusBar)
+    }
+
+
 
   // initializeEventListeners attaches event listener to elements, e.g. we want
   // to update the status bar at every keystroke.
@@ -354,87 +369,6 @@ The status bar shows:
     );
   }
 
-  // handleKeyboardShortcuts takes and event and dispatches various actions.
-  handleKeyboardShortcuts(e) {
-    if (e.ctrlKey && e.key === "p" && !this.isHelpMode) {
-      e.preventDefault();
-      this.togglePreviewMode();
-    } else if ((e.ctrlKey && e.key === "h") || e.key === "F1") {
-      e.preventDefault();
-      this.toggleHelpMode();
-    } else if (e.ctrlKey && (e.key === "=" || e.key === "+")) {
-      e.preventDefault();
-      this.changeFontSize(1);
-    } else if (e.ctrlKey && e.key === "-") {
-      e.preventDefault();
-      this.changeFontSize(-1);
-    } else if (e.ctrlKey && e.key === "e") {
-      e.preventDefault();
-      this.exportMarkdown();
-    }
-  }
-
-  /* the status bar can track some basic textarea info, later also indicate API
-   * access to LLM and other information */
-  updateStatusBar() {
-    const charCount = this.textarea.value.length;
-    const text = this.textarea.value.substring(0, this.textarea.selectionStart);
-    const row = text.split("\n").length;
-    const column = text.split("\n").pop().length + 1;
-    const fontSize = window.getComputedStyle(this.textarea).fontSize;
-    let mode = "E";
-    if (this.isPreviewMode) {
-      mode = "P";
-    }
-    if (this.isHelpMode) {
-      mode = "H";
-    }
-    this.statusBar.textContent = `${charCount} · ${row}:${column} · ${fontSize} · ${mode}`;
-  }
-
-  // attach DOM elements to HTML
-  initializeElements() {
-    // create textarea
-    this.textarea = document.createElement("textarea");
-    this.textarea.setAttribute("spellcheck", "false");
-    this.textarea.setAttribute(
-      "placeholder",
-      "Let's go - CTRL-h for keyboard shortcuts",
-    );
-    this.textarea.id = "note-textarea";
-
-    // create preview div
-    this.preview = document.createElement("div");
-    this.preview.className = "preview";
-    this.preview.id = "preview";
-    this.preview.style.display = "none";
-
-    // create status bar
-    this.statusBar = document.createElement("div");
-    this.statusBar.className = "status-bar";
-    this.statusBar.id = "status-bar";
-
-    // append elements to container
-    this.container.appendChild(this.textarea);
-    this.container.appendChild(this.preview);
-    this.container.appendChild(this.statusBar);
-  }
-
-  // initializeEventListeners attaches event listener to elements, e.g. we
-  // want to update the status bar at every keystroke.
-  initializeEventListeners() {
-    // text-related events
-    this.textarea.addEventListener("input", () => this.updateStatusBar());
-    this.textarea.addEventListener("keyup", () => this.updateStatusBar());
-    this.textarea.addEventListener("click", () => this.updateStatusBar());
-    this.textarea.addEventListener("select", () => this.updateStatusBar());
-    this.textarea.addEventListener("mousemove", () => this.updateStatusBar());
-
-    // keyboard shortcuts
-    document.addEventListener("keydown", (e) =>
-      this.handleKeyboardShortcuts(e),
-    );
-  }
 
   // setState is called on a state transition, currently on a keyboard
   // shortcut

@@ -30,62 +30,62 @@ body {
 /* styling the editor container */
 
 #editor-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 /* styling the text area of the container */
 
 #note-textarea {
-    flex: 1;
-    width: 100%;
-    resize: none;
-    border: none;
-    outline: none;
-    overflow-y: auto;
-    font-size: 16px;
-    text-wrap: unrestricted;
-    box-sizing: border-box;
-    padding: 1rem; /* Move padding to textarea */
+  flex: 1;
+  width: 100%;
+  resize: none;
+  border: none;
+  outline: none;
+  overflow-y: auto;
+  font-size: 16px;
+  text-wrap: unrestricted;
+  box-sizing: border-box;
+  padding: 1rem; /* Move padding to textarea */
 }
 
 /* preview state outlook */
 
 #preview {
-    flex: 1;
-    width: 100%;
-    padding: 1rem;
-    overflow-y: auto;
-    font-size: 16px;
-    box-sizing: border-box;
+  flex: 1;
+  width: 100%;
+  padding: 1rem;
+  overflow-y: auto;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
 /* styling the status bar */
 
 .status-bar {
-    padding: 0.5rem 1rem;
-    background-color: #f5f5f5;
-    border-top: 1px solid #ddd;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  width: 100%;
 }
 
 .llm-count {
-    color: #888; /* Subtle gray color */
+  color: #888; /* Subtle gray color */
 }
 
 .model-name {
-    color: #666;
-    font-style: italic;
-    border-bottom: 1px solid #4a9; /* subtle green underline */
-    padding-bottom: 1px;
+  color: #666;
+  font-style: italic;
+  border-bottom: 1px solid #4a9; /* subtle green underline */
+  padding-bottom: 1px;
 }
 
 .model-warning {
-    color: #b35900; /* muted orange */
+  color: #b35900; /* muted orange */
   padding: 0.5rem 1rem;
   background-color: #f5f5f5;
   border-top: 1px solid #ddd;
