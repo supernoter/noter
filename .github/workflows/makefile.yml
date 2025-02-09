@@ -61,7 +61,7 @@ jobs:
           token: ${{ github.token }}
           # This can be set to false, one we are out of our "alpha" release
           # stage.
-          prerelease: true
+          prerelease: false
           make_latest: true
           # Just make it so we notice, if any of the artifacts are missing.
           fail_on_unmatched_files: true
