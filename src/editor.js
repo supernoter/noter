@@ -183,6 +183,7 @@ class EditState extends EditorState {
         if (e.ctrlKey && e.key === 'b') {
             e.preventDefault()
             this.editor.toggleNavigationBar()
+            return true
         }
 
         // Only count single alphanumeric keystrokes
@@ -773,6 +774,7 @@ async loadNotes() {
         return new Promise(async (resolve) => {
             await this.typeEffect(introText)
             await this.deleteEffect(introText)
+            await this.loadNotes();
             this.textarea.focus()
             resolve()
         })

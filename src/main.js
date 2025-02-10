@@ -4,29 +4,8 @@ const process = require('process')
 const fs = require('fs')
 const path = require('path')
 
-const notesDir = path.join(
-    '/Users',
-    'gioriz',
-    'Desktop',
-    'noter',
-    'src',
-    'user-notes'
-)
 
-ipcMain.handle('get-notes', async () => {
-    if (!fs.existsSync(notesDir)) {
-        fs.mkdirSync(notesDir)
-    }
-    return fs.readdirSync(notesDir) // Returns filenames
-})
 
-ipcMain.handle('read-note', async (event, filename) => {
-    const filePath = path.join(notesDir, filename)
-    if (fs.existsSync(filePath)) {
-        return fs.readFileSync(filePath, 'utf8') // Return note content
-    }
-    return ''
-})
 
 // Create path for all the user notes
 const notesDir = path.join(app.getPath("userData"), "user-notes");

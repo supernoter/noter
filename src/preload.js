@@ -1,4 +1,4 @@
-const { contextBridge } = require('electron')
+const { contextBridge, ipcRenderer } = require('electron')
 const customizationHandler = require('./CustomizationHandler')
 
 contextBridge.exposeInMainWorld('api', {
