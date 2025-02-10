@@ -34,6 +34,21 @@ NOTER is available for MacOS, Windows and Linux - you can download it from our
 
 Access help within the editor with CTRL-h or F1.
 
+## Keyboard Shortcuts
+
+| Keyboard Shortcut | Functionality                                                   |
+|-------------------|-----------------------------------------------------------------|
+| CTRL-e            | Export note to PDF                                              |
+| CTRL-b            | Toggle sidebar                                                  |
+| CTRL-g            | Call out to the configured LLM and insert response to a prompt. |
+| CTRL-h, F1        | Toggle help                                                     |
+| CTRL-n            | Create a new file                                               |
+| CTRL-o            | Open an existing file                                           |
+| CTRL-p            | Toggle preview                                                  |
+| CTRL-s            | Save file                                                       |
+| CTRL-+            | Increase font size                                              |
+| CTRL-- (minus)    | Decreate font size                                              |
+
 ## Configuration
 
 You can customize the editor in many ways, using a `config.json` file (in the
@@ -80,23 +95,6 @@ current directory). Changes are applied at editor startup time.
 }
 ```
 
-## Keyboard Shortcuts
-
-| Keyboard Shortcut | Functionality                                                   |
-|-------------------|-----------------------------------------------------------------|
-| CTRL-e            | Export note to PDF                                              |
-| CTRL-b            | Toggle sidebar                                                  |
-| CTRL-g            | Call out to the configured LLM and insert response to a prompt. |
-| CTRL-h, F1        | Toggle help                                                     |
-| CTRL-n            | Create a new file                                               |
-| CTRL-o            | Open an existing file                                           |
-| CTRL-p            | Toggle preview                                                  |
-| CTRL-s            | Save file                                                       |
-| CTRL-+            | Increase font size                                              |
-| CTRL-- (minus)    | Decreate font size                                              |
-
 # Development notes
 
-## Note on git usage
-
-See: [git-tutorial](git-tutorial.html)
+* [Git tutorial](git-tutorial.html)
