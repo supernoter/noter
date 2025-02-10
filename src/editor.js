@@ -338,155 +338,158 @@ The status bar shows:
         this.#pdf_font_style = 'Arial'
     }
 
-  // attach DOM elements to HTML
-  initializeElements() {
-    // create textarea
-    this.textarea = document.createElement("textarea");
-    this.textarea.setAttribute("spellcheck", "false");
-    this.textarea.setAttribute(
-      "placeholder",
-      "Let's go … and type CTRL-p to toggle preview, and CTRL-h for help",
-    );
-    this.textarea.id = "note-textarea";
+    // attach DOM elements to HTML
+    initializeElements() {
+        // create textarea
+        this.textarea = document.createElement('textarea')
+        this.textarea.setAttribute('spellcheck', 'false')
+        this.textarea.setAttribute(
+            'placeholder',
+            "Let's go … and type CTRL-p to toggle preview, and CTRL-h for help"
+        )
+        this.textarea.id = 'note-textarea'
 
-    // create preview div
-    this.preview = document.createElement("div");
-    this.preview.className = "preview";
-    this.preview.id = "preview";
-    this.preview.style.display = "none";
+        // create preview div
+        this.preview = document.createElement('div')
+        this.preview.className = 'preview'
+        this.preview.id = 'preview'
+        this.preview.style.display = 'none'
 
-    // create status bar
-    this.statusBar = document.createElement("div");
-    this.statusBar.className = "status-bar";
-    this.statusBar.id = "status-bar";
+        // create status bar
+        this.statusBar = document.createElement('div')
+        this.statusBar.className = 'status-bar'
+        this.statusBar.id = 'status-bar'
 
-    // create navigation side bar
-    this.navigationBar = document.createElement("div");
-    this.navigationBar.className = "navigation-bar";
-    this.navigationBar.id = "navigation-bar";
-    this.navigationBar.style.width = "200px";
+        // create navigation side bar
+        this.navigationBar = document.createElement('div')
+        this.navigationBar.className = 'navigation-bar'
+        this.navigationBar.id = 'navigation-bar'
+        this.navigationBar.style.width = '200px'
 
-    // create note list header
-    this.noteHeader = document.createElement("h3");
-    this.noteHeader.id = "note-list-header";
-    this.noteHeader.textContent = "Your Notes: ";
-    this.navigationBar.appendChild(this.noteHeader);
+        // create note list header
+        this.noteHeader = document.createElement('h3')
+        this.noteHeader.id = 'note-list-header'
+        this.noteHeader.textContent = 'Your Notes: '
+        this.navigationBar.appendChild(this.noteHeader)
 
-    // create note list
-    this.noteList = document.createElement("ul");
-    this.noteList.id = "note-list";
+        // create note list
+        this.noteList = document.createElement('ul')
+        this.noteList.id = 'note-list'
 
-    // Create search input
-    this.searchInput = document.createElement("input");
-    this.searchInput.type = "text";
-    this.searchInput.id = "search-notes";
-    this.searchInput.placeholder = "Search notes...";
-    this.searchInput.className = "search-bar";
+        // Create search input
+        this.searchInput = document.createElement('input')
+        this.searchInput.type = 'text'
+        this.searchInput.id = 'search-notes'
+        this.searchInput.placeholder = 'Search notes...'
+        this.searchInput.className = 'search-bar'
 
-    // append elements to container
-    this.container.appendChild(this.textarea);
-    this.container.appendChild(this.preview);
-    this.container.appendChild(this.statusBar);
-    this.container.appendChild(this.navigationBar);
-    this.navigationBar.appendChild(this.noteList);
-    this.navigationBar.appendChild(this.searchInput);
-  }
-
-  // initializeEventListeners attaches event listener to elements, e.g. we want
-  // to update the status bar at every keystroke.
-  initializeEventListeners() {
-    // text-related events
-    this.textarea.addEventListener("input", () => this.updateStatusBar());
-    this.textarea.addEventListener("keyup", () => this.updateStatusBar());
-    this.textarea.addEventListener("click", () => this.updateStatusBar());
-    this.textarea.addEventListener("select", () => this.updateStatusBar());
-    this.textarea.addEventListener("mousemove", () => this.updateStatusBar());
-    this.searchInput.addEventListener("input", () => this.filterNotes());
-
-    // keyboard shortcuts
-    document.addEventListener("keydown", (e) =>
-      this.handleKeyboardShortcuts(e),
-    );
-  }
-
-  // handleKeyboardShortcuts takes and event and dispatches various actions.
-  handleKeyboardShortcuts(e) {
-    if (e.ctrlKey && e.key === "p" && !this.isHelpMode) {
-      e.preventDefault();
-      this.togglePreviewMode();
-    } else if ((e.ctrlKey && e.key === "h") || e.key === "F1") {
-      e.preventDefault();
-      this.toggleHelpMode();
-    } else if (e.ctrlKey && (e.key === "=" || e.key === "+")) {
-      e.preventDefault();
-      this.changeFontSize(1);
-    } else if (e.ctrlKey && e.key === "-") {
-      e.preventDefault();
-      this.changeFontSize(-1);
-    } else if (e.ctrlKey && e.key === "b") {
-      e.preventDefault();
-      this.toggleNavigationBar();
+        // append elements to container
+        this.container.appendChild(this.textarea)
+        this.container.appendChild(this.preview)
+        this.container.appendChild(this.statusBar)
+        this.container.appendChild(this.navigationBar)
+        this.navigationBar.appendChild(this.noteList)
+        this.navigationBar.appendChild(this.searchInput)
     }
-  }
 
-  toggleNavigationBar() {
-    const navigationBar = document.getElementById("navigation-bar");
-    const editorContainer = document.getElementById("editor-container");
-    navigationBar.classList.toggle("open");
-    editorContainer.classList.toggle("shifted");
-  }
+    // initializeEventListeners attaches event listener to elements, e.g. we want
+    // to update the status bar at every keystroke.
+    initializeEventListeners() {
+        // text-related events
+        this.textarea.addEventListener('input', () => this.updateStatusBar())
+        this.textarea.addEventListener('keyup', () => this.updateStatusBar())
+        this.textarea.addEventListener('click', () => this.updateStatusBar())
+        this.textarea.addEventListener('select', () => this.updateStatusBar())
+        this.textarea.addEventListener('mousemove', () =>
+            this.updateStatusBar()
+        )
+        this.searchInput.addEventListener('input', () => this.filterNotes())
 
-
-  async openNote(filename) {
-    const content = await window.api.readNote(filename);
-    this.setContent(content);
-}
-
-filterNotes() {
-  const query = this.searchInput.value.toLowerCase();
-  const noteItems = this.noteList.getElementsByTagName("li");
-
-  Array.from(noteItems).forEach((item) => {
-    const noteName = item.textContent.toLowerCase();
-    item.style.display = noteName.includes(query) ? "block" : "none";
-  });
-}
-
-async loadNotes() {
-  const noteFiles = await window.api.getNotes();
-  this.noteList.innerHTML = "";
-
-  noteFiles.forEach((file) => {
-    const listItem = document.createElement("li");
-    listItem.textContent = file.replace(".md", "");
-    listItem.addEventListener("click", () => this.openNote(file));
-    this.noteList.appendChild(listItem);
-  });
-  this.filterNotes();
-}
-  async openNote(filename) {
-    const content = await window.api.readNote(filename);
-    this.setContent(content);
-}
-
-  /* the status bar can track some basic textarea info, later also indicate API
-   * access to LLM and other information */
-  updateStatusBar() {
-    const charCount = this.textarea.value.length;
-    const text = this.textarea.value.substring(0, this.textarea.selectionStart);
-    const row = text.split("\n").length;
-    const column = text.split("\n").pop().length + 1;
-    const fontSize = window.getComputedStyle(this.textarea).fontSize;
-    let mode = "E";
-    if (this.isPreviewMode) {
-      mode = "P";
+        // keyboard shortcuts
+        document.addEventListener('keydown', (e) =>
+            this.handleKeyboardShortcuts(e)
+        )
     }
-    if (this.isHelpMode) {
-      mode = "H";
-    }
-    this.statusBar.textContent = `${charCount} · ${row}:${column} · ${fontSize} · ${mode}`;
-  }
 
+    // handleKeyboardShortcuts takes and event and dispatches various actions.
+    handleKeyboardShortcuts(e) {
+        if (e.ctrlKey && e.key === 'p' && !this.isHelpMode) {
+            e.preventDefault()
+            this.togglePreviewMode()
+        } else if ((e.ctrlKey && e.key === 'h') || e.key === 'F1') {
+            e.preventDefault()
+            this.toggleHelpMode()
+        } else if (e.ctrlKey && (e.key === '=' || e.key === '+')) {
+            e.preventDefault()
+            this.changeFontSize(1)
+        } else if (e.ctrlKey && e.key === '-') {
+            e.preventDefault()
+            this.changeFontSize(-1)
+        } else if (e.ctrlKey && e.key === 'b') {
+            e.preventDefault()
+            this.toggleNavigationBar()
+        }
+    }
+
+    toggleNavigationBar() {
+        const navigationBar = document.getElementById('navigation-bar')
+        const editorContainer = document.getElementById('editor-container')
+        navigationBar.classList.toggle('open')
+        editorContainer.classList.toggle('shifted')
+    }
+
+    async openNote(filename) {
+        const content = await window.api.readNote(filename)
+        this.setContent(content)
+    }
+
+    filterNotes() {
+        const query = this.searchInput.value.toLowerCase()
+        const noteItems = this.noteList.getElementsByTagName('li')
+
+        Array.from(noteItems).forEach((item) => {
+            const noteName = item.textContent.toLowerCase()
+            item.style.display = noteName.includes(query) ? 'block' : 'none'
+        })
+    }
+
+    async loadNotes() {
+        const noteFiles = await window.api.getNotes()
+        this.noteList.innerHTML = ''
+
+        noteFiles.forEach((file) => {
+            const listItem = document.createElement('li')
+            listItem.textContent = file.replace('.md', '')
+            listItem.addEventListener('click', () => this.openNote(file))
+            this.noteList.appendChild(listItem)
+        })
+        this.filterNotes()
+    }
+    async openNote(filename) {
+        const content = await window.api.readNote(filename)
+        this.setContent(content)
+    }
+
+    /* the status bar can track some basic textarea info, later also indicate API
+     * access to LLM and other information */
+    updateStatusBar() {
+        const charCount = this.textarea.value.length
+        const text = this.textarea.value.substring(
+            0,
+            this.textarea.selectionStart
+        )
+        const row = text.split('\n').length
+        const column = text.split('\n').pop().length + 1
+        const fontSize = window.getComputedStyle(this.textarea).fontSize
+        let mode = 'E'
+        if (this.isPreviewMode) {
+            mode = 'P'
+        }
+        if (this.isHelpMode) {
+            mode = 'H'
+        }
+        this.statusBar.textContent = `${charCount} · ${row}:${column} · ${fontSize} · ${mode}`
+    }
 
     // attach DOM elements to HTML
     initializeElements() {
@@ -774,7 +777,7 @@ async loadNotes() {
         return new Promise(async (resolve) => {
             await this.typeEffect(introText)
             await this.deleteEffect(introText)
-            await this.loadNotes();
+            await this.loadNotes()
             this.textarea.focus()
             resolve()
         })
