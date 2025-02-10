@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="date" content="2025-02-01" />
+    <title>NOTER - git tutorial</title>
+    <style>
+      .video-container {
+        width: 100%;
+        max-width: 100%;
+        margin: 2rem 0;
+      }
+
+      .video-container video {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+      }
+
+      th {
+        text-align: left;
+        padding: 0.75rem;
+        background: var(--secondary-bg);
+        border-bottom: 2px solid var(--muted-color);
+      }
+
+      td {
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--muted-color);
+      }
+
+      tr:nth-child(even) {
+        background: var(--secondary-bg);
+      }
+
+      :root {
+        --primary-color: #2563eb;
+        --text-color: #1f2937;
+        --bg-color: #ffffff;
+        --secondary-bg: #f3f4f6;
+        --muted-color: rgba(107, 114, 128, 0.2);
+        --grid-color: rgba(107, 114, 128, 0.15);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background: var(--bg-color);
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 0.5rem;
+        padding: 0.8rem 0;
+        background-color: #f8fafc;
+        background-image: linear-gradient(
+            var(--grid-color) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, var(--grid-color) 1px, transparent 1px),
+          linear-gradient(var(--muted-color) 0.5px, transparent 0.5px),
+          linear-gradient(90deg, var(--muted-color) 0.5px, transparent 0.5px);
+        background-size:
+          50px 50px,
+          50px 50px,
+          10px 10px,
+          10px 10px;
+        background-position:
+          -1px -1px,
+          -1px -1px,
+          -1px -1px,
+          -1px -1px;
+        color: var(--text-color);
+      }
+
+      h1,
+      h2 {
+        position: relative;
+      }
+
+      h1 .anchor,
+      h2 .anchor {
+        position: absolute;
+        left: -1em;
+        padding-right: 0.5em;
+        opacity: 0;
+        text-decoration: none;
+      }
+
+      h1 .anchor::before,
+      h2 .anchor::before {
+        content: "#";
+        color: var(--primary-color);
+      }
+
+      h1:hover .anchor,
+      h2:hover .anchor {
+        opacity: 0.7;
+      }
+
+      h1 {
+        color: var(--primary-color);
+        margin-bottom: 0.4rem;
+      }
+
+      header h1 {
+        font-size: clamp(2rem, 5vw, 4rem);
+      }
+
+      h2 {
+        margin: 0.8rem 0 1rem;
+      }
+
+      p {
+        margin-bottom: 1.5rem;
+      }
+
+      header p {
+        padding: 0.25em;
+        background: yellow;
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          padding: 1rem;
+        }
+
+        header {
+          padding: 1rem 0;
+          margin-bottom: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>NOTER &mdash; write together</h1>
+        <p>Notes on git usage and workflow</p>
+      </div>
+    </header>
+
+    <main class="container"><h1 id="git-workflow-tutorial"><a
+href="#git-workflow-tutorial" class="anchor" aria-hidden="true"></a>Git
+Workflow Tutorial</h1>
+<h2 id="st---ensure-git-is-installed"><a
+href="#st---ensure-git-is-installed" class="anchor"
+aria-hidden="true"></a>1st - Ensure git is installed</h2>
+<ul>
+<li>run <code>git --version</code> in your command line</li>
+<li>if something like <code>git version 2.47.0.windows.2</code> appears,
+you’re fine</li>
+<li>if not, follow the installation tutorial at
+https://git-scm.com/downloads</li>
+</ul>
+<h2
+id="nd---generate-an-ssh-key-pair-im-assuming-you-have-ssh-installed"><a
+href="#nd---generate-an-ssh-key-pair-im-assuming-you-have-ssh-installed"
+class="anchor" aria-hidden="true"></a>2nd - Generate an SSH key pair
+[I’m assuming you have SSH installed]</h2>
+<ul>
+<li>go to your home directory in the command line</li>
+<li>check if theres a hidden folder called <code>.ssh</code></li>
+<li>if so, run <code>cd .ssh</code>. Otherwise, SSH might not be
+installed … run <code>ssh -v</code> to make sure</li>
+<li>if you find a keypair there that you’d like to use … go to the 3rd
+step</li>
+<li>otherwise, in the .ssh folder run <code>ssh-keygen</code> and just
+press <code>&lt;Enter&gt;</code> to everything if don’t know what’s
+happening</li>
+<li>If you did everything correclty, you should have two new files in
+the .ssh folder : <code>something</code> and
+<code>something.pub</code></li>
+</ul>
+<h2 id="rd---link-to-your-github-account-using-the-ssh-key"><a
+href="#rd---link-to-your-github-account-using-the-ssh-key"
+class="anchor" aria-hidden="true"></a>3rd - Link to your GitHub account
+using the ssh key</h2>
+<ul>
+<li>login into your github account and go to the main page at the
+<code>https://github.com/</code> URL</li>
+<li>click on your <code>profile picture</code> [up right corner]</li>
+<li>click on <code>Settings</code></li>
+<li>your URL should be something like
+<code>https://github.com/settings/profile</code></li>
+<li>find an option called <code>SSH and GPG keys</code> and click on
+it</li>
+<li>you should see a <code>New SSH key</code> green button … click on
+it</li>
+<li>add a <code>title</code> to your key and set its
+<code>Key type</code> to <code>Authentication Key</code></li>
+<li>from your .ssh folder, copy the !!!entire!!! content of the
+<code>something.pub</code> file into the <code>Key</code> textarea</li>
+<li>click the <code>Add SSH key</code> green button and you’re
+done!</li>
+</ul>
+<h2 id="th---clone-the-repository-of-our-project"><a
+href="#th---clone-the-repository-of-our-project" class="anchor"
+aria-hidden="true"></a>4th - Clone the repository of our project</h2>
+<ul>
+<li>go to https://github.com/supernoter/noter</li>
+<li>click the <code>Code</code> green button</li>
+<li>select the <code>SSH</code> option and copy the URL it gives you …
+something like <code>git@github.com:supernoter/noter.git</code></li>
+<li>chose a place on your computer to store the local copy of the repo …
+I like to put it in the Desktop</li>
+<li>wherever it is … open the command line on that place and type
+<code>git clone git@github.com:supernoter/noter.git</code></li>
+<li>accept everything … and you should see a <code>noter</code> folder
+there … if so, congrats!</li>
+</ul>
+<h2 id="th---add-your-own-branch"><a href="#th---add-your-own-branch"
+class="anchor" aria-hidden="true"></a>5th - Add your own branch</h2>
+<ul>
+<li>let’s say you have already created a <code>card</code> at the Trello
+board
+(https://trello.com/c/1axqVOjS/22-interface-for-configuration-file)</li>
+<li>and let’s say you have already created an issue for your demand on
+github (https://github.com/supernoter/noter/issues)</li>
+<li>run <code>git branch issue-10</code> [change the number for the
+number of your issue]</li>
+<li>run <code>git checkout issue-10</code> [again, change the number for
+the number of your issue]</li>
+<li>do what you have to do [add files or change existing ones]</li>
+<li>when you’re finished, run <code>git add *</code></li>
+<li>then, run
+<code>git commit -m '[feat] : &lt;what you did here&gt;</code>
+(https://www.conventionalcommits.org/en/v1.0.0/)</li>
+<li>finally, run <code>git push</code> and you’re done!</li>
+</ul>
+<h2 id="th---epilogue"><a href="#th---epilogue" class="anchor"
+aria-hidden="true"></a>6th - Epilogue</h2>
+<ul>
+<li>I’m not a mac user, so this flow might differ on a macos machine.
+Search on YouTube for <code>SSH Github configuration on mac</code></li>
+<li>Read the git documentation <code>https://git-scm.com/docs/git</code>
+or simply search for a git tutorial on YouTube</li>
+</ul>
+<h1 id="any-issues-hit-me-via-slack-thanks"><a
+href="#any-issues-hit-me-via-slack-thanks" class="anchor"
+aria-hidden="true"></a>Any issues, hit me via Slack! Thanks!
+🤠</h1></main>
+  </body>
+</html>

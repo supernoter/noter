@@ -1,3 +1,9 @@
+---
+title: NOTER - git tutorial
+date: February 1, 2025
+header: Notes on git usage and workflow
+---
+
 # Git Workflow Tutorial
 
 ## 1st - Ensure git is installed
@@ -21,9 +27,9 @@
 * click on your `profile picture` [up right corner]
 * click on `Settings`
 * your URL should be something like `https://github.com/settings/profile`
-* find an option called `SSH and GPG keys` and click on it 
+* find an option called `SSH and GPG keys` and click on it
 * you should see a `New SSH key` green button ... click on it
-* add a `title` to your key and set its `Key type` to `Authentication Key` 
+* add a `title` to your key and set its `Key type` to `Authentication Key`
 * from your .ssh folder, copy the !!!entire!!! content of the `something.pub` file into the `Key` textarea
 * click the `Add SSH key` green button and you're done!
 
@@ -33,7 +39,7 @@
 * click the `Code` green button
 * select the `SSH` option and copy the URL it gives you ... something like `git@github.com:supernoter/noter.git`
 * chose a place on your computer to store the local copy of the repo ... I like to put it in the Desktop
-* wherever it is ... open the command line on that place and type `git clone git@github.com:supernoter/noter.git` 
+* wherever it is ... open the command line on that place and type `git clone git@github.com:supernoter/noter.git`
 * accept everything ... and you should see a `noter` folder there ... if so, congrats!
 
 ## 5th - Add your own branch
@@ -43,8 +49,8 @@
 * run `git branch issue-10` [change the number for the number of your issue]
 * run `git checkout issue-10` [again, change the number for the number of your issue]
 * do what you have to do [add files or change existing ones]
-* when you're finished, run `git add *` 
-* then, run `git commit -m '[feat] : <what you did here>` (https://www.conventionalcommits.org/en/v1.0.0/) 
+* when you're finished, run `git add *`
+* then, run `git commit -m '[feat] : <what you did here>` (https://www.conventionalcommits.org/en/v1.0.0/)
 * finally, run `git push` and you're done!
 
 ## 6th - Epilogue

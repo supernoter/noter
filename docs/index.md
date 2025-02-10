@@ -34,10 +34,58 @@ NOTER is available for MacOS, Windows and Linux - you can download it from our
 
 Access help within the editor with CTRL-h or F1.
 
+## Configuration
+
+You can customize the editor in many ways, using a `config.json` file (in the
+current directory). Changes are applied at editor startup time.
+
+```json
+{
+  "window": {
+    "opacity": 1,
+    "width": 900,
+    "height": 550
+  },
+  "font": {
+    "colour": "blue",
+    "size": "16px",
+    "family": "monospace, monospace"
+  },
+  "background": {
+    "colour": "white",
+    "gradient": null,
+    "image": null,
+    "opacity": "100%"
+  },
+  "status-bar": {
+    "font": {
+      "colour": "black",
+      "size": "14px",
+      "family": "Arial"
+    },
+    "background": {
+      "colour": "white"
+    }
+  },
+  "preview": {
+    "font": {
+      "colour": "black",
+      "size": "20px",
+      "family": "Arial"
+    },
+    "background": {
+      "colour": "blue"
+    }
+  }
+}
+```
+
 ## Keyboard Shortcuts
 
 | Keyboard Shortcut | Functionality                                                   |
 |-------------------|-----------------------------------------------------------------|
+| CTRL-e            | Export note to PDF                                              |
+| CTRL-b            | Toggle sidebar                                                  |
 | CTRL-g            | Call out to the configured LLM and insert response to a prompt. |
 | CTRL-h, F1        | Toggle help                                                     |
 | CTRL-n            | Create a new file                                               |
@@ -46,3 +94,9 @@ Access help within the editor with CTRL-h or F1.
 | CTRL-s            | Save file                                                       |
 | CTRL-+            | Increase font size                                              |
 | CTRL-- (minus)    | Decreate font size                                              |
+
+# Development notes
+
+## Note on git usage
+
+See: [git-tutorial](git-tutorial.html)
