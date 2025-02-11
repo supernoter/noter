@@ -18,3 +18,15 @@ fmt:
 	# beware, this does inplace edits, https://prettier.io/
 	prettier -w .
 
+.PHONY: icons
+icons:
+	./node_modules/.bin/electron-icon-maker --input=../static/nb.png --output=build
+
+.PHONY: build
+build:
+	npm run build
+
+.PHONY: clean
+clean:
+	rm -rf dist
+
