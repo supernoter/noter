@@ -13,6 +13,6 @@
     "electron": "^33.2.1"
   },
   "dependencies": {
-    "node-file-dialog": "^1.0.3"
+    "marked": "^15.0.6"
   }
 }

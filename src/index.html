@@ -1,23 +1,191 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="UTF-8" />
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <title>Hello from Electron renderer!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Note Taking Page</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        background-color: #f4f4f9;
+        font-family: Arial, sans-serif;
+        box-sizing: border-box;
+      }
+
+      textarea {
+        width: 100%;
+        height: calc(100% - 30px);
+        border: none;
+        outline: none;
+        resize: none;
+        padding: 10px;
+        box-sizing: border-box;
+        font-size: 16px;
+        line-height: 1.5;
+        background-color: #fff;
+      }
+
+      .status-bar {
+        height: 30px;
+        background-color: #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 10px;
+        box-sizing: border-box;
+        font-size: 14px;
+        color: #333;
+      }
+
+      .preview {
+        display: none;
+        width: 100%;
+        height: calc(100% - 30px);
+        background-color: white;
+        box-sizing: border-box;
+        padding: 10px;
+        overflow-y: auto;
+        font-family: Arial, sans-serif;
+        line-height: 1.5;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- 2cf587e4-2811-4e48-b809-f3b1ab2a8c4e -->
+    <!-- <script src="./assets/marked.min.js"></script> -->
   </head>
   <body>
-    <h1>Hello from Electron renderer! This is NOTER!</h1>
-    <p>👋</p>
-    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam malesuada, quam eu elementum imperdiet, purus augue hendrerit nisi, id fermentum justo diam bibendum tellus. Praesent vel diam sollicitudin, vehicula eros in, faucibus ligula. Curabitur ultrices tincidunt nunc, a dapibus dolor viverra ut. Nulla sit amet urna nulla. Curabitur molestie risus quam, a sagittis odio porta quis. Suspendisse augue lacus, congue eu pharetra ac, rutrum vel nunc. Maecenas id pretium massa, non feugiat eros. Curabitur pellentesque vulputate orci eu faucibus. Aliquam lobortis arcu in posuere porta. Integer sit amet eros tincidunt, maximus leo sit amet, gravida ligula. Aliquam erat volutpat. Morbi aliquet imperdiet velit ac tincidunt. Cras sit amet convallis augue.
+    <textarea
+      spellcheck="false"
+      placeholder="Let's go … and type CTRL-p to toggle preview"
+      id="note-textarea"
+    ></textarea>
+    <div class="preview" id="preview"></div>
+    <div class="status-bar" id="status-bar">0 · 1:1 · 16px · 0 file(s)</div>
 
-      Proin id purus ac mi ullamcorper dignissim. Donec faucibus in magna at posuere. Donec a tempor risus, eu fermentum elit. Aliquam ultrices mauris ac lacus elementum consequat. Cras ut nisl rutrum, finibus velit in, blandit lorem. Suspendisse eget facilisis augue. Nunc quis pretium neque. Donec id accumsan purus. Nunc sapien diam, ullamcorper quis nibh at, ornare aliquam lectus.
+    <script>
+      // For the moment, we put all logic here, but we should move these things out as part of the modularization of the application.
+      // TODO(miku): move rendering and preview handling to a separate module
+      const typingDelay = 30; // ms
+      const typingPause = 1200; // ms
+
+      const textarea = document.getElementById("note-textarea");
+      const statusBar = document.getElementById("status-bar");
+      const preview = document.getElementById("preview");
+      let isPreviewMode = false;
+
+      // Add event listeners for real-time updates
+      textarea.addEventListener("input", updateStatusBar);
+      textarea.addEventListener("keyup", updateStatusBar);
+      textarea.addEventListener("click", updateStatusBar);
+      textarea.addEventListener("select", updateStatusBar);
+      textarea.addEventListener("mousemove", updateStatusBar);
+
+      // update the status bar using current values of a few global variables
+      function updateStatusBar() {
+        const charCount = textarea.value.length;
+        const text = textarea.value.substring(0, textarea.selectionStart);
+        const row = text.split("\n").length;
+        const column = text.split("\n").pop().length + 1;
+        const fontSize = window.getComputedStyle(textarea).fontSize;
+        statusBar.textContent = `${charCount} · ${row}:${column} · ${fontSize}`;
+      }
+
+      // define what should happen at every keydown event
+      document.addEventListener("keydown", (e) => {
+        if (e.ctrlKey && e.key === "p") {
+          e.preventDefault();
+          togglePreviewMode();
+        } else if (e.ctrlKey && (e.key === "=" || e.key === "+")) {
+          e.preventDefault();
+          changeFontSize(1);
+        } else if (e.ctrlKey && e.key === "-") {
+          e.preventDefault();
+          changeFontSize(-1);
+        }
+      });
+
+      // switch between markdown preview and textarea
+      function togglePreviewMode() {
+        isPreviewMode = !isPreviewMode;
+        if (isPreviewMode) {
+          textarea.style.display = "none";
+          preview.style.display = "block";
+          preview.innerHTML = marked.parse(textarea.value);
+        } else {
+          textarea.style.display = "block";
+          preview.style.display = "none";
+          textarea.focus(); // Add focus when returning to edit mode
+        }
+      }
+
+      // handle font size changes
+      function changeFontSize(delta) {
+        const currentSize = parseInt(
+          window.getComputedStyle(textarea).fontSize,
+          10,
+        );
+        const newSize = Math.max(10, currentSize + delta);
+        textarea.style.fontSize = `${newSize}px`;
+        updateStatusBar();
+      }
+
+      // typeEffect at the start of the application
+      function typeEffect(text, callback) {
+        let index = 0;
+        const interval = setInterval(() => {
+          if (index < text.length) {
+            textarea.value += text[index];
+            index++;
+            updateStatusBar();
+          } else {
+            clearInterval(interval);
+            const highlightStart = text.indexOf("together");
+            const highlightEnd = highlightStart + "together".length;
+            textarea.setSelectionRange(highlightStart, highlightEnd);
+            textarea.focus();
+
+            setTimeout(() => {
+              textarea.setSelectionRange(0, 0);
+              deleteEffect(text, callback);
+            }, typingPause);
+          }
+        }, typingDelay);
+      }
+
+      // deleteEffect at the start of the application
+      function deleteEffect(text, callback) {
+        let index = text.length;
+        const interval = setInterval(() => {
+          if (index > 0) {
+            textarea.value = textarea.value.slice(0, -1);
+            index--;
+            updateStatusBar();
+          } else {
+            clearInterval(interval);
+            callback();
+          }
+        }, typingDelay);
+      }
+
+      // once the document is loaded, we run a short intro animation
+      document.addEventListener("DOMContentLoaded", () => {
+        textarea.value = "";
+        const introText = "noter: write together";
+        typeEffect(introText, () => {
+          textarea.focus();
+        });
+      });
+
+      updateStatusBar();
+    </script>
   </body>
 </html>
