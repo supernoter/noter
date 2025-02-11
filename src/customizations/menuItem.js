@@ -1,4 +1,4 @@
-const { app, Menu, dialog } = require("electron");
+const { app, Menu, dialog, shell } = require("electron");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
@@ -36,6 +36,10 @@ class menuItem {
           {
             label: "Create new file",
             click: () => this.createNewFile(window),
+          },
+          {
+            label: "Open folder",
+            click: () => this.openDirectory(window),
           },
           // isMac ? [{ role: "close" }] : [{ role: "quit" }],
         ],
@@ -161,29 +165,31 @@ class menuItem {
   };
 
   //open folder where file is saved.
-  openNewFile = () => {
-    const deskTopPath = os.homedir();
-    const filePath = path.join(deskTopPath, "New Document.txt");
-    let data = "Hello World";
+  openDirectory = async (window) => {
+    dialog
+      .showOpenDialog(window, {
+        properties: ["openFile", "openDirectory"],
+      })
+      .then((result) => {
+        const filePath = result.filePath;
+        if (result.canceled) return;
 
-    // Open the save dialog with the default path set to the desktop
-    // filePath = dialog.showSaveDialog(mainWindow, {
-    //   title: "Save File",
-    //   defaultPath: defaultFilePath,
-    //   buttonLabel: "Save",
-    //   filters: [
-    //     { name: "Text Files", extensions: ["txt"] },
-    //     { name: "All Files", extensions: ["*"] },
-    //   ],
-    // });
+        fs.openFile(filePath, "w", (err) => {
+          if (err) {
+            console.error("Failed to open file:", err);
+            dialog.showErrorBox("Error", "Could not open the file.");
+            return;
+          } else {
+            shell.openPath(filePath);
+          }
+        });
 
-    fs.open(filePath, "w+", (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log(`File created at: ${filePath}`);
-    });
+        console.log(result.canceled);
+        console.log(result.filePaths);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 }
 
