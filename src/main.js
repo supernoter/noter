@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require("electron/main");
 const fs = require("fs");
 const path = require("path");
+
 let window;
 
 const createWindow = () => {
@@ -37,11 +38,3 @@ app.on("window-all-closed", () => {
 // where PascalCase modules are instantiable class constructors (e.g.
 // BrowserWindow, Tray, Notification) whereas camelCase modules are not
 // instantiable (e.g. app, ipcRenderer, webContents).
-
-// We want to bundle marked.js to we do not need to do any web request in index.html.
-function copyMarkedToRenderer() {
-  const source = path.join(__dirname, "node_modules/marked/marked.min.js");
-  const destination = path.join(__dirname, "renderer/assets/marked.min.js");
-
-  fs.copyFileSync(source, destination);
-}
