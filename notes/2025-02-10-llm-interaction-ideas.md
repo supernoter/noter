@@ -38,3 +38,16 @@ Summarization mode:
 Or summarize a complete note an put a TL;DR on top
 
 > ;: note
+
+## cycle models
+
+* have a way to quickly change between models
+* have a way to quickly change between system prompts, adjustments
+
+In statusbar, have a field for "model mode", like "assistant", "critique",
+"tutor", or the like.
+
+* cycle model: ctrl-l
+* cycle mode: ctrl-m
+
+
