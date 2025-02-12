@@ -1,11 +1,22 @@
 # Makefile for common tasks around NOTER project, like running the application
-# # or formatting the code. In the JS world, npm scripts fullfil somewhat the
+# or formatting the code. In the JS world, npm scripts fullfil somewhat the
 # same role: https://docs.npmjs.com/cli/v10/using-npm/scripts.
 #
-# $ make run # start the application
+# Start the application
 #
-# $ make fmt # will format all JS, CSS and HTML files in the project
+#   $ make run
 #
+# Format all code (JS, CSS and HTML)
+#
+#   $ make fmt
+#
+# Build packages
+#
+#   $ make build
+#
+# Run tests
+#
+#   $ make test
 
 SHELL = /bin/bash
 
