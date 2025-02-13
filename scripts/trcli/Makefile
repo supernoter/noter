@@ -6,4 +6,4 @@ trcli: main.go
 
 .PHONY: clean
 clean:
-	rm f trcli
+	rm -f trcli
