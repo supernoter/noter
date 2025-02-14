@@ -44,3 +44,12 @@ clean:
 .PHONY: test
 test:
 	npm test
+
+package-lock.json: package.json
+	# https://stackoverflow.com/q/57867267/89391
+	npm install --package-lock-only
+
+.PHONY: update-outdated-npm-packages
+update-outdated-npm-packges:
+	# https://stackoverflow.com/a/16074029/89391
+	npx npm-check-updates -u
