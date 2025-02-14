@@ -16,10 +16,19 @@
     },
     "contributors": [
         {
-            "name": "Guilherme Elias Marinho"
+            "name": "Felix Chombe"
         },
         {
             "name": "Martin Czygan"
+        },
+        {
+            "name": "Guilherme Elias Marinho"
+        },
+        {
+            "name": "Chi Hung NGAI"
+        },
+        {
+            "name": "Giovanni Rizzo"
         }
     ],
     "devDependencies": {
