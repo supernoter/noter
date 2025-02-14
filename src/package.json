@@ -9,7 +9,7 @@
         "build": "electron-builder --mac --windows --linux --publish never"
     },
     "author": "ASP-G30-T7 <universe@supernoter.xyz>",
-    "license": "ISC",
+    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/supernoter/noter.git"
