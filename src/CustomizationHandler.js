@@ -6,14 +6,13 @@ const configurationInterface = require('./ConfigurationInterface')
 
 class CustomizationHandler {
     constructor() {
-        const { window, font, background, statusbar, preview } =
-            configurationInterface.getConfigurationData()
+        const { window, font, background, statusbar, preview } = configurationInterface.getConfigurationData();
 
-        this.window = window
-        this.font = font
-        this.background = background
-        this.statusBar = statusbar
-        this.preview = preview
+        this.window = window;
+        this.font = font;
+        this.background = background;
+        this.statusBar = statusbar;
+        this.preview = preview;
     }
 
     // apply customizations to the editor
@@ -28,8 +27,7 @@ class CustomizationHandler {
             content.style.opacity = this.background['opacity']
 
             const statusBar = document.querySelector('.status-bar') // status bar
-            statusBar.style.backgroundColor =
-                this.statusBar['background']['colour']
+            statusBar.style.backgroundColor = this.statusBar['background']['colour']
             statusBar.style.color = this.statusBar['font']['colour']
             statusBar.style.fontSize = this.statusBar['font']['size']
             statusBar.style.fontFamily = this.statusBar['font']['family']
