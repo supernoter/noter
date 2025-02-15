@@ -1,6 +1,6 @@
 {
     "name": "noter",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "description": "noter note-taking application with a dash of AI",
     "main": "main.js",
     "scripts": {
@@ -32,8 +32,8 @@
         }
     ],
     "devDependencies": {
-        "@babel/core": "^7.26.8",
-        "@babel/preset-env": "^7.26.8",
+        "@babel/core": "^7.26.9",
+        "@babel/preset-env": "^7.26.9",
         "babel-jest": "^29.7.0",
         "electron": "^34.2.0",
         "electron-builder": "^25.1.8",
