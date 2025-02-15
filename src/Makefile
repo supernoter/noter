@@ -53,3 +53,7 @@ package-lock.json: package.json
 update-outdated-npm-packges:
 	# https://stackoverflow.com/a/16074029/89391
 	npx npm-check-updates -u
+
+# Extra, one time tasks, e.g. fetching font files.
+noto.css:
+	../scripts/localcss/localcss -f noto.css -d . -a fonts -u "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap"
