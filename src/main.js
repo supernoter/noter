@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcRenderer } = require("electron");
 const menuitem = require("./customizations/menuItem.js");
 const fs = require("fs");
 const os = require("os");

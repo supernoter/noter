@@ -1,8 +1,6 @@
-const { app, Menu, dialog, shell } = require("electron");
+const { app, Menu, dialog, ipcMain } = require("electron");
 const fs = require("fs");
-const os = require("os");
 const path = require("path");
-
 class menuItem {
   // constructor(window) {
   //   this.window = window;
@@ -35,7 +33,8 @@ class menuItem {
         submenu: [
           {
             label: "Create new file",
-            click: () => this.createNewFile(window),
+            // click: () => this.createNewFile(window),
+            click: () => window.webContents.send("trigger-save"),
           },
           {
             label: "Open folder",
@@ -127,42 +126,42 @@ class menuItem {
 
   // Function to create a new file in the user's desktop directory.
 
-  createNewFile = async (window) => {
-    //open save dialog from electron.
-    dialog
-      .showSaveDialog(window, {
-        //set default file path to the download folder and default file name to Untitled.
-        defaultPath: path.join(app.getPath("downloads"), "Untitled.txt"),
-        filters: [
-          { name: "Text Files", extensions: ["txt"] },
-          { name: "All Files", extensions: ["*"] },
-        ],
-      })
-      .then((result) => {
-        //If user selects cancel return.
-        if (result.canceled) return;
-        //set file path.
-        const filePath = result.filePath;
-        //write the file with the name the user has selected.
-        fs.writeFile(filePath, "", (err) => {
-          if (err) {
-            console.error("Failed to create file:", err);
-            dialog.showErrorBox("Error", "Could not create the file.");
-          } else {
-            //message dialoge showing where the user has saved the file.
-            dialog.showMessageBox(
-              window,
-              {
-                type: "info",
-                title: "File Created",
-                message: `File created at: ${filePath}`,
-              },
-              () => {}
-            );
-          }
-        });
-      });
-  };
+  // createNewFile = async (window) => {
+  //   //open save dialog from electron.
+  //   dialog
+  //     .showSaveDialog(window, {
+  //       //set default file path to the download folder and default file name to Untitled.
+  //       defaultPath: path.join(app.getPath("downloads"), "Untitled.txt"),
+  //       filters: [
+  //         { name: "Text Files", extensions: ["txt"] },
+  //         { name: "All Files", extensions: ["*"] },
+  //       ],
+  //     })
+  //     .then((result) => {
+  //       //If user selects cancel return.
+  //       if (result.canceled) return;
+  //       //set file path.
+  //       const filePath = result.filePath;
+  //       //write the file with the name the user has selected.
+  //       fs.writeFile(filePath, "", (err) => {
+  //         if (err) {
+  //           console.error("Failed to create file:", err);
+  //           dialog.showErrorBox("Error", "Could not create the file.");
+  //         } else {
+  //           //message dialoge showing where the user has saved the file.
+  //           dialog.showMessageBox(
+  //             window,
+  //             {
+  //               type: "info",
+  //               title: "File Created",
+  //               message: `File created at: ${filePath}`,
+  //             },
+  //             () => {}
+  //           );
+  //         }
+  //       });
+  //     });
+  // };
 
   //open folder where file is saved.
   openDirectory = async (window) => {
@@ -192,5 +191,24 @@ class menuItem {
       });
   };
 }
+
+// Handle file saving
+ipcMain.on("save-file", async (event, content) => {
+  const result = await dialog.showSaveDialog({
+    title: "Save File",
+    defaultPath: "untitled.txt",
+    filters: [{ name: "Text Files", extensions: ["txt", "md", "json"] }],
+  });
+
+  if (!result.canceled && result.filePath) {
+    fs.writeFile(result.filePath, content, (err) => {
+      if (err) {
+        console.error("Error saving file:", err);
+        return;
+      }
+      event.sender.send("file-saved");
+    });
+  }
+});
 
 module.exports = new menuItem();
