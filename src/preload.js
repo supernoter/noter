@@ -7,6 +7,9 @@ contextBridge.exposeInMainWorld('api', {
     NOTER_OLLAMA_MODEL: process.env.NOTER_OLLAMA_MODEL || 'gemma',
     getNotes: () => ipcRenderer.invoke('get-notes'),
     readNote: (filename) => ipcRenderer.invoke('read-note', filename),
+    // Testing access to textarea, TODO: test and improve
+    getContent: () => document.querySelector('textarea').value,
+    setContent: (value) => (document.querySelector('textarea').value = value),
 })
 
 customizationHandler.applyCustomizationsToEditor()

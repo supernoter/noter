@@ -32,12 +32,11 @@ ipcMain.handle('read-note', async (event, filename) => {
     return ''
 })
 
-
 // createInitialWindow creates a window, set the menu and loads our application
 // HTML.
 createInitialWindow = () => {
-    let window = windowHandler.createWindow()
-    menu.createMenu(window);
+    const window = windowHandler.createWindow()
+    menu.createMenu(window)
     window.loadFile('./index.html')
 }
 
@@ -46,10 +45,10 @@ createInitialWindow = () => {
 // these emitters.
 
 app.whenReady().then(() => {
-    createInitialWindow();
+    createInitialWindow()
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
-            createInitialWindow();
+            createInitialWindow()
         }
     })
 })
