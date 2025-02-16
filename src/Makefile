@@ -10,7 +10,7 @@
 #
 #   $ make fmt
 #
-# Build packages
+# Build packages for MacOS, Linux and Windows
 #
 #   $ make build
 #
@@ -31,7 +31,9 @@ fmt:
 
 .PHONY: icons
 icons:
-	./node_modules/.bin/electron-icon-maker --input=../static/nb.png --output=build
+	# note: we needed to remove this dev dependency, because it triggered lots
+	# of security warnings
+	echo ./node_modules/.bin/electron-icon-maker --input=../static/nb.png --output=build
 
 .PHONY: build
 build:
@@ -40,6 +42,7 @@ build:
 .PHONY: clean
 clean:
 	rm -rf dist
+	rm -f .DS_Store
 
 .PHONY: test
 test:
@@ -54,6 +57,6 @@ update-outdated-npm-packges:
 	# https://stackoverflow.com/a/16074029/89391
 	npx npm-check-updates -u
 
-# Extra, one time tasks, e.g. fetching font files.
+# Extra, one time tasks e.g. fetching font files.
 noto.css:
 	../scripts/localcss/localcss -f noto.css -d . -a fonts -u "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap"
