@@ -42,7 +42,7 @@ jobs:
           npm install --include=dev
           make build
       - name: Checksum
-        run: echo ${{ github.sha }} > release.txt
+        run: echo ${{ github.sha }} > noter-${{ github.ref_name }}-release.txt
       - name: Generate changelog
         run: |
           echo '# NOTER ${{ github.ref_name }}
@@ -70,4 +70,5 @@ jobs:
             src/dist/Noter-*.AppImage
             src/dist/Noter-*-mac.zip
             src/dist/Noter-*-win.zip
+            src/dist/noter-*.rpm
             release.txt
