@@ -1,11 +1,13 @@
 const fileSystem = require('fs')
+const path = require('path')
+const { app } = require('electron')
 
 class ConfigurationInterface {
     /**
      * PRIVATE FIELDS
      */
 
-    #filePath = './config.json'
+    #filePath = path.join(app.isPackaged ? app.getPath('userData') : '', 'config.json')
 
     #defaultConfiguration = {
         window: { opacity: 1, width: 900, height: 550 },
