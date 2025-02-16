@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron/main')
 const windowHandler = require('./WindowHandler')
+const menu = require('./menu')
 const process = require('process')
 const fs = require('fs')
 const path = require('path')
@@ -31,17 +32,24 @@ ipcMain.handle('read-note', async (event, filename) => {
     return ''
 })
 
+
+// createInitialWindow creates a window, set the menu and loads our application
+// HTML.
+createInitialWindow = () => {
+    let window = windowHandler.createWindow()
+    menu.createMenu(window);
+    window.loadFile('./index.html')
+}
+
 // Many of Electron's core modules are Node.js event emitters that adhere to
 // Node's asynchronous event-driven architecture. The app module is one of
 // these emitters.
 
 app.whenReady().then(() => {
-    let window = windowHandler.createWindow()
-    window.loadFile('./index.html')
+    createInitialWindow();
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
-            window = windowHandler.createWindow()
-            window.loadFile('./index.html')
+            createInitialWindow();
         }
     })
 })
