@@ -1,26 +1,35 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Note Taking Page</title>
-    <link rel="stylesheet" href="./main.css" />
-    <!-- 2cf587e4-2811-4e48-b809-f3b1ab2a8c4e -->
-    <!-- b815eaf1-eab6-406e-97b7-25d18a69c7dd -->
-  </head>
-  <body>
-    <div id="editor-container"></div>
-    <script type="module">
-      import Editor from "./editor.js";
-      document.addEventListener("DOMContentLoaded", () => {
-        const editor = new Editor("editor-container");
-        editor.init().then(() => {
-          console.log("editor.init() done");
-          console.log(window.api.hey);
-        });
-      });
-    </script>
-    <script src="./customizations/trigger.js"></script>
-  </body>
+<!DOCTYPE HTNL>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Note Taking Page</title>
+        <script src="./node_modules/html2canvas/dist/html2canvas.js"></script>
+        <script src="./node_modules/jspdf/dist/jspdf.umd.min.js"></script>
+        <link rel="stylesheet" href="./main.css" />
+        <link rel="stylesheet" href="./noto.css" />
+        <!-- 2cf587e4-2811-4e48-b809-f3b1ab2a8c4e -->
+        <!-- b815eaf1-eab6-406e-97b7-25d18a69c7dd -->
+    </head>
+    <body>
+        <div id="editor-container"></div>
+        <script type="module">
+            import { Editor } from './editor.js'
+            import { Llm } from './llm.js'
+            document.addEventListener('DOMContentLoaded', () => {
+                // Llm settings will be picked up from environment variables
+                const llm = new Llm()
+                const editor = new Editor('editor-container', llm)
+                editor
+                    .init()
+                    .then(() => {
+                        console.log('editor.init() done')
+                        console.log(window.api.hey)
+                    })
+                    .catch((error) => {
+                        console.error('editor.init() failed: ', error)
+                    })
+            })
+        </script>
+    </body>
 </html>
