@@ -38,6 +38,10 @@ createInitialWindow = () => {
     const window = windowHandler.createWindow()
     menu.createMenu(window)
     window.loadFile('./index.html')
+    // Check if DEBUG environment variable is set
+    if (process.env.DEBUG) {
+        window.webContents.openDevTools()
+    }
 }
 
 // Many of Electron's core modules are Node.js event emitters that adhere to
