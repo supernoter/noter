@@ -53,6 +53,10 @@
         "directories": {
             "output": "dist"
         },
+        "extraResources": {
+            "from": "./fonts/",
+            "to": "./fonts/"
+        },
         "mac": {
             "target": [
                 "zip"
@@ -63,12 +67,15 @@
         "linux": {
             "target": [
                 "AppImage",
-                "deb"
+                "deb",
+                "rpm"
             ],
             "icon": "build/icons/png/512x512.png"
         },
         "win": {
-            "target": "zip",
+            "target": [
+                "zip"
+            ],
             "icon": "build/icons/win/icon.ico"
         }
     },
