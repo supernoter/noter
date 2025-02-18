@@ -53,7 +53,7 @@ package-lock.json: package.json
 	npm install --package-lock-only
 
 .PHONY: update-outdated-npm-packages
-update-outdated-npm-packges:
+update-outdated-npm-packages:
 	# https://stackoverflow.com/a/16074029/89391
 	npx npm-check-updates -u
 
