@@ -1,6 +1,7 @@
 const { app, shell, Menu, dialog, ipcMain } = require('electron')
 const fs = require('fs')
 const path = require('path')
+const os = require('os')
 class menu {
     // constructor(window) {
     //   this.window = window;
@@ -34,17 +35,90 @@ class menu {
                     {
                         label: 'Create new file',
                         // click: () => this.createNewFile(window),
-                        click: () => window.webContents.send('trigger-save'),
+                        click: () =>
+                            ipcMain.on('save-file', async (event, content) => {
+                                const result = await dialog.showSaveDialog({
+                                    title: 'Save File',
+                                    defaultPath: 'untitled.txt',
+                                    filters: [
+                                        {
+                                            name: 'Text Files',
+                                            extensions: ['txt', 'md', 'json'],
+                                        },
+                                    ],
+                                })
+
+                                if (!result.canceled && result.filePath) {
+                                    fs.writeFile(
+                                        result.filePath,
+                                        content,
+                                        (err) => {
+                                            if (err) {
+                                                console.error(
+                                                    'Error saving file:',
+                                                    err
+                                                )
+                                                return
+                                            }
+                                            event.sender.send('file-saved')
+                                        }
+                                    )
+                                }
+                            }),
                     },
                     {
                         // TODO: complete this
                         label: 'Save content',
                         click: async () => {
-                            const content =
-                                await window.webContents.executeJavaScript(
-                                    'window.api.getContent()'
-                                )
-                            console.log('saving content: ' + content)
+                            const { filePath } = await dialog.showSaveDialog(
+                                window,
+                                {
+                                    title: 'Save File',
+                                    defaultPath: path.join(
+                                        os.homedir(),
+                                        'Desktop',
+                                        'newfile.txt'
+                                    ),
+                                    filters: [
+                                        {
+                                            name: 'Text Files',
+                                            extensions: ['txt'],
+                                        },
+                                        {
+                                            name: 'All Files',
+                                            extensions: ['*'],
+                                        },
+                                    ],
+                                }
+                            )
+                            if (filePath) {
+                                const content =
+                                    await window.webContents.executeJavaScript(
+                                        'window.api.getContent()'
+                                    )
+                                console.log('saving content: ', content)
+                                console.log('file path: ', filePath)
+                                fs.writeFile(filePath, content, (err) => {
+                                    if (err) {
+                                        console.error('Error saving file:', err)
+                                        return 'Error saving file.'
+                                    } else {
+                                        return 'File saved successfully!'
+                                    }
+                                })
+                            }
+                            // catch (error)
+                            //     {
+                            //     console.error('Error saving file:', error)
+                            //     return 'Error saving file.'
+                            //     }
+                            // }
+
+                            // const content =
+                            //     await window.webContents.executeJavaScript(
+                            //         'window.api.getContent()'
+                            //     )
+                            // console.log('saving content: ' + content)
                         },
                     },
                     {
