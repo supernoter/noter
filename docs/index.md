@@ -97,4 +97,4 @@ current directory). Changes are applied at editor startup time.
 
 # Development notes
 
-* [Git tutorial](git-tutorial.html)
+We compiled a [Git tutorial](git-tutorial.html) to get started with version control.
