@@ -4,9 +4,10 @@ const menu = require('./menu')
 const process = require('process')
 const fs = require('fs')
 const path = require('path')
+const xdg = require('@folder/xdg')
 
 // Create path for all the user notes
-const notesDir = path.join(app.getPath('userData'), 'user-notes')
+const notesDir = path.join(app.getPath('documents'), 'noter')
 
 ipcMain.handle('get-notes', async () => {
     if (!fs.existsSync(notesDir)) {
