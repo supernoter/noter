@@ -96,8 +96,8 @@ class menu {
                                     await window.webContents.executeJavaScript(
                                         'window.api.getContent()'
                                     )
-                                console.log('saving content: ', content)
-                                console.log('file path: ', filePath)
+                                // console.log('saving content: ', content)
+                                // console.log('file path: ', filePath)
                                 fs.writeFile(filePath, content, (err) => {
                                     if (err) {
                                         console.error('Error saving file:', err)
@@ -123,16 +123,38 @@ class menu {
                     },
                     {
                         // TODO: complete this
-                        label: 'Insert some content on click',
-                        click: async () => {
-                            console.log(
-                                'todo: file open dialog, get filename, read file, set content'
-                            )
-                            const content =
-                                await window.webContents.executeJavaScript(
-                                    'window.api.setContent("This can be loaded from a file")'
-                                )
-                        },
+                        label: 'Open file',
+                        click: async () =>
+                            dialog
+                                .showOpenDialog(window, {
+                                    properties: ['openFile', 'openDirectory'],
+                                })
+                                .then((result) => {
+                                    const filePath = result.filePaths
+                                    if (result.canceled) return
+
+                                    const content =
+                                        window.webContents.executeJavaScript(
+                                            'window.api.setContent(filePath)'
+                                        )
+
+                                    fs.open(filePath[0], 'w', (err) => {
+                                        if (err) {
+                                            console.error(
+                                                'Failed to open file:',
+                                                err
+                                            )
+                                            dialog.showErrorBox(
+                                                'Error',
+                                                'Could not open the file.'
+                                            )
+                                            return
+                                        } else {
+                                            // shell.openPath(filePath)
+                                            return content
+                                        }
+                                    })
+                                }),
                     },
                     {
                         label: 'Open folder',
@@ -220,53 +242,54 @@ class menu {
         const menu = Menu.buildFromTemplate(template)
         Menu.setApplicationMenu(menu)
     }
-
-    //open folder where file is saved.
-    openDirectory = async (window) => {
-        dialog
-            .showOpenDialog(window, {
-                properties: ['openFile', 'openDirectory'],
-            })
-            .then((result) => {
-                const filePath = result.filePath
-                if (result.canceled) return
-
-                fs.openFile(filePath, 'w', (err) => {
-                    if (err) {
-                        console.error('Failed to open file:', err)
-                        dialog.showErrorBox('Error', 'Could not open the file.')
-                        return
-                    } else {
-                        shell.openPath(filePath)
-                    }
-                })
-
-                console.log(result.canceled)
-                console.log(result.filePaths)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }
 }
 
-// Handle file saving
-ipcMain.on('save-file', async (event, content) => {
-    const result = await dialog.showSaveDialog({
-        title: 'Save File',
-        defaultPath: 'untitled.txt',
-        filters: [{ name: 'Text Files', extensions: ['txt', 'md', 'json'] }],
-    })
+//open folder where file is saved.
+//     openDirectory = async (window) => {
+//         dialog
+//             .showOpenDialog(window, {
+//                 properties: ['openFile', 'openDirectory'],
+//             })
+//             .then((result) => {
+//                 const filePath = result.filePath
+//                 if (result.canceled) return
 
-    if (!result.canceled && result.filePath) {
-        fs.writeFile(result.filePath, content, (err) => {
-            if (err) {
-                console.error('Error saving file:', err)
-                return
-            }
-            event.sender.send('file-saved')
-        })
-    }
-})
+//                 fs.openFile(filePath, 'w', (err) => {
+//                     if (err) {
+//                         console.error('Failed to open file:', err)
+//                         dialog.showErrorBox('Error', 'Could not open the file.')
+//                         return
+//                     } else {
+//                         shell.openPath(filePath)
+//                     }
+//                 })
+
+//                 console.log(result.canceled)
+//                 console.log(result.filePaths)
+//             })
+//             .catch((err) => {
+//                 console.log(err)
+//             })
+//     }
+// }
+
+// Handle file saving
+// ipcMain.on('save-file', async (event, content) => {
+//     const result = await dialog.showSaveDialog({
+//         title: 'Save File',
+//         defaultPath: 'untitled.txt',
+//         filters: [{ name: 'Text Files', extensions: ['txt', 'md', 'json'] }],
+//     })
+
+//     if (!result.canceled && result.filePath) {
+//         fs.writeFile(result.filePath, content, (err) => {
+//             if (err) {
+//                 console.error('Error saving file:', err)
+//                 return
+//             }
+//             event.sender.send('file-saved')
+//         })
+//     }
+// })
 
 module.exports = new menu()
