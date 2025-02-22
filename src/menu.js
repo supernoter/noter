@@ -33,53 +33,60 @@ class menu {
                 label: 'File',
                 submenu: [
                     {
-                        label: 'Create new file',
+                        label: 'New Note',
+                        accelerator:
+                            process.platform === 'darwin' ? 'Cmd+N' : 'Ctrl+N',
                         // click: () => this.createNewFile(window),
-                        click: () =>
-                            ipcMain.on('save-file', async (event, content) => {
-                                const result = await dialog.showSaveDialog({
-                                    title: 'Save File',
-                                    defaultPath: 'untitled.txt',
-                                    filters: [
-                                        {
-                                            name: 'Text Files',
-                                            extensions: ['txt', 'md', 'json'],
-                                        },
-                                    ],
-                                })
-
-                                if (!result.canceled && result.filePath) {
-                                    fs.writeFile(
-                                        result.filePath,
-                                        content,
-                                        (err) => {
-                                            if (err) {
-                                                console.error(
-                                                    'Error saving file:',
-                                                    err
-                                                )
-                                                return
-                                            }
-                                            event.sender.send('file-saved')
-                                        }
-                                    )
-                                }
-                            }),
+                        click: () => {
+                            window.webContents.executeJavaScript(
+                                'window.api.setContent("Hello World!")'
+                            )
+                            console.log('new note')
+                        },
                     },
                     {
                         // TODO: complete this
-                        label: 'Save content',
+                        label: 'Open Note',
+                        accelerator:
+                            process.platform === 'darwin' ? 'Cmd+O' : 'Ctrl+O',
+                        click: async () =>
+                            dialog
+                                .showOpenDialog(window, {
+                                    properties: ['openFile'],
+                                })
+                                .then((result) => {
+                                    const filePath = result.filePaths[0]
+                                    if (result.canceled) return
+
+                                    let content = fs.readFileSync(
+                                        filePath,
+                                        'utf8'
+                                    )
+                                    window.webContents.executeJavaScript(
+                                        `window.api.setContent(${JSON.stringify(content)})`
+                                    )
+                                }),
+                    },
+                    {
+                        // TODO: complete this
+                        label: 'Save Note',
+                        accelerator:
+                            process.platform === 'darwin' ? 'Cmd+S' : 'Ctrl+S',
                         click: async () => {
                             const { filePath } = await dialog.showSaveDialog(
                                 window,
                                 {
-                                    title: 'Save File',
+                                    title: 'Save',
                                     defaultPath: path.join(
                                         os.homedir(),
                                         'Desktop',
                                         'newfile.txt'
                                     ),
                                     filters: [
+                                        {
+                                            name: 'Markdown',
+                                            extensions: ['md'],
+                                        },
                                         {
                                             name: 'Text Files',
                                             extensions: ['txt'],
@@ -107,58 +114,17 @@ class menu {
                                     }
                                 })
                             }
-                            // catch (error)
-                            //     {
-                            //     console.error('Error saving file:', error)
-                            //     return 'Error saving file.'
-                            //     }
-                            // }
-
-                            // const content =
-                            //     await window.webContents.executeJavaScript(
-                            //         'window.api.getContent()'
-                            //     )
-                            // console.log('saving content: ' + content)
                         },
                     },
+                    { type: 'separator' },
                     {
                         // TODO: complete this
-                        label: 'Open file',
-                        click: async () =>
-                            dialog
-                                .showOpenDialog(window, {
-                                    properties: ['openFile', 'openDirectory'],
-                                })
-                                .then((result) => {
-                                    const filePath = result.filePaths
-                                    if (result.canceled) return
-
-                                    const content =
-                                        window.webContents.executeJavaScript(
-                                            'window.api.setContent(filePath)'
-                                        )
-
-                                    fs.open(filePath[0], 'w', (err) => {
-                                        if (err) {
-                                            console.error(
-                                                'Failed to open file:',
-                                                err
-                                            )
-                                            dialog.showErrorBox(
-                                                'Error',
-                                                'Could not open the file.'
-                                            )
-                                            return
-                                        } else {
-                                            // shell.openPath(filePath)
-                                            return content
-                                        }
-                                    })
-                                }),
-                    },
-                    {
-                        label: 'Open folder',
-                        click: () => this.openDirectory(window),
+                        label: 'Quit',
+                        accelerator:
+                            process.platform === 'darwin' ? 'Cmd+Q' : 'Ctrl+Q',
+                        click: async () => {
+                            app.quit()
+                        },
                     },
                     // isMac ? [{ role: "close" }] : [{ role: "quit" }],
                 ],
