@@ -274,6 +274,7 @@ class Editor {
         this.keystrokeCount = 0
         this.llmCharCount = 0
 
+        // XXX: bail out quickly, if we have no connectivity
         this.llm = llm
         if (this.llm) {
             this.llm
