@@ -1,0 +1,4 @@
+.DS_Store
+src/dist/
+src/node_modules/
+src/config.json
