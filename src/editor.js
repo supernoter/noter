@@ -443,16 +443,38 @@ The status bar shows:
         })
     }
 
+    // handleKeyboardShortcuts takes and event and dispatches various actions.
+    handleKeyboardShortcuts(e) {
+        if (this.state.handleKeyboardShortcuts(e)) {
+            return // state already handled the shortcut
+        }
+        // handle common shortcuts across all states
+        if (e.ctrlKey && (e.key === '=' || e.key === '+')) {
+            e.preventDefault()
+            this.changeFontSize(1)
+        } else if (e.ctrlKey && e.key === '-') {
+            e.preventDefault()
+            this.changeFontSize(-1)
+        } else if (e.ctrlKey && e.key === 'b') {
+            e.preventDefault()
+            this.toggleNavigationBar()
+        }
+    }
+
+    // setState is called on a state transition, currently on a keyboard
+    // shortcut
+    setState(newState) {
+        this.state.exitState()
+        this.state = newState
+        this.state.enterState()
+        this.updateStatusBar()
+    }
+
     toggleNavigationBar() {
         const navigationBar = document.getElementById('navigation-bar')
         const editorContainer = document.getElementById('editor-container')
         navigationBar.classList.toggle('open')
         editorContainer.classList.toggle('shifted')
-    }
-
-    async openNote(filename) {
-        const content = await window.api.readNote(filename)
-        this.setContent(content)
     }
 
     filterNotes() {
@@ -478,32 +500,6 @@ The status bar shows:
         this.filterNotes()
     }
 
-    toggleNavigationBar() {
-        const navigationBar = document.getElementById('navigation-bar')
-        const editorContainer = document.getElementById('editor-container')
-        navigationBar.classList.toggle('open')
-        editorContainer.classList.toggle('shifted')
-    }
-
-    async openNote(filename) {
-        console.log('Opening note:', filename) // ✅ Debugging step
-        const content = await window.api.readNote(filename)
-        this.setContent(content)
-    }
-
-    async loadNotes() {
-        const noteFiles = await window.api.getNotes()
-        console.log('Loaded Notes:', noteFiles)
-        this.noteList.innerHTML = '' // Clear the list before adding new items
-
-        noteFiles.forEach((file) => {
-            const listItem = document.createElement('li')
-            listItem.textContent = file.replace('.md', '') // Remove .md extension
-            listItem.addEventListener('click', () => this.openNote(file))
-            this.noteList.appendChild(listItem)
-        })
-    }
-
     async openNote(filename) {
         console.log('Opening note:', filename) // ✅ Debugging step
         const content = await window.api.readNote(filename)
@@ -519,33 +515,6 @@ The status bar shows:
         const newSize = Math.max(10, currentSize + delta)
         this.textarea.style.fontSize = `${newSize}px`
         this.updateStatusBar()
-    }
-
-    // setState is called on a state transition, currently on a keyboard
-    // shortcut
-    setState(newState) {
-        this.state.exitState()
-        this.state = newState
-        this.state.enterState()
-        this.updateStatusBar()
-    }
-
-    // handleKeyboardShortcuts takes and event and dispatches various actions.
-    handleKeyboardShortcuts(e) {
-        if (this.state.handleKeyboardShortcuts(e)) {
-            return // state already handled the shortcut
-        }
-        // handle common shortcuts across all states
-        if (e.ctrlKey && (e.key === '=' || e.key === '+')) {
-            e.preventDefault()
-            this.changeFontSize(1)
-        } else if (e.ctrlKey && e.key === '-') {
-            e.preventDefault()
-            this.changeFontSize(-1)
-        } else if (e.ctrlKey && e.key === 'b') {
-            e.preventDefault()
-            this.toggleNavigationBar()
-        }
     }
 
     // Helper method to scroll to bottom
@@ -569,7 +538,7 @@ The status bar shows:
         } · <span class="llm-count">M:${this.llmCharCount}</span> · ${fontSize}`
 
         // Add model info or warning
-        if (this.llm) {
+        if (this.llm != null) {
             const modelStatus = this.llm.getModelStatus()
             if (modelStatus) {
                 status += ` · <span class="model-name">${modelStatus.currentModel}</span>`
@@ -586,17 +555,6 @@ The status bar shows:
         } else {
             this.statusBar.innerHTML = `${this.getBaseStatus()} · ${this.state.getName()}`
         }
-    }
-
-    /* font size, with some limits */
-    changeFontSize(delta) {
-        const currentSize = parseInt(
-            window.getComputedStyle(this.textarea).fontSize,
-            10
-        )
-        const newSize = Math.max(10, currentSize + delta)
-        this.textarea.style.fontSize = `${newSize}px`
-        this.updateStatusBar()
     }
 
     /* typeEffect is here for an initial typing sequence, giving an impression
