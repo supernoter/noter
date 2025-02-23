@@ -321,6 +321,42 @@ The status bar shows:
         this.#pdf_font_style = 'Arial'
     }
 
+    // init sets up the editor
+    async init() {
+        await this.initializeElements()
+
+        // dispatch an event, so customization could be applied
+        const event = new Event('NoterEditorElementsLoaded')
+        window.dispatchEvent(event)
+
+        await this.initializeEventListeners()
+
+        // If we have an llm configured, then try to connect
+        // XXX: bail out quickly, if we have no connectivity
+        if (this.llm) {
+            this.llm
+                .checkModelAvailability()
+                .then(() => this.updateStatusBar())
+                .catch((error) => console.warn('model check failed:', error))
+        }
+
+        // Enter the first editor state
+        this.state = new EditState(this)
+        this.state.enterState()
+        this.updateStatusBar()
+
+        this.textarea.value = ''
+        const introText = 'noter: write together'
+
+        return new Promise(async (resolve) => {
+            await this.typeEffect(introText)
+            await this.deleteEffect(introText)
+            await this.loadNotes()
+            this.textarea.focus()
+            resolve()
+        })
+    }
+
     // attach DOM elements to HTML
     initializeElements() {
         // create textarea
@@ -407,26 +443,6 @@ The status bar shows:
         })
     }
 
-    // handleKeyboardShortcuts takes and event and dispatches various actions.
-    handleKeyboardShortcuts(e) {
-        if (e.ctrlKey && e.key === 'p' && !this.isHelpMode) {
-            e.preventDefault()
-            this.togglePreviewMode()
-        } else if ((e.ctrlKey && e.key === 'h') || e.key === 'F1') {
-            e.preventDefault()
-            this.toggleHelpMode()
-        } else if (e.ctrlKey && (e.key === '=' || e.key === '+')) {
-            e.preventDefault()
-            this.changeFontSize(1)
-        } else if (e.ctrlKey && e.key === '-') {
-            e.preventDefault()
-            this.changeFontSize(-1)
-        } else if (e.ctrlKey && e.key === 'b') {
-            e.preventDefault()
-            this.toggleNavigationBar()
-        }
-    }
-
     toggleNavigationBar() {
         const navigationBar = document.getElementById('navigation-bar')
         const editorContainer = document.getElementById('editor-container')
@@ -460,51 +476,6 @@ The status bar shows:
             this.noteList.appendChild(listItem)
         })
         this.filterNotes()
-    }
-    async openNote(filename) {
-        const content = await window.api.readNote(filename)
-        this.setContent(content)
-    }
-
-    /* the status bar can track some basic textarea info, later also indicate API
-     * access to LLM and other information */
-    updateStatusBar() {
-        const charCount = this.textarea.value.length
-        const text = this.textarea.value.substring(
-            0,
-            this.textarea.selectionStart
-        )
-        const row = text.split('\n').length
-        const column = text.split('\n').pop().length + 1
-        const fontSize = window.getComputedStyle(this.textarea).fontSize
-        let mode = 'E'
-        if (this.isPreviewMode) {
-            mode = 'P'
-        }
-        if (this.isHelpMode) {
-            mode = 'H'
-        }
-        this.statusBar.textContent = `${charCount} · ${row}:${column} · ${fontSize} · ${mode}`
-    }
-
-    // handleKeyboardShortcuts takes and event and dispatches various actions.
-    handleKeyboardShortcuts(e) {
-        if (e.ctrlKey && e.key === 'p' && !this.isHelpMode) {
-            e.preventDefault()
-            this.togglePreviewMode()
-        } else if ((e.ctrlKey && e.key === 'h') || e.key === 'F1') {
-            e.preventDefault()
-            this.toggleHelpMode()
-        } else if (e.ctrlKey && (e.key === '=' || e.key === '+')) {
-            e.preventDefault()
-            this.changeFontSize(1)
-        } else if (e.ctrlKey && e.key === '-') {
-            e.preventDefault()
-            this.changeFontSize(-1)
-        } else if (e.ctrlKey && e.key === 'b') {
-            e.preventDefault()
-            this.toggleNavigationBar()
-        }
     }
 
     toggleNavigationBar() {
@@ -571,6 +542,9 @@ The status bar shows:
         } else if (e.ctrlKey && e.key === '-') {
             e.preventDefault()
             this.changeFontSize(-1)
+        } else if (e.ctrlKey && e.key === 'b') {
+            e.preventDefault()
+            this.toggleNavigationBar()
         }
     }
 
@@ -671,42 +645,6 @@ The status bar shows:
         })
     }
 
-    // init sets up the editor
-    async init() {
-        await this.initializeElements()
-
-        // dispatch an event, so customization could be applied
-        const event = new Event('NoterEditorElementsLoaded')
-        window.dispatchEvent(event)
-
-        await this.initializeEventListeners()
-
-        // If we have an llm configured, then try to connect
-        // XXX: bail out quickly, if we have no connectivity
-        if (this.llm) {
-            this.llm
-                .checkModelAvailability()
-                .then(() => this.updateStatusBar())
-                .catch((error) => console.warn('model check failed:', error))
-        }
-
-        // Enter the first editor state
-        this.state = new EditState(this)
-        this.state.enterState()
-        this.updateStatusBar()
-
-        this.textarea.value = ''
-        const introText = 'noter: write together'
-
-        return new Promise(async (resolve) => {
-            await this.typeEffect(introText)
-            await this.deleteEffect(introText)
-            await this.loadNotes()
-            this.textarea.focus()
-            resolve()
-        })
-    }
-
     // Get the current content of the editor
     getContent() {
         return this.textarea.value
@@ -755,24 +693,6 @@ The status bar shows:
             y: top_margin,
             margin: [top_margin, pdf_margin, pdf_margin, pdf_margin],
         })
-    }
-
-    // Set new content for the editor
-    setContent(content) {
-        this.textarea.value = content
-        this.updateStatusBar()
-    }
-
-    toggleNavigationBar() {
-        const navigationBar = document.getElementById('navigation-bar')
-        const editorContainer = document.getElementById('editor-container')
-        navigationBar.classList.toggle('open')
-        editorContainer.classList.toggle('shifted')
-    }
-    // Set new content for the editor
-    setContent(content) {
-        this.textarea.value = content
-        this.updateStatusBar()
     }
 }
 
