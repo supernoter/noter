@@ -392,6 +392,19 @@ The status bar shows:
         document.addEventListener('keydown', (e) =>
             this.handleKeyboardShortcuts(e)
         )
+
+        // WIP: we should move to this callback style approach to pass data
+        // from main to renderer
+        //
+        // TODO: should the filename just be a concern of main process?
+        window.api.setEditorContent((value) => {
+            console.log('setting editor content')
+            this.textarea.value = value
+        })
+        window.api.setEditorTitle((value) => {
+            console.log('setting editor title')
+            document.title = value
+        })
     }
 
     // handleKeyboardShortcuts takes and event and dispatches various actions.

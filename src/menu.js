@@ -42,6 +42,7 @@ class menu {
                                 'window.api.setContent("Hello World!")'
                             )
                             console.log('new note')
+                            window.webContents.send('set-editor-title', 'NOTER')
                         },
                     },
                     {
@@ -62,8 +63,13 @@ class menu {
                                         filePath,
                                         'utf8'
                                     )
-                                    window.webContents.executeJavaScript(
-                                        `window.api.setContent(${JSON.stringify(content)})`
+                                    window.webContents.send(
+                                        'set-editor-content',
+                                        content
+                                    )
+                                    window.webContents.send(
+                                        'set-editor-title',
+                                        path.basename(filePath)
                                     )
                                 }),
                     },
