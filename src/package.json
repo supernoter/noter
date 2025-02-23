@@ -1,6 +1,6 @@
 {
     "name": "noter",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "description": "noter note-taking application with a dash of AI",
     "main": "main.js",
     "scripts": {
@@ -39,12 +39,12 @@
         "electron-builder": "^25.1.8",
         "jest": "^29.7.0",
         "jest-environment-jsdom": "^29.7.0",
-        "prettier": "3.5.1",
+        "prettier": "3.5.2",
         "whatwg-fetch": "^3.6.20"
     },
     "dependencies": {
         "html2canvas": "^1.4.1",
-        "jspdf": "^2.5.2",
+        "jspdf": "^3.0.0",
         "marked": "^15.0.7"
     },
     "build": {
