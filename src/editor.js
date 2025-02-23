@@ -274,14 +274,7 @@ class Editor {
         this.keystrokeCount = 0
         this.llmCharCount = 0
 
-        // XXX: bail out quickly, if we have no connectivity
         this.llm = llm
-        if (this.llm) {
-            this.llm
-                .checkModelAvailability()
-                .then(() => this.updateStatusBar())
-                .catch((error) => console.warn('model check failed:', error))
-        }
 
         this.llmTriggerPrefix = ':: '
         this.llmResponsePrefix = '> '
@@ -318,17 +311,6 @@ The status bar shows:
 * Cursor position (row:column)
 * Current font size`
 
-        this.initializeElements()
-
-        // dispatch an event, so customization could be applied
-        const event = new Event('NoterEditorElementsLoaded')
-        window.dispatchEvent(event)
-
-        this.initializeEventListeners()
-        // Set the first state
-        this.state = new EditState(this)
-        this.state.enterState()
-        this.updateStatusBar()
         const { jsPDF } = window.jspdf
         this.#pdf_doc = new jsPDF({
             orientation: 'portrait',
@@ -492,64 +474,6 @@ The status bar shows:
         this.statusBar.textContent = `${charCount} · ${row}:${column} · ${fontSize} · ${mode}`
     }
 
-    // attach DOM elements to HTML
-    initializeElements() {
-        // create textarea
-        this.textarea = document.createElement('textarea')
-        this.textarea.setAttribute('spellcheck', 'false')
-        this.textarea.setAttribute(
-            'placeholder',
-            "Let's go … and type CTRL-p to toggle preview, and CTRL-h for help"
-        )
-        this.textarea.id = 'note-textarea'
-
-        // create preview div
-        this.preview = document.createElement('div')
-        this.preview.className = 'preview'
-        this.preview.id = 'preview'
-        this.preview.style.display = 'none'
-
-        // create status bar
-        this.statusBar = document.createElement('div')
-        this.statusBar.className = 'status-bar'
-        this.statusBar.id = 'status-bar'
-
-        // create navigation side bar
-        this.navigationBar = document.createElement('div')
-        this.navigationBar.className = 'navigation-bar'
-        this.navigationBar.id = 'navigation-bar'
-        this.navigationBar.style.width = '200px'
-
-        // Inside initializeElements()
-        this.noteList = document.createElement('ul')
-        this.noteList.id = 'note-list'
-
-        // append elements to container
-        this.container.appendChild(this.textarea)
-        this.container.appendChild(this.preview)
-        this.container.appendChild(this.statusBar)
-        this.container.appendChild(this.navigationBar)
-        this.navigationBar.appendChild(this.noteList)
-    }
-
-    // initializeEventListeners attaches event listener to elements, e.g. we want
-    // to update the status bar at every keystroke.
-    initializeEventListeners() {
-        // text-related events
-        this.textarea.addEventListener('input', () => this.updateStatusBar())
-        this.textarea.addEventListener('keyup', () => this.updateStatusBar())
-        this.textarea.addEventListener('click', () => this.updateStatusBar())
-        this.textarea.addEventListener('select', () => this.updateStatusBar())
-        this.textarea.addEventListener('mousemove', () =>
-            this.updateStatusBar()
-        )
-
-        // keyboard shortcuts
-        document.addEventListener('keydown', (e) =>
-            this.handleKeyboardShortcuts(e)
-        )
-    }
-
     // handleKeyboardShortcuts takes and event and dispatches various actions.
     handleKeyboardShortcuts(e) {
         if (e.ctrlKey && e.key === 'p' && !this.isHelpMode) {
@@ -602,24 +526,6 @@ The status bar shows:
         this.setContent(content)
     }
 
-    // initializeEventListeners attaches event listener to elements, e.g. we want
-    // to update the status bar at every keystroke.
-    initializeEventListeners() {
-        // text-related events
-        this.textarea.addEventListener('input', () => this.updateStatusBar())
-        this.textarea.addEventListener('keyup', () => this.updateStatusBar())
-        this.textarea.addEventListener('click', () => this.updateStatusBar())
-        this.textarea.addEventListener('select', () => this.updateStatusBar())
-        this.textarea.addEventListener('mousemove', () =>
-            this.updateStatusBar()
-        )
-
-        // keyboard shortcuts
-        document.addEventListener('keydown', (e) =>
-            this.handleKeyboardShortcuts(e)
-        )
-    }
-
     /* font size, with some limits */
     changeFontSize(delta) {
         const currentSize = parseInt(
@@ -629,24 +535,6 @@ The status bar shows:
         const newSize = Math.max(10, currentSize + delta)
         this.textarea.style.fontSize = `${newSize}px`
         this.updateStatusBar()
-    }
-
-    // initializeEventListeners attaches event listener to elements, e.g. we want
-    // to update the status bar at every keystroke.
-    initializeEventListeners() {
-        // text-related events
-        this.textarea.addEventListener('input', () => this.updateStatusBar())
-        this.textarea.addEventListener('keyup', () => this.updateStatusBar())
-        this.textarea.addEventListener('click', () => this.updateStatusBar())
-        this.textarea.addEventListener('select', () => this.updateStatusBar())
-        this.textarea.addEventListener('mousemove', () =>
-            this.updateStatusBar()
-        )
-
-        // keyboard shortcuts
-        document.addEventListener('keydown', (e) =>
-            this.handleKeyboardShortcuts(e)
-        )
     }
 
     // setState is called on a state transition, currently on a keyboard
@@ -770,8 +658,30 @@ The status bar shows:
         })
     }
 
-    // init starts the typing intro sequence
-    init() {
+    // init sets up the editor
+    async init() {
+        await this.initializeElements()
+
+        // dispatch an event, so customization could be applied
+        const event = new Event('NoterEditorElementsLoaded')
+        window.dispatchEvent(event)
+
+        await this.initializeEventListeners()
+
+        // If we have an llm configured, then try to connect
+        // XXX: bail out quickly, if we have no connectivity
+        if (this.llm) {
+            this.llm
+                .checkModelAvailability()
+                .then(() => this.updateStatusBar())
+                .catch((error) => console.warn('model check failed:', error))
+        }
+
+        // Enter the first editor state
+        this.state = new EditState(this)
+        this.state.enterState()
+        this.updateStatusBar()
+
         this.textarea.value = ''
         const introText = 'noter: write together'
 
