@@ -71,4 +71,5 @@ jobs:
             src/dist/Noter-*-mac.zip
             src/dist/Noter-*-win.zip
             src/dist/noter-*.rpm
-            release.txt
+            noter-*-release.txt
+
