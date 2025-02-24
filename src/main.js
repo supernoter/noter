@@ -8,18 +8,20 @@ const path = require('path')
 // Create path for all the user notes
 const notesDir = path.join(app.getPath('documents'), 'noter')
 
+const WELCOME_NOTE_TEXT = `# Welcome to NOTER!
+
+Noter is a simple, yet powerful markdown editor that we hope you will enjoy using.
+
+Find out more at [supernoter.xyz](https://supernoter.xyz) and on GitHub at
+[supernoter/noter](https://github.com/supernoter/noter).
+`
+
 ipcMain.handle('get-notes', async () => {
     if (!fs.existsSync(notesDir)) {
         fs.mkdirSync(notesDir, { recursive: true })
-
-        // Create an example markdown file
-        const defaultNotePath1 = path.join(notesDir, 'First note.md')
-        const defaultNotePath2 = path.join(notesDir, 'Second note.md')
-        const exampleNote1 = 'Hello, this is your first note!'
-        const exampleNote2 = 'This is your second note!'
-
-        fs.writeFileSync(defaultNotePath1, exampleNote1, 'utf-8')
-        fs.writeFileSync(defaultNotePath2, exampleNote2, 'utf-8')
+        // create a welcome note
+        const welcomeNote = path.join(notesDir, 'Welcome.md')
+        fs.writeFileSync(welcomeNote, WELCOME_NOTE_TEXT, 'utf-8')
     }
     return fs.readdirSync(notesDir)
 })
