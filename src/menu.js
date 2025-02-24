@@ -2,10 +2,10 @@ const { app, shell, Menu, dialog, ipcMain } = require('electron')
 const fs = require('fs')
 const path = require('path')
 const os = require('os')
+
+const HOMEPAGE = 'https://supernoter.xyz/?src=app'
+
 class menu {
-    // constructor(window) {
-    //   this.window = window;
-    // }
     createMenu = (window) => {
         const isMac = process.platform === 'darwin'
         const template = [
@@ -36,29 +36,39 @@ class menu {
                         label: 'New Note',
                         accelerator:
                             process.platform === 'darwin' ? 'Cmd+N' : 'Ctrl+N',
-                        // click: () => this.createNewFile(window),
                         click: () => {
                             window.webContents.executeJavaScript(
                                 'window.api.setContent("Hello World!")'
                             )
-                            console.log('new note')
                             window.webContents.send('set-editor-title', 'NOTER')
                         },
                     },
                     {
-                        // TODO: complete this
                         label: 'Open Note',
                         accelerator:
                             process.platform === 'darwin' ? 'Cmd+O' : 'Ctrl+O',
                         click: async () =>
                             dialog
                                 .showOpenDialog(window, {
+                                    defaultPath: path.join(
+                                        app.getPath('documents'),
+                                        'noter'
+                                    ),
                                     properties: ['openFile'],
+                                    filters: [
+                                        {
+                                            name: 'Markdown',
+                                            extensions: ['md'],
+                                        },
+                                        {
+                                            name: 'All Files',
+                                            extensions: ['*'],
+                                        },
+                                    ],
                                 })
                                 .then((result) => {
                                     const filePath = result.filePaths[0]
                                     if (result.canceled) return
-
                                     let content = fs.readFileSync(
                                         filePath,
                                         'utf8'
@@ -74,7 +84,6 @@ class menu {
                                 }),
                     },
                     {
-                        // TODO: complete this
                         label: 'Save Note',
                         accelerator:
                             process.platform === 'darwin' ? 'Cmd+S' : 'Ctrl+S',
@@ -132,10 +141,8 @@ class menu {
                             app.quit()
                         },
                     },
-                    // isMac ? [{ role: "close" }] : [{ role: "quit" }],
                 ],
             },
-            // { role: 'editMenu' }
             {
                 label: 'Edit',
                 submenu: [
@@ -166,7 +173,6 @@ class menu {
                           ]),
                 ],
             },
-            // { role: 'viewMenu' }
             {
                 label: 'View',
                 submenu: [
@@ -181,7 +187,6 @@ class menu {
                     { role: 'togglefullscreen' },
                 ],
             },
-            // { role: 'windowMenu' }
             {
                 label: 'Window',
                 submenu: [
@@ -204,13 +209,12 @@ class menu {
                     {
                         label: 'Learn More',
                         click: async () => {
-                            await shell.openExternal('https://supernoter.xyz')
+                            await shell.openExternal(HOMEPAGE)
                         },
                     },
                 ],
             },
         ]
-
         const menu = Menu.buildFromTemplate(template)
         Menu.setApplicationMenu(menu)
     }
