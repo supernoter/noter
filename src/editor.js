@@ -6,6 +6,39 @@ import { marked } from './node_modules/marked/lib/marked.esm.js'
 import * as jsPDF from './node_modules/jspdf/dist/jspdf.umd.min.js'
 import * as html2canvas from './node_modules/html2canvas/dist/html2canvas.esm.js'
 
+// HELP as displayed on F1
+const HELP = `# NOTER Help
+
+## Basic Usage
+* Type your notes in the editor
+* Markdown formatting is supported
+
+## Keyboard Shortcuts
+* **CTRL-b**: Open Navigation Sidebar
+* **CTRL-n**: Create a New file
+* **CTRL-o**: Open a file
+* **CTRL-p**: Toggle preview mode
+* **CTRL-h** or **F1**: Toggle this help view
+* **CTRL-g**: Generate text for editor prompts
+* **CTRL-+**: Increase font size
+* **CTRL--**: Decrease font size
+* **CTRL-s**: Save the file
+* **CTRL-e**: Export notes to PDF
+
+## Markdown Tips
+* Use # for headers
+* Use * or - for bullet points
+* Use ** for bold text
+* Use * for italic text
+* Use \`code\` for inline code
+* Use \`\`\` for code blocks
+
+## Status Bar
+The status bar shows:
+* Character count
+* Cursor position (row:column)
+* Current font size`
+
 // EditorState encapsulates the different modes the editor can be in, like edit,
 // preview, help and potentially others.
 class EditorState {
@@ -275,41 +308,10 @@ class Editor {
         this.llmCharCount = 0
 
         this.llm = llm
-
         this.llmTriggerPrefix = ':: '
         this.llmResponsePrefix = '> '
-        // help text in markdown format
-        this.helpText = `# NOTER Help
 
-## Basic Usage
-* Type your notes in the editor
-* Markdown formatting is supported
-
-## Keyboard Shortcuts
-* **CTRL-b**: Open Navigation Sidebar
-* **CTRL-n**: Create a New file
-* **CTRL-o**: Open a file
-* **CTRL-p**: Toggle preview mode
-* **CTRL-h** or **F1**: Toggle this help view
-* **CTRL-g**: Generate text for editor prompts
-* **CTRL-+**: Increase font size
-* **CTRL--**: Decrease font size
-* **CTRL-s**: Save the file
-* **CTRL-e**: Export notes to PDF
-
-## Markdown Tips
-* Use # for headers
-* Use * or - for bullet points
-* Use ** for bold text
-* Use * for italic text
-* Use \`code\` for inline code
-* Use \`\`\` for code blocks
-
-## Status Bar
-The status bar shows:
-* Character count
-* Cursor position (row:column)
-* Current font size`
+        this.helpText = HELP
 
         const { jsPDF } = window.jspdf
         this.#pdf_doc = new jsPDF({
