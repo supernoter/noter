@@ -437,6 +437,10 @@ class Editor {
             console.log('setting editor title')
             document.title = value
         })
+        window.api.toggleSidebar(() => {
+            console.log('toggle sidebar')
+            this.toggleNavigationBar()
+        })
     }
 
     // handleKeyboardShortcuts takes and event and dispatches various actions.

@@ -17,6 +17,9 @@ contextBridge.exposeInMainWorld('api', {
     setEditorTitle: (callback) => {
         ipcRenderer.on('set-editor-title', (e, v) => callback(v))
     },
+    toggleSidebar: (callback) => {
+        ipcRenderer.on('toggle-sidebar', (e) => callback())
+    },
 })
 
 customizationHandler.applyCustomizationsToEditor()

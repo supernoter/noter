@@ -185,6 +185,14 @@ class menu {
                     { role: 'zoomOut' },
                     { type: 'separator' },
                     { role: 'togglefullscreen' },
+                    {
+                        label: 'Toggle Sidebar',
+                        accelerator:
+                            process.platform === 'darwin' ? 'Cmd+B' : 'Ctrl+B',
+                        click: () => {
+                            window.webContents.send('toggle-sidebar')
+                        },
+                    },
                 ],
             },
             {
