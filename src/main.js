@@ -23,7 +23,16 @@ ipcMain.handle('get-notes', async () => {
         const welcomeNote = path.join(notesDir, 'Welcome.md')
         fs.writeFileSync(welcomeNote, WELCOME_NOTE_TEXT, 'utf-8')
     }
-    return fs.readdirSync(notesDir)
+    const files = fs
+        .readdirSync(notesDir)
+        .map((filename) => ({
+            name: filename,
+            path: path.join(notesDir, filename),
+            mtime: fs.statSync(path.join(notesDir, filename)).mtime,
+        }))
+        .sort((a, b) => b.mtime - a.mtime)
+        .map((file) => file.name)
+    return files
 })
 
 ipcMain.handle('read-note', async (event, filename) => {

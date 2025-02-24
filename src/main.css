@@ -49,7 +49,7 @@ body {
     font-size: 16px;
     text-wrap: unrestricted;
     box-sizing: border-box;
-    padding: 1rem; /* Move padding to textarea */
+    padding: 1rem;
 }
 
 /* preview state outlook */
@@ -63,8 +63,6 @@ body {
     box-sizing: border-box;
 }
 
-/* styling the status bar */
-
 #note-textarea,
 #preview {
     flex: 1;
@@ -76,6 +74,8 @@ body {
     overflow-y: auto;
     font-size: 16px;
 }
+
+/* styling the status bar */
 
 .status-bar {
     padding: 0.5rem 1rem;
@@ -181,16 +181,19 @@ body {
     font-family: 'Courier New', Courier, monospace;
 }
 
+/* navigation sidebar */
+
 #navigation-bar {
-    background-color: #2f3b52;
-    color: #fff;
+    background-color: #ffffff;
+    color: #333333;
     position: fixed;
     left: -200px;
     top: 0;
     bottom: 0;
     width: 250px;
-    padding: 0px;
+    padding: 0;
     transition: left 0.3s ease;
+    border-right: 1px solid #eaeaea;
 }
 
 #navigation-bar.open {
@@ -201,43 +204,50 @@ body {
     margin-left: 200px;
 }
 
-.note-item {
-    padding: 10px;
-    cursor: pointer;
-    border-bottom: 1px solid #ccc;
-}
-
-.note-item:hover {
-    background: #ddd;
-}
-
-#note-list-header {
-    margin: 10px;
-    padding: 10px;
-    margin: 0px;
-    cursor: pointer;
-    border-bottom: 1px solid #ccc;
-    transform: translateX(-25px);
-}
-
-#note-list-header {
-    margin: 10px;
-}
-
-#note-list li {
-    padding: 10px;
-    margin: 0px;
-    border-bottom: 1px solid #ccc;
-    list-style: none;
-    transform: translateX(-25px);
-}
-
+/* Search bar styling */
 .search-bar {
-    width: 85%;
-    padding: 5px;
+    width: calc(100% - 20px);
+    padding: 8px 10px;
     margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    position: absolute;
-    bottom: 10px;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    position: sticky;
+    top: 10px;
+    background-color: #ffffff;
+    font-size: 14px;
+}
+
+.search-bar:focus {
+    outline: none;
+    border-color: #007aff;
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
+}
+
+#note-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-top: 8px; /* Space for search bar */
+}
+
+.note-item,
+#note-list li {
+    padding: 6px 16px;
+    cursor: pointer;
+    margin: 0;
+    list-style: none;
+    font-size: 14px;
+    color: #333;
+    border-left: 2px solid transparent;
+}
+
+.note-item:hover,
+#note-list li:hover {
+    background-color: #f5f5f5;
+    border-left: 2px solid #007aff;
+}
+
+.note-item:not(:last-child),
+#note-list li:not(:last-child) {
+    border-bottom: 1px solid #f0f0f0;
 }

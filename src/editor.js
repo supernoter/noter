@@ -387,12 +387,6 @@ class Editor {
         this.navigationBar.id = 'navigation-bar'
         this.navigationBar.style.width = '200px'
 
-        // create note list header
-        this.noteHeader = document.createElement('h3')
-        this.noteHeader.id = 'note-list-header'
-        this.noteHeader.textContent = 'Your Notes: '
-        this.navigationBar.appendChild(this.noteHeader)
-
         // create note list
         this.noteList = document.createElement('ul')
         this.noteList.id = 'note-list'
@@ -409,8 +403,8 @@ class Editor {
         this.container.appendChild(this.preview)
         this.container.appendChild(this.statusBar)
         this.container.appendChild(this.navigationBar)
-        this.navigationBar.appendChild(this.noteList)
         this.navigationBar.appendChild(this.searchInput)
+        this.navigationBar.appendChild(this.noteList)
     }
 
     // initializeEventListeners attaches event listener to elements, e.g. we want
@@ -472,7 +466,9 @@ class Editor {
         this.updateStatusBar()
     }
 
-    toggleNavigationBar() {
+    async toggleNavigationBar() {
+        // TODO: need to read files
+        await this.loadNotes()
         const navigationBar = document.getElementById('navigation-bar')
         const editorContainer = document.getElementById('editor-container')
         navigationBar.classList.toggle('open')
