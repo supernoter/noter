@@ -170,6 +170,62 @@ class menu {
                             }
                         },
                     },
+                    {
+                        label: 'Save Note As ...',
+                        accelerator:
+                            process.platform === 'darwin'
+                                ? 'Cmd+Shift+S'
+                                : 'Ctrl+Shift+S',
+                        click: async () => {
+                            let targetFilePath = undefined
+                            const defaultPath = path.join(
+                                app.getPath('documents'),
+                                'noter',
+                                getCurrentFormattedTimestamp() + '.md'
+                            )
+                            const dialogResult = await dialog.showSaveDialog(
+                                window,
+                                {
+                                    title: 'Save',
+                                    defaultPath,
+                                    filters: [
+                                        {
+                                            name: 'Markdown',
+                                            extensions: ['md'],
+                                        },
+                                        {
+                                            name: 'All Files',
+                                            extensions: ['*'],
+                                        },
+                                    ],
+                                }
+                            )
+
+                            targetFilePath = dialogResult.filePath
+
+                            // Exit if no file path selected
+                            if (!targetFilePath) {
+                                return
+                            }
+
+                            // Get and save content
+                            const content =
+                                await window.webContents.executeJavaScript(
+                                    'window.api.getContent()'
+                                )
+
+                            await fs.promises.writeFile(targetFilePath, content)
+                            console.log(
+                                `file saved successfully: ${targetFilePath}`
+                            )
+
+                            // Update the editor's file path reference
+                            await window.webContents.send(
+                                'set-editor-filepath',
+                                targetFilePath
+                            )
+                        },
+                    },
                     { type: 'separator' },
                     {
                         // TODO: complete this
@@ -261,42 +317,42 @@ class menu {
                     },
                 ],
             },
-            { // menu button for theme selector
+            {
+                // menu button for theme selector
                 label: 'Theme',
                 submenu: [
                     {
                         label: 'chombe',
                         click: () => {
                             window.webContents.send('change-theme', 'chombe')
-                        }
+                        },
                     },
                     {
                         label: 'czygan',
                         click: () => {
                             window.webContents.send('change-theme', 'czygan')
-                        }
+                        },
                     },
                     {
                         label: 'dennis',
                         click: () => {
                             window.webContents.send('change-theme', 'dennis')
-                        }
+                        },
                     },
                     {
                         label: 'rizzo',
                         click: () => {
                             window.webContents.send('change-theme', 'rizzo')
-                        }
+                        },
                     },
                     {
                         label: 'marinho',
                         click: () => {
                             window.webContents.send('change-theme', 'marinho')
-                        }
-                    }
-                ]
-            }
-            
+                        },
+                    },
+                ],
+            },
         ]
         const menu = Menu.buildFromTemplate(template)
         Menu.setApplicationMenu(menu)
