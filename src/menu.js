@@ -318,7 +318,7 @@ class menu {
                         },
                     },
                     {
-                        label: 'czygan',
+                        label: 'marty',
                         click: () => {
                             window.webContents.send('change-theme', 'marty')
                         },
