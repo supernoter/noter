@@ -43,7 +43,7 @@ build:
 clean:
 	rm -rf dist
 	rm -f .DS_Store
-	rm -f noter-app-screenshot.png
+	rm -f noter-testrun-*png
 
 .PHONY: test
 test:
