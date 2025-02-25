@@ -320,7 +320,7 @@ class menu {
                     {
                         label: 'czygan',
                         click: () => {
-                            window.webContents.send('change-theme', 'czygan')
+                            window.webContents.send('change-theme', 'marty')
                         },
                     },
                     {
