@@ -183,6 +183,7 @@ body {
 
 /* navigation sidebar */
 
+/* navigation sidebar */
 #navigation-bar {
     background-color: #ffffff;
     color: #333333;
@@ -194,6 +195,8 @@ body {
     padding: 0;
     transition: left 0.3s ease;
     border-right: 1px solid #eaeaea;
+    display: flex;
+    flex-direction: column; /* Add this to create a column layout */
 }
 
 #navigation-bar.open {
@@ -215,9 +218,17 @@ body {
     top: 10px;
     background-color: #ffffff;
     font-size: 14px;
+    z-index: 2;
+    flex-shrink: 0;
 }
 
 .search-bar:focus {
+    outline: none;
+    border-color: #007aff;
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
+}
+
+search-bar:focus {
     outline: none;
     border-color: #007aff;
     box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
@@ -227,7 +238,9 @@ body {
     margin: 0;
     padding: 0;
     list-style: none;
-    margin-top: 8px; /* Space for search bar */
+    margin-top: 8px;
+    overflow-y: auto;
+    flex-grow: 1;
 }
 
 .note-item,
