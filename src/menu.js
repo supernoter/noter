@@ -41,6 +41,7 @@ class menu {
                                 'window.api.setContent("Hello World!")'
                             )
                             window.webContents.send('set-editor-title', 'NOTER')
+                            window.webContents.send('set-editor-filepath', '')
                         },
                     },
                     {
