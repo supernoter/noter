@@ -4,24 +4,44 @@ const path = require('path')
 ;(async () => {
     try {
         const electronApp = await electron.launch({
-            args: [path.join(__dirname, '../../main.js')],
+            args: [path.join(__dirname, '../../main.js'), '--no-intro'],
         })
-
-        const appPath = await electronApp.evaluate(async ({ app }) => {
-            return app.getAppPath()
-        })
-        console.log('App path:', appPath)
 
         const window = await electronApp.firstWindow()
 
+        await window.waitForLoadState('domcontentloaded')
+
         console.log('Window title:', await window.title())
 
-        await window.screenshot({ path: 'noter-app-screenshot.png' })
+        await window.keyboard.type(
+            'This is a test note written by Playwright automation!'
+        )
 
-        window.on('console', console.log)
+        await window.keyboard.press('Enter')
+        await window.keyboard.press('Enter')
+        await window.keyboard.type('# Heading 1')
+        await window.keyboard.press('Enter')
+        await window.keyboard.type('## Heading 2')
+        await window.keyboard.press('Enter')
+        await window.keyboard.press('Enter')
+        await window.keyboard.type('- Bullet point 1')
+        await window.keyboard.press('Enter')
+        await window.keyboard.type('- Bullet point 2')
+        await window.keyboard.press('Enter')
+        await window.keyboard.press('Enter')
+        await window.keyboard.type('**Bold text** and *italic text*')
 
-        await new Promise((resolve) => setTimeout(resolve, 3000))
+        await window.waitForTimeout(1000)
 
+        await window.screenshot({ path: 'noter-testrun-0000.png' })
+
+        // Optional: If you need to click a save button
+        // await window.click('button.save-note');
+
+        // Wait a moment before closing
+        await window.waitForTimeout(2000)
+
+        // Exit app
         await electronApp.close()
 
         console.log('Test completed successfully!')
