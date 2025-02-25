@@ -430,8 +430,8 @@ class Editor {
         //
         // TODO: should the filename just be a concern of main process?
         window.api.setEditorFilePath((filePath) => {
-            document.title = filePath || 'Noter'
             console.log('setEditorFilePath callback: ' + filePath)
+            document.title = filePath ? window.api.basename(filePath) : 'NOTER'
             window.api.updateFilePath(filePath)
         })
 

@@ -40,7 +40,6 @@ ipcMain.handle('get-notes', async () => {
 ipcMain.handle('read-note', async (event, filename) => {
     const filePath = path.join(notesDir, filename)
     if (fs.existsSync(filePath)) {
-        mainWindow.webContents.send('set-editor-title', path.basename(filePath))
         mainWindow.webContents.send('set-editor-filepath', filePath)
         return fs.readFileSync(filePath, 'utf8') // Return note content
     }

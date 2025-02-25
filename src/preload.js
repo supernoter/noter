@@ -1,4 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron')
+const path = require('path')
 const customizationHandler = require('./CustomizationHandler')
 
 // Initialize a variable in the preload scope
@@ -41,6 +42,8 @@ contextBridge.exposeInMainWorld('api', {
     toggleSidebar: (callback) => {
         ipcRenderer.on('toggle-sidebar', (e) => callback())
     },
+
+    basename: (filePath, ext) => path.basename(filePath, ext),
 })
 
 ipcRenderer.on('change-theme', (event, themeName) => {
