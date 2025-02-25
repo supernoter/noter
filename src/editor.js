@@ -6,7 +6,10 @@ import { marked } from './node_modules/marked/lib/marked.esm.js'
 import * as jsPDF from './node_modules/jspdf/dist/jspdf.umd.min.js'
 import * as html2canvas from './node_modules/html2canvas/dist/html2canvas.esm.js'
 
-// HELP as displayed on F1
+// PLACEHOLDER is the textarea placeholder text
+const PLACEHOLDER = `Let's go … and type CTRL-p to toggle preview, and CTRL-h for help`
+
+// HELP is the inline help contents of NOTER, accessed by CTRL-h or F1.
 const HELP = `# NOTER Help
 
 ## Basic Usage
@@ -323,7 +326,8 @@ class Editor {
         this.#pdf_font_style = 'Arial'
     }
 
-    // init sets up the editor
+    // init sets up the editor, after instanciation this is the only methods
+    // that needs to be called before the editor becomes usable
     async init() {
         await this.initializeElements()
 
@@ -348,10 +352,11 @@ class Editor {
         this.updateStatusBar()
 
         this.textarea.value = ''
-        const introText = 'noter: write together'
 
+        // only show intro sequence, if --no-intro has not been passed
         const showIntro = await window.api.shouldShowIntro()
         if (showIntro) {
+            const introText = 'noter: write together'
             return new Promise(async (resolve) => {
                 await this.typeEffect(introText)
                 await this.deleteEffect(introText)
@@ -367,15 +372,12 @@ class Editor {
         }
     }
 
-    // attach DOM elements to HTML
+    // initializeElements attaches DOM elements to HTML
     initializeElements() {
         // create textarea
         this.textarea = document.createElement('textarea')
         this.textarea.setAttribute('spellcheck', 'false')
-        this.textarea.setAttribute(
-            'placeholder',
-            "Let's go … and type CTRL-p to toggle preview, and CTRL-h for help"
-        )
+        this.textarea.setAttribute('placeholder', PLACEHOLDER)
         this.textarea.id = 'note-textarea'
 
         // create preview div
@@ -428,21 +430,15 @@ class Editor {
         )
         this.searchInput.addEventListener('input', () => this.filterNotes())
 
-        // keyboard shortcuts
         document.addEventListener('keydown', (e) =>
             this.handleKeyboardShortcuts(e)
         )
 
-        // WIP: we should move to this callback style approach to pass data
-        // from main to renderer
-        //
-        // TODO: should the filename just be a concern of main process?
         window.api.setEditorFilePath((filePath) => {
             console.log('setEditorFilePath callback: ' + filePath)
             document.title = filePath ? window.api.basename(filePath) : 'NOTER'
             window.api.updateFilePath(filePath)
         })
-
         window.api.setEditorContent((value) => {
             this.textarea.value = value
             console.log('setEditorContent (index): ' + value)
@@ -484,6 +480,7 @@ class Editor {
         this.updateStatusBar()
     }
 
+    // toggleNavigationBar show and hides the navigation sidebar
     async toggleNavigationBar() {
         const navigationBar = document.getElementById('navigation-bar')
         const editorContainer = document.getElementById('editor-container')
@@ -500,6 +497,7 @@ class Editor {
         }
     }
 
+    // filterNotes filters notes in the sidebar
     filterNotes() {
         const query = this.searchInput.value.toLowerCase()
         const noteItems = this.noteList.getElementsByTagName('li')
@@ -510,6 +508,7 @@ class Editor {
         })
     }
 
+    // loadNotes reads list of files from disk
     async loadNotes() {
         const noteFiles = await window.api.getNotes()
         this.noteList.innerHTML = ''
@@ -523,13 +522,13 @@ class Editor {
         this.filterNotes()
     }
 
+    // openNote opens a file by filename
     async openNote(filename) {
-        console.log('Opening note:', filename) // ✅ Debugging step
         const content = await window.api.readNote(filename)
         this.setContent(content)
     }
 
-    /* font size, with some limits */
+    // font size, with some limits
     changeFontSize(delta) {
         const currentSize = parseInt(
             window.getComputedStyle(this.textarea).fontSize,
@@ -545,7 +544,8 @@ class Editor {
         this.textarea.scrollTop = this.textarea.scrollHeight
     }
 
-    // Get the base status bar text without state-specific additions
+    // getBaseStatus gets the base status bar text without state-specific
+    // additions
     getBaseStatus() {
         const charCount = this.textarea.value.length
         const text = this.textarea.value.substring(
@@ -572,6 +572,7 @@ class Editor {
         return status
     }
 
+    // updateStatusBar updates the statusbar
     updateStatusBar() {
         if (this.state.getStatusText) {
             this.statusBar.innerHTML = this.state.getStatusText() // Use innerHTML instead of textContent

@@ -2,7 +2,8 @@ const { contextBridge, ipcRenderer } = require('electron')
 const path = require('path')
 const customizationHandler = require('./CustomizationHandler')
 
-// Initialize a variable in the preload scope
+// storedFilePath keeps the absolute path of the last loaded or saved file. If
+// this value is set, then CTRL-s will save the current contents to this file.
 let storedFilePath = ''
 
 contextBridge.exposeInMainWorld('api', {
@@ -39,7 +40,6 @@ contextBridge.exposeInMainWorld('api', {
     toggleSidebar: (callback) => {
         ipcRenderer.on('toggle-sidebar', (e) => callback())
     },
-
     basename: (filePath, ext) => path.basename(filePath, ext),
 })
 
