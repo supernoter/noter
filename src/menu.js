@@ -212,7 +212,7 @@ class menu {
                 ],
             },
             {
-                role: 'help',
+                role: 'Help',
                 submenu: [
                     {
                         label: 'Learn More',
@@ -222,6 +222,42 @@ class menu {
                     },
                 ],
             },
+            { // menu button for theme selector
+                label: 'Theme',
+                submenu: [
+                    {
+                        label: 'chombe',
+                        click: () => {
+                            window.webContents.send('change-theme', 'chombe')
+                        }
+                    },
+                    {
+                        label: 'czygan',
+                        click: () => {
+                            window.webContents.send('change-theme', 'czygan')
+                        }
+                    },
+                    {
+                        label: 'dennis',
+                        click: () => {
+                            window.webContents.send('change-theme', 'dennis')
+                        }
+                    },
+                    {
+                        label: 'rizzo',
+                        click: () => {
+                            window.webContents.send('change-theme', 'rizzo')
+                        }
+                    },
+                    {
+                        label: 'marinho',
+                        click: () => {
+                            window.webContents.send('change-theme', 'marinho')
+                        }
+                    }
+                ]
+            }
+            
         ]
         const menu = Menu.buildFromTemplate(template)
         Menu.setApplicationMenu(menu)
