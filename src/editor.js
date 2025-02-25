@@ -485,12 +485,19 @@ class Editor {
     }
 
     async toggleNavigationBar() {
-        // TODO: need to read files
-        await this.loadNotes()
         const navigationBar = document.getElementById('navigation-bar')
         const editorContainer = document.getElementById('editor-container')
+        if (!navigationBar.classList.contains('open')) {
+            console.log('updating note list')
+            await this.loadNotes()
+        }
         navigationBar.classList.toggle('open')
         editorContainer.classList.toggle('shifted')
+        if (navigationBar.classList.contains('open')) {
+            this.searchInput.focus()
+        } else {
+            this.textarea.focus()
+        }
     }
 
     filterNotes() {
