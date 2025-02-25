@@ -43,10 +43,19 @@ build:
 clean:
 	rm -rf dist
 	rm -f .DS_Store
+	rm -f noter-app-screenshot.png
 
 .PHONY: test
 test:
+	echo "run test-unit or test-integration" # separate for now
+
+.PHONY: test-unit
+test-unit:
 	npm test
+
+.PHONY: test-integration
+test-integration:
+	npm run test:electron
 
 package-lock.json: package.json
 	# https://stackoverflow.com/q/57867267/89391
