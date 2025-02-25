@@ -108,10 +108,9 @@ class menu {
                                         app.getPath('documents'),
                                         'noter',
                                         getCurrentFormattedTimestamp() +
-										'-' +
-									generatePronounceableName(2) +
-
-										'.md'
+                                            '-' +
+                                            generatePronounceableName(2) +
+                                            '.md'
                                     )
                                     const dialogResult =
                                         await dialog.showSaveDialog(window, {
