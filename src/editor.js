@@ -429,13 +429,19 @@ class Editor {
         // from main to renderer
         //
         // TODO: should the filename just be a concern of main process?
+        window.api.setEditorFilePath((filePath) => {
+            document.title = filePath || 'Noter'
+            console.log('setEditorFilePath callback: ' + filePath)
+            window.api.updateFilePath(filePath)
+        })
+
         window.api.setEditorContent((value) => {
-            console.log('setting editor content')
             this.textarea.value = value
+            console.log('setEditorContent (index): ' + value)
         })
         window.api.setEditorTitle((value) => {
-            console.log('setting editor title')
             document.title = value
+            console.log('setEditorTitle (index): ' + value)
         })
         window.api.toggleSidebar(() => {
             console.log('toggle sidebar')

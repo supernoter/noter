@@ -81,6 +81,10 @@ class menu {
                                         'set-editor-title',
                                         path.basename(filePath)
                                     )
+                                    window.webContents.send(
+                                        'set-editor-filepath',
+                                        filePath
+                                    )
                                 }),
                     },
                     {
@@ -88,45 +92,80 @@ class menu {
                         accelerator:
                             process.platform === 'darwin' ? 'Cmd+S' : 'Ctrl+S',
                         click: async () => {
-                            const { filePath } = await dialog.showSaveDialog(
-                                window,
-                                {
-                                    title: 'Save',
-                                    defaultPath: path.join(
-                                        os.homedir(),
-                                        'Desktop',
-                                        'newfile.txt'
-                                    ),
-                                    filters: [
-                                        {
-                                            name: 'Markdown',
-                                            extensions: ['md'],
-                                        },
-                                        {
-                                            name: 'Text Files',
-                                            extensions: ['txt'],
-                                        },
-                                        {
-                                            name: 'All Files',
-                                            extensions: ['*'],
-                                        },
-                                    ],
+                            try {
+                                const currentFilePath =
+                                    await window.webContents.executeJavaScript(
+                                        'window.api.getEditorFilePath()'
+                                    )
+                                let targetFilePath = currentFilePath
+                                console.log(
+                                    'currentFilePath: ' + currentFilePath
+                                )
+                                console.log(
+                                    'currentFilePath (type): ' +
+                                        typeof currentFilePath
+                                )
+
+                                // Show save dialog if no existing file
+                                if (
+                                    typeof currentFilePath !== 'string' ||
+                                    !currentFilePath.trim()
+                                ) {
+                                    const defaultPath = path.join(
+                                        app.getPath('documents'),
+                                        'noter',
+                                        getCurrentFormattedTimestamp() + '.md'
+                                    )
+                                    const dialogResult =
+                                        await dialog.showSaveDialog(window, {
+                                            title: 'Save',
+                                            defaultPath,
+                                            filters: [
+                                                {
+                                                    name: 'Markdown',
+                                                    extensions: ['md'],
+                                                },
+                                                {
+                                                    name: 'All Files',
+                                                    extensions: ['*'],
+                                                },
+                                            ],
+                                        })
+
+                                    targetFilePath = dialogResult.filePath
                                 }
-                            )
-                            if (filePath) {
+
+                                // Exit if no file path selected
+                                if (!targetFilePath) {
+                                    return
+                                }
+
+                                // Get and save content
                                 const content =
                                     await window.webContents.executeJavaScript(
                                         'window.api.getContent()'
                                     )
-                                // console.log('saving content: ', content)
-                                // console.log('file path: ', filePath)
-                                fs.writeFile(filePath, content, (err) => {
-                                    if (err) {
-                                        console.error('Error saving file:', err)
-                                        return 'Error saving file.'
-                                    } else {
-                                        return 'File saved successfully!'
-                                    }
+
+                                await fs.promises.writeFile(
+                                    targetFilePath,
+                                    content
+                                )
+                                console.log(
+                                    `file saved successfully: ${targetFilePath}`
+                                )
+
+                                // Update the editor's file path reference
+                                await window.webContents.send(
+                                    'set-editor-filepath',
+                                    targetFilePath
+                                )
+                            } catch (error) {
+                                console.error('Failed to save file:', error)
+                                // Here you might want to show an error dialog to the user
+                                dialog.showErrorDialog(window, {
+                                    title: 'Save Error',
+                                    message: 'Failed to save the file',
+                                    detail: error.message,
                                 })
                             }
                         },
@@ -262,6 +301,19 @@ class menu {
         const menu = Menu.buildFromTemplate(template)
         Menu.setApplicationMenu(menu)
     }
+}
+
+const getCurrentFormattedTimestamp = () => {
+    const now = new Date()
+    return (
+        now.getFullYear().toString().slice(-2) +
+        (now.getMonth() + 1).toString().padStart(2, '0') +
+        now.getDate().toString().padStart(2, '0') +
+        '-' +
+        now.getHours().toString().padStart(2, '0') +
+        now.getMinutes().toString().padStart(2, '0') +
+        now.getSeconds().toString().padStart(2, '0')
+    )
 }
 
 module.exports = new menu()
