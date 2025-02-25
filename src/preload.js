@@ -16,23 +16,19 @@ contextBridge.exposeInMainWorld('api', {
     getContent: () => document.querySelector('textarea').value,
     setContent: (value) => (document.querySelector('textarea').value = value),
     getEditorFilePath: () => {
-        console.log('getEditorFilePath: ' + storedFilePath)
         return storedFilePath
     },
     setEditorFilePath: (callback) => {
-        console.log('setEditorFilePath listener registered')
         // Listen for the event from main
         ipcRenderer.on('set-editor-filepath', (e, filePath) => {
             // Store the value in our preload scope
             storedFilePath = filePath
-            console.log('Received filepath from main: ' + filePath)
             // Then call the callback
             callback(filePath)
         })
     },
     updateFilePath: (filePath) => {
         storedFilePath = filePath
-        console.log('updateFilePath (preload): ' + storedFilePath)
     },
     setEditorContent: (callback) => {
         ipcRenderer.on('set-editor-content', (e, v) => callback(v))

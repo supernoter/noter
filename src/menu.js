@@ -98,14 +98,6 @@ class menu {
                                         'window.api.getEditorFilePath()'
                                     )
                                 let targetFilePath = currentFilePath
-                                console.log(
-                                    'currentFilePath: ' + currentFilePath
-                                )
-                                console.log(
-                                    'currentFilePath (type): ' +
-                                        typeof currentFilePath
-                                )
-
                                 // Show save dialog if no existing file
                                 if (
                                     typeof currentFilePath !== 'string' ||
@@ -150,21 +142,16 @@ class menu {
                                     targetFilePath,
                                     content
                                 )
-                                console.log(
-                                    `file saved successfully: ${targetFilePath}`
-                                )
-
-                                // Update the editor's file path reference
+                                console.log(`file saved: ${targetFilePath}`)
                                 await window.webContents.send(
                                     'set-editor-filepath',
                                     targetFilePath
                                 )
                             } catch (error) {
-                                console.error('Failed to save file:', error)
-                                // Here you might want to show an error dialog to the user
+                                console.error('failed to save file: ', error)
                                 dialog.showErrorDialog(window, {
                                     title: 'Save Error',
-                                    message: 'Failed to save the file',
+                                    message: 'Failed to save file',
                                     detail: error.message,
                                 })
                             }
@@ -215,9 +202,7 @@ class menu {
                                 )
 
                             await fs.promises.writeFile(targetFilePath, content)
-                            console.log(
-                                `file saved successfully: ${targetFilePath}`
-                            )
+                            console.log(`file saved: ${targetFilePath}`)
 
                             // Update the editor's file path reference
                             await window.webContents.send(
