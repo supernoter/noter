@@ -350,13 +350,21 @@ class Editor {
         this.textarea.value = ''
         const introText = 'noter: write together'
 
-        return new Promise(async (resolve) => {
-            await this.typeEffect(introText)
-            await this.deleteEffect(introText)
-            await this.loadNotes()
-            this.textarea.focus()
-            resolve()
-        })
+        const showIntro = await window.api.shouldShowIntro()
+        if (showIntro) {
+            return new Promise(async (resolve) => {
+                await this.typeEffect(introText)
+                await this.deleteEffect(introText)
+                await this.loadNotes()
+                this.textarea.focus()
+                resolve()
+            })
+        } else {
+            return new Promise(async (resolve) => {
+                this.textarea.focus()
+                resolve()
+            })
+        }
     }
 
     // attach DOM elements to HTML

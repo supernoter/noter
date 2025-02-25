@@ -5,6 +5,10 @@ const process = require('process')
 const fs = require('fs')
 const path = require('path')
 
+// Parse command line arguments
+const argv = process.argv.slice(1) // Remove the first element (path to electron executable)
+const showIntro = !argv.includes('--no-intro')
+
 // Create path for all the user notes
 const notesDir = path.join(app.getPath('documents'), 'noter')
 
@@ -44,6 +48,11 @@ ipcMain.handle('read-note', async (event, filename) => {
         return fs.readFileSync(filePath, 'utf8') // Return note content
     }
     return ''
+})
+
+// Add a new IPC handler to check if intro should be shown
+ipcMain.handle('should-show-intro', () => {
+    return showIntro
 })
 
 // createInitialWindow creates a window, set the menu and loads our application
