@@ -16,6 +16,8 @@ Find out more at [supernoter.xyz](https://supernoter.xyz) and on GitHub at
 [supernoter/noter](https://github.com/supernoter/noter).
 `
 
+let mainWindow // reference to main window
+
 ipcMain.handle('get-notes', async () => {
     if (!fs.existsSync(notesDir)) {
         fs.mkdirSync(notesDir, { recursive: true })
@@ -38,6 +40,8 @@ ipcMain.handle('get-notes', async () => {
 ipcMain.handle('read-note', async (event, filename) => {
     const filePath = path.join(notesDir, filename)
     if (fs.existsSync(filePath)) {
+        mainWindow.webContents.send('set-editor-title', path.basename(filePath))
+        mainWindow.webContents.send('set-editor-filepath', filePath)
         return fs.readFileSync(filePath, 'utf8') // Return note content
     }
     return ''
@@ -46,12 +50,12 @@ ipcMain.handle('read-note', async (event, filename) => {
 // createInitialWindow creates a window, set the menu and loads our application
 // HTML.
 createInitialWindow = () => {
-    const window = windowHandler.createWindow()
-    menu.createMenu(window)
-    window.loadFile('./index.html')
+    mainWindow = windowHandler.createWindow()
+    menu.createMenu(mainWindow)
+    mainWindow.loadFile('./index.html')
     // Check if DEBUG environment variable is set
     if (process.env.DEBUG) {
-        window.webContents.openDevTools()
+        mainWindow.webContents.openDevTools()
     }
 }
 
