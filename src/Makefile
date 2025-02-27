@@ -29,12 +29,6 @@ fmt:
 	# beware, this does inplace edits, https://prettier.io/
 	prettier -w .
 
-.PHONY: icons
-icons:
-	# note: we needed to remove this dev dependency, because it triggered lots
-	# of security warnings
-	echo ./node_modules/.bin/electron-icon-maker --input=../static/nb.png --output=build
-
 .PHONY: build
 build:
 	npm run build
@@ -69,3 +63,9 @@ update-outdated-npm-packages:
 # Extra, one time tasks e.g. fetching font files.
 noto.css:
 	../scripts/localcss/localcss -f noto.css -d . -a fonts -u "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap"
+
+.PHONY: icons
+icons:
+	# note: we needed to remove this dev dependency, because it triggered lots
+	# of security warnings
+	# echo ./node_modules/.bin/electron-icon-maker --input=../static/nb.png --output=build
