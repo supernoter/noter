@@ -104,14 +104,7 @@ class menu {
                                     typeof currentFilePath !== 'string' ||
                                     !currentFilePath.trim()
                                 ) {
-                                    const defaultPath = path.join(
-                                        app.getPath('documents'),
-                                        'noter',
-                                        getCurrentFormattedTimestamp() +
-                                            '-' +
-                                            generatePronounceableName(2) +
-                                            '.md'
-                                    )
+                                    const defaultPath = getDefaultFilePath()
                                     const dialogResult =
                                         await dialog.showSaveDialog(window, {
                                             title: 'Save',
@@ -169,11 +162,7 @@ class menu {
                                 : 'Ctrl+Shift+S',
                         click: async () => {
                             let targetFilePath = undefined
-                            const defaultPath = path.join(
-                                app.getPath('documents'),
-                                'noter',
-                                getCurrentFormattedTimestamp() + '.md'
-                            )
+                            const defaultPath = getDefaultFilePath()
                             const dialogResult = await dialog.showSaveDialog(
                                 window,
                                 {
@@ -346,6 +335,18 @@ class menu {
         const menu = Menu.buildFromTemplate(template)
         Menu.setApplicationMenu(menu)
     }
+}
+
+// getDefaultFilePath returns a default filepath, that will most likely be unique.
+function getDefaultFilePath() {
+    return (
+        app.getPath('documents'),
+        'noter',
+        getCurrentFormattedTimestamp() +
+            '-' +
+            generatePronounceableName(2) +
+            '.md'
+    )
 }
 
 // getCurrentFormattedTimestamp returns a preformatted timestamp
