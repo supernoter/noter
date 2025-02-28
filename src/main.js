@@ -8,6 +8,7 @@ const createConfigurationInterface = require('./ConfigurationInterface')
 
 // Parse command line arguments
 const argv = process.argv.slice(1) // Remove the first element (path to electron executable)
+// showIntro is a boolean flag; if set, no intro text animation is shown
 const showIntro = !argv.includes('--no-intro')
 
 // Reference to main window
@@ -19,6 +20,8 @@ let configInterface
 
 // Create path for all the user notes
 const notesDir = path.join(app.getPath('documents'), 'noter')
+
+// Content for the first note.
 const WELCOME_NOTE_TEXT = `# Welcome to NOTER!
 Noter is a simple, yet powerful markdown editor that we hope you will enjoy using.
 Find out more at [supernoter.xyz](https://supernoter.xyz) and on GitHub at
@@ -27,6 +30,7 @@ Find out more at [supernoter.xyz](https://supernoter.xyz) and on GitHub at
 
 // Set up IPC handlers
 function setupIpcHandlers() {
+    // Respond to request to get all notes in the default directory.
     ipcMain.handle('get-notes', async () => {
         if (!fs.existsSync(notesDir)) {
             fs.mkdirSync(notesDir, { recursive: true })
@@ -45,34 +49,34 @@ function setupIpcHandlers() {
             .map((file) => file.name)
         return files
     })
-
+    // Respond to renderer request to read a single note from a file.
     ipcMain.handle('read-note', async (event, filename) => {
         const filePath = path.join(notesDir, filename)
         if (fs.existsSync(filePath)) {
+            // Emit event to set editor filepath.
             mainWindow.webContents.send('set-editor-filepath', filePath)
             return fs.readFileSync(filePath, 'utf8') // Return note content
         }
         return ''
     })
-
-    // Add a new IPC handler to check if intro should be shown
+    // Respond to renderer request whether to show the intro sequence.
     ipcMain.handle('should-show-intro', () => {
         return showIntro
     })
-
-    // Add handler to get configuration
+    //
+    // Respond to renderer request to get configuration data.
     ipcMain.handle('get-config', () => {
         return configInterface.getConfigurationData()
     })
 }
 
 // createInitialWindow creates a window, set the menu and loads our application
-// HTML.
+// HTML. If started with DEBUG=1 environment variable, show developer tools
+// directly on startup.
 function createInitialWindow() {
     mainWindow = windowHandler.createWindow()
     menu.createMenu(mainWindow)
     mainWindow.loadFile('./index.html')
-    // Check if DEBUG environment variable is set
     if (process.env.DEBUG) {
         mainWindow.webContents.openDevTools()
     }

@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const os = require('os')
 
+// HOMEPAGE is the current project homepage.
 const HOMEPAGE = 'https://supernoter.xyz/?src=app'
 
 class menu {

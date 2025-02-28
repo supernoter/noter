@@ -11,15 +11,15 @@ class CustomizationHandler {
             colour: 'white',
             gradient: null,
             image: null,
-            opacity: '100%'
+            opacity: '100%',
         }
         this.statusBar = {
             font: { colour: 'black', size: '15px', family: 'Arial' },
-            background: { colour: 'white' }
+            background: { colour: 'white' },
         }
         this.preview = {
             font: { colour: 'black', size: '20px', family: 'Arial' },
-            background: { colour: 'blue' }
+            background: { colour: 'blue' },
         }
         this.loadConfig()
     }
@@ -42,21 +42,21 @@ class CustomizationHandler {
     applyCustomizationsToEditor() {
         window.addEventListener('NoterEditorElementsLoaded', () => {
             const content = document.querySelector('#note-textarea') // editor
-
             if (!content) {
                 console.error('editor element (#note-textarea) not found')
                 return
             }
-
             // Apply font styles
             content.style.color = this.font['colour']
             content.style.fontSize = this.font['size']
             content.style.fontFamily = this.font['family']
-
             // Apply background
             if (this.background['image']) {
                 // If there's a background image, use it
-                console.log('setting background image:', this.background['image'])
+                console.log(
+                    'setting background image:',
+                    this.background['image']
+                )
                 content.style.backgroundImage = `url('${this.background['image']}')`
                 content.style.backgroundSize = 'cover'
                 content.style.backgroundPosition = 'center'
@@ -70,25 +70,24 @@ class CustomizationHandler {
                 content.style.backgroundImage = 'none'
                 content.style.backgroundColor = this.background['colour']
             }
-
             // Apply opacity
             content.style.opacity = this.background['opacity']
-
             // Status bar styling
             const statusBar = document.querySelector('.status-bar')
             if (statusBar) {
-                statusBar.style.backgroundColor = this.statusBar['background']['colour']
+                statusBar.style.backgroundColor =
+                    this.statusBar['background']['colour']
                 statusBar.style.color = this.statusBar['font']['colour']
                 statusBar.style.fontSize = this.statusBar['font']['size']
                 statusBar.style.fontFamily = this.statusBar['font']['family']
             } else {
                 console.error('status bar element (.status-bar) not found')
             }
-
             // Preview styling
             const preview = document.querySelector('#preview')
             if (preview) {
-                preview.style.backgroundColor = this.preview['background']['colour']
+                preview.style.backgroundColor =
+                    this.preview['background']['colour']
                 preview.style.color = this.preview['font']['colour']
                 preview.style.fontSize = this.preview['font']['size']
                 preview.style.fontFamily = this.preview['font']['family']

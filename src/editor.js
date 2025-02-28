@@ -1,7 +1,3 @@
-/**
- * Author: Martin
- */
-
 import { marked } from './node_modules/marked/lib/marked.esm.js'
 import * as jsPDF from './node_modules/jspdf/dist/jspdf.umd.min.js'
 import * as html2canvas from './node_modules/html2canvas/dist/html2canvas.esm.js'
