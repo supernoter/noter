@@ -267,6 +267,11 @@ class PreviewState extends EditorState {
             this.editor.setState(new EditState(this.editor))
             return true
         }
+        if (e.ctrlKey && e.key == 'e') {
+            e.preventDefault()
+            this.editor.exportMarkdown()
+            return true
+        }
         if ((e.ctrlKey && e.key == 'h') || e.key == 'F1') {
             e.preventDefault()
             this.editor.setState(new HelpState(this.editor))
