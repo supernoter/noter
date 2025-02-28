@@ -85,6 +85,8 @@ function createCustomizationHandler(app) {
         // generates a window object with configurations set by the user
         getWindowOptions() {
             return {
+                minWidth: 640,
+                minHeight: 400,
                 width: this.window['width'],
                 height: this.window['height'],
                 transparent: this.window['opacity'] < 1,
