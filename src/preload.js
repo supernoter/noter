@@ -178,8 +178,12 @@ contextBridge.exposeInMainWorld('api', {
                     updatedConfig['status-bar'] ||
                     customizationHandler.statusBar,
                 preview: updatedConfig.preview || customizationHandler.preview,
-                ollama_host: updatedConfig.ollama_host || customizationHandler.ollama_host,
-                ollama_model_name: updatedConfig.ollama_model_name || customizationHandler.ollama_model_name
+                ollama_host:
+                    updatedConfig.ollama_host ||
+                    customizationHandler.ollama_host,
+                ollama_model_name:
+                    updatedConfig.ollama_model_name ||
+                    customizationHandler.ollama_model_name,
             })
             callback(updatedConfig)
         })
