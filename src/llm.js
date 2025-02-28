@@ -270,6 +270,43 @@ class Llm {
         }
         return isAvailable
     }
+
+    /**
+     * Rephrases a given text.
+     */
+    async rephraseText(text, systemPrompt) {
+        if (!text || typeof text !== 'string') {
+            throw new Error('text cannot be empty')
+        }
+        try {
+            const completionsUrl = this.urlFor('chat/completions')
+            const requestBody = {
+                model: this.model,
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: text },
+                ],
+                stream: false,
+            }
+            const response = await fetch(completionsUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            })
+            if (!response.ok) {
+                throw new Error(
+                    `request failed with status ${response.status}: ${response.statusText}`
+                )
+            }
+            const data = await response.json()
+            return data.choices?.[0]?.message?.content || ''
+        } catch (error) {
+            console.error('llm.rephraseText failed with: ', error)
+            throw error
+        }
+    }
 }
 
 export { Llm }
