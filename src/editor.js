@@ -333,7 +333,7 @@ class Editor {
         this.llmCharCount = 0
 
         this.llm = llm
-        this.llmTriggerPrefix = ':: '
+        this.llmTriggerPrefix = '>> '
         this.llmResponsePrefix = '> '
 
         this.helpText = HELP
