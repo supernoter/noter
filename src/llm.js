@@ -1,14 +1,23 @@
 // Llm wraps interaction with an LLM using OpenAI API specification
 class Llm {
     constructor(apiEndpoint = null, model = null) {
+        const config = window.api.getConfig()
+        console.log(config)
         const baseEndpoint =
-            apiEndpoint || window.api.OLLAMA_HOST || 'localhost:11434'
+            apiEndpoint ||
+            config.ollama_host ||
+            window.api.OLLAMA_HOST ||
+            'http://localhost:11434'
         const hasSchema = /^https?:\/\//i.test(baseEndpoint)
         const baseUrl = hasSchema ? baseEndpoint : `http://${baseEndpoint}`
         // OpenAI API endpoint format (Ollama supports this format since
         // 02/2024: https://ollama.com/blog/openai-compatibility)
         this.apiEndpoint = `${baseUrl}`.replace(/\/+$/, '')
-        this.requestedModel = model || window.api.NOTER_OLLAMA_MODEL || 'gemma'
+        this.requestedModel =
+            model ||
+            config.ollama_model_name ||
+            window.api.NOTER_OLLAMA_MODEL ||
+            'gemma'
         this.model = this.requestedModel // Will be updated if fallback is needed
         this.isModelAvailable = false
         this.modelDetails = null

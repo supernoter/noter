@@ -21,6 +21,8 @@ class CustomizationHandler {
             font: { colour: 'black', size: '20px', family: 'Arial' },
             background: { colour: 'blue' },
         }
+        this.ollama_host = 'http://localhost:11434'
+        this.ollama_model_name = 'gemma'
         this.loadConfig()
     }
 
@@ -33,9 +35,25 @@ class CustomizationHandler {
                 this.background = config.background || this.background
                 this.statusBar = config['status-bar'] || this.statusBar
                 this.preview = config.preview || this.preview
+                this.ollama_host = config.ollama_host || this.ollama_host
+                this.ollama_model_name =
+                    config.ollama_model_name || this.ollama_model_name
             }
         } catch (error) {
             console.error('error loading config in preload:', error)
+        }
+    }
+
+    // Get the current configuration
+    getConfig() {
+        return {
+            window: this.window,
+            font: this.font,
+            background: this.background,
+            statusBar: this.statusBar,
+            preview: this.preview,
+            ollama_host: this.ollama_host,
+            ollama_model_name: this.ollama_model_name,
         }
     }
 
@@ -141,6 +159,31 @@ contextBridge.exposeInMainWorld('api', {
         ipcRenderer.on('toggle-sidebar', (e) => callback())
     },
     basename: (filePath, ext) => path.basename(filePath, ext),
+
+    getConfig: () => customizationHandler.getConfig(),
+    updateConfig: (newConfig) => ipcRenderer.invoke('update-config', newConfig),
+    reloadConfig: async () => {
+        await customizationHandler.loadConfig()
+        return customizationHandler.getConfig()
+    },
+    // Subscribe to configuration updates
+    onConfigUpdate: (callback) => {
+        ipcRenderer.on('config-updated', (_, updatedConfig) => {
+            Object.assign(customizationHandler, {
+                window: updatedConfig.window || customizationHandler.window,
+                font: updatedConfig.font || customizationHandler.font,
+                background:
+                    updatedConfig.background || customizationHandler.background,
+                statusBar:
+                    updatedConfig['status-bar'] ||
+                    customizationHandler.statusBar,
+                preview: updatedConfig.preview || customizationHandler.preview,
+                ollama_host: updatedConfig.ollama_host || customizationHandler.ollama_host,
+                ollama_model_name: updatedConfig.ollama_model_name || customizationHandler.ollama_model_name
+            })
+            callback(updatedConfig)
+        })
+    },
 })
 
 ipcRenderer.on('change-theme', (event, themeName) => {

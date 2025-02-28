@@ -29,6 +29,8 @@ function createConfigurationInterface(app) {
                 font: { colour: 'black', size: '20px', family: 'Arial' },
                 background: { colour: 'blue' },
             },
+            ollama_host: 'http://localhost:11434',
+            ollama_model_name: 'gemma',
         }
 
         constructor() {
@@ -55,6 +57,35 @@ function createConfigurationInterface(app) {
             this.#ensureConfigurationFileExistence()
             const configurationDataObject = this.#loadConfigurations()
             return configurationDataObject
+        }
+
+        /**
+         * Saves the provided configuration data to the configuration file
+         * @param {Object} configData - The configuration data to save
+         * @returns {boolean} - True if the save was successful, false otherwise
+         */
+        saveConfigurationData(configData) {
+            try {
+                // Ensure the directory exists
+                const dirPath = path.dirname(this.#filePath)
+                if (!fileSystem.existsSync(dirPath)) {
+                    fileSystem.mkdirSync(dirPath, { recursive: true })
+                }
+
+                // Validate the config data (optional but recommended)
+                const validatedConfig = this.#validateConfigData(configData)
+
+                // Write the configuration to file
+                fileSystem.writeFileSync(
+                    this.#filePath,
+                    JSON.stringify(validatedConfig, null, 2)
+                )
+
+                return true
+            } catch (error) {
+                console.error('Error saving configuration file:', error)
+                return false
+            }
         }
 
         /**
@@ -120,6 +151,37 @@ function createConfigurationInterface(app) {
                     console.error('error creating configuration file:', error)
                 }
             }
+        }
+
+        /**
+         * Validates and sanitizes configuration data
+         * @param {Object} configData - The configuration data to validate
+         * @returns {Object} - The validated configuration data
+         */
+        #validateConfigData(configData) {
+            const currentConfig = this.getConfigurationData()
+            const validatedConfig = JSON.parse(JSON.stringify(currentConfig))
+            // Merge and update configuration values.
+            if (configData) {
+                Object.keys(configData).forEach((key) => {
+                    if (validatedConfig.hasOwnProperty(key)) {
+                        if (
+                            typeof configData[key] === 'object' &&
+                            configData[key] !== null
+                        ) {
+                            validatedConfig[key] = {
+                                ...validatedConfig[key],
+                                ...configData[key],
+                            }
+                        } else {
+                            validatedConfig[key] = configData[key]
+                        }
+                    } else {
+                        validatedConfig[key] = configData[key]
+                    }
+                })
+            }
+            return validatedConfig
         }
     }
     return new ConfigurationInterface()

@@ -63,10 +63,25 @@ function setupIpcHandlers() {
     ipcMain.handle('should-show-intro', () => {
         return showIntro
     })
-    //
     // Respond to renderer request to get configuration data.
     ipcMain.handle('get-config', () => {
         return configInterface.getConfigurationData()
+    })
+    // Handle configuration updates from the renderer process; will also emit a config-updated message.
+    ipcMain.handle('update-config', async (event, newConfig) => {
+        const success = configInterface.saveConfigurationData(newConfig)
+        if (success) {
+            const windows = BrowserWindow.getAllWindows()
+            windows.forEach((window) => {
+                if (!window.isDestroyed()) {
+                    window.webContents.send(
+                        'config-updated',
+                        configInterface.getConfigurationData()
+                    )
+                }
+            })
+        }
+        return success
     })
 }
 
