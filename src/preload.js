@@ -1,6 +1,107 @@
 const { contextBridge, ipcRenderer } = require('electron')
 const path = require('path')
-const customizationHandler = require('./CustomizationHandler')
+
+// CustomizationHandler for renderer process
+class CustomizationHandler {
+    constructor() {
+        // Load the configuration via IPC
+        this.window = { opacity: 1, width: 900, height: 550 }
+        this.font = { colour: 'blue', size: '25px', family: 'Arial' }
+        this.background = {
+            colour: 'white',
+            gradient: null,
+            image: null,
+            opacity: '100%'
+        }
+        this.statusBar = {
+            font: { colour: 'black', size: '15px', family: 'Arial' },
+            background: { colour: 'white' }
+        }
+        this.preview = {
+            font: { colour: 'black', size: '20px', family: 'Arial' },
+            background: { colour: 'blue' }
+        }
+        this.loadConfig()
+    }
+
+    async loadConfig() {
+        try {
+            const config = await ipcRenderer.invoke('get-config')
+            if (config) {
+                this.window = config.window || this.window
+                this.font = config.font || this.font
+                this.background = config.background || this.background
+                this.statusBar = config['status-bar'] || this.statusBar
+                this.preview = config.preview || this.preview
+            }
+        } catch (error) {
+            console.error('error loading config in preload:', error)
+        }
+    }
+
+    applyCustomizationsToEditor() {
+        window.addEventListener('NoterEditorElementsLoaded', () => {
+            const content = document.querySelector('#note-textarea') // editor
+
+            if (!content) {
+                console.error('editor element (#note-textarea) not found')
+                return
+            }
+
+            // Apply font styles
+            content.style.color = this.font['colour']
+            content.style.fontSize = this.font['size']
+            content.style.fontFamily = this.font['family']
+
+            // Apply background
+            if (this.background['image']) {
+                // If there's a background image, use it
+                console.log('setting background image:', this.background['image'])
+                content.style.backgroundImage = `url('${this.background['image']}')`
+                content.style.backgroundSize = 'cover'
+                content.style.backgroundPosition = 'center'
+                content.style.backgroundRepeat = 'no-repeat'
+            } else if (this.background['gradient']) {
+                // If there's a gradient, use it
+                content.style.backgroundImage = this.background['gradient']
+                content.style.backgroundSize = 'cover'
+            } else {
+                // Otherwise just use the background color
+                content.style.backgroundImage = 'none'
+                content.style.backgroundColor = this.background['colour']
+            }
+
+            // Apply opacity
+            content.style.opacity = this.background['opacity']
+
+            // Status bar styling
+            const statusBar = document.querySelector('.status-bar')
+            if (statusBar) {
+                statusBar.style.backgroundColor = this.statusBar['background']['colour']
+                statusBar.style.color = this.statusBar['font']['colour']
+                statusBar.style.fontSize = this.statusBar['font']['size']
+                statusBar.style.fontFamily = this.statusBar['font']['family']
+            } else {
+                console.error('status bar element (.status-bar) not found')
+            }
+
+            // Preview styling
+            const preview = document.querySelector('#preview')
+            if (preview) {
+                preview.style.backgroundColor = this.preview['background']['colour']
+                preview.style.color = this.preview['font']['colour']
+                preview.style.fontSize = this.preview['font']['size']
+                preview.style.fontFamily = this.preview['font']['family']
+            } else {
+                console.error('preview element (#preview) not found')
+            }
+            console.log('applied customizations to editor')
+        })
+    }
+}
+
+// Create an instance of our renderer-compatible CustomizationHandler
+const customizationHandler = new CustomizationHandler()
 
 // storedFilePath keeps the absolute path of the last loaded or saved file. If
 // this value is set, then CTRL-s will save the current contents to this file.
@@ -45,8 +146,8 @@ contextBridge.exposeInMainWorld('api', {
 
 ipcRenderer.on('change-theme', (event, themeName) => {
     // document.body.className = themeName;
-
     console.log(`You chose ${themeName}'s theme! Great choice!`)
 })
 
+// Apply customizations to the editor
 customizationHandler.applyCustomizationsToEditor()

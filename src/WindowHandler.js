@@ -1,15 +1,24 @@
-const { BrowserWindow } = require('electron')
-const customizationHandler = require('./CustomizationHandler')
+const path = require('path')
+const { BrowserWindow, screen } = require('electron/main')
+const createCustomizationHandler = require('./CustomizationHandler')
 
-// wrapper class for creating a window with the proper configurations
-// set by the user
-class WindowHandler {
-    createWindow() {
-        const mainWindow = new BrowserWindow(
-            customizationHandler.getWindowOptions()
-        )
-        return mainWindow
+/**
+ * Create a WindowHandler with the specified app object
+ * @param {Object} app - The Electron app object
+ * @returns {WindowHandler} - An instance of WindowHandler
+ */
+function createWindowHandler(app) {
+    // Create customization handler
+    const customizationHandler = createCustomizationHandler(app)
+
+    class WindowHandler {
+        createWindow() {
+            const windowOptions = customizationHandler.getWindowOptions()
+            return new BrowserWindow(windowOptions)
+        }
     }
+
+    return new WindowHandler()
 }
 
-module.exports = new WindowHandler()
+module.exports = createWindowHandler
