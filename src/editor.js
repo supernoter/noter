@@ -8,23 +8,32 @@ const PLACEHOLDER = `Let's go … and type CTRL-p to toggle preview, and CTRL-h 
 // HELP is the inline help contents of NOTER, accessed by CTRL-h or F1.
 const HELP = `# NOTER Help
 
-## Basic Usage
-* Type your notes in the editor
-* Markdown formatting is supported
+NOTER is a markdown editor with PDF export and LLM support. Learn more at [supernoter.xyz](https://supernoter.xyz).
 
 ## Keyboard Shortcuts
-* **CTRL-b**: Open Navigation Sidebar
+
+----
+
 * **CTRL-n**: Create a New file
 * **CTRL-o**: Open a file
-* **CTRL-p**: Toggle preview mode
-* **CTRL-h** or **F1**: Toggle this help view
-* **CTRL-g**: Generate text for editor prompts
-* **CTRL-+**: Increase font size
-* **CTRL--**: Decrease font size
 * **CTRL-s**: Save the file
+* **CTRL-SHIFT-s**: Save to a new file
 * **CTRL-e**: Export notes to PDF
 
+----
+
+* **CTRL-b**: Open Navigation Sidebar
+* **CTRL-g**: Generate text for editor prompts
+* **CTRL-h** or **F1**: Toggle this help view
+* **CTRL-p**: Toggle preview mode
+
+----
+
+* **CTRL-+**: Increase font size
+* **CTRL--**: Decrease font size
+
 ## Markdown Tips
+
 * Use # for headers
 * Use * or - for bullet points
 * Use ** for bold text
@@ -33,10 +42,16 @@ const HELP = `# NOTER Help
 * Use \`\`\` for code blocks
 
 ## Status Bar
+
 The status bar shows:
-* Character count
+
+* Current character count in editor
 * Cursor position (row:column)
-* Current font size`
+* Number of characters written by a human (H) and machine (M)
+* The currently connected LLM name (e.g. "gemma") or "no model" if no LLM is available
+* Current font size
+* The current editor mode (E=edit, P=preview, G=generate)
+`
 
 // EditorState encapsulates the different modes the editor can be in, like edit,
 // preview, help and potentially others.
