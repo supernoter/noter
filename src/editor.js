@@ -26,6 +26,7 @@ NOTER is a markdown editor with PDF export and LLM support. Learn more at [super
 * **CTRL-g**: Generate text for editor prompts
 * **CTRL-h** or **F1**: Toggle this help view
 * **CTRL-p**: Toggle preview mode
+* **CTRL-i**: Switch to next available LLM model
 
 ----
 
@@ -230,6 +231,11 @@ class EditState extends EditorState {
         if (e.ctrlKey && e.key === 'b') {
             e.preventDefault()
             this.editor.toggleNavigationBar()
+            return true
+        }
+        if (e.ctrlKey && e.key === 'j') {
+            e.preventDefault()
+            this.editor.switchModel()
             return true
         }
 
@@ -690,6 +696,33 @@ class Editor {
             y: top_margin,
             margin: [top_margin, pdf_margin, pdf_margin, pdf_margin],
         })
+    }
+
+    // Add this method to the Editor class
+    async switchModel() {
+        if (!this.llm) {
+            console.warn('LLM not configured')
+            return
+        }
+        try {
+            const prevStatusBar = this.statusBar.innerHTML
+            this.statusBar.innerHTML = `${this.getBaseStatus()} · switching model...`
+            const success = await this.llm.switchToNextModel()
+            if (success) {
+                console.log(`successfully switched to model: ${this.llm.model}`)
+                this.updateStatusBar()
+            } else {
+                console.warn('failed to switch model')
+                this.statusBar.innerHTML = prevStatusBar
+                setTimeout(() => {
+                    this.statusBar.innerHTML = `${this.getBaseStatus()} · model switching failed`
+                    setTimeout(() => this.updateStatusBar(), 2000)
+                }, 100)
+            }
+        } catch (error) {
+            console.error('error switching model:', error)
+            this.updateStatusBar()
+        }
     }
 }
 

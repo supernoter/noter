@@ -245,6 +245,31 @@ class Llm {
             throw error // Re-throw to let caller handle it
         }
     }
+
+    /**
+     * Switches to the next available model in the list
+     * @returns {Promise<boolean>} Success status of switching
+     */
+    async switchToNextModel() {
+        if (this.availableModels.length === 0) {
+            await this.getAvailableModels()
+            if (this.availableModels.length === 0) {
+                console.warn('no models available to switch to')
+                return false
+            }
+        }
+        const currentIndex = this.availableModels.indexOf(this.model)
+        const nextIndex = (currentIndex + 1) % this.availableModels.length
+        const nextModel = this.availableModels[nextIndex]
+        console.log(`switching from ${this.model} to ${nextModel}`)
+        this.model = nextModel
+        const isAvailable = await this.checkModelAvailability()
+        if (!isAvailable && this.availableModels.length > 1) {
+            console.warn(`model ${nextModel} not available, trying next one`)
+            return this.switchToNextModel()
+        }
+        return isAvailable
+    }
 }
 
 export { Llm }
