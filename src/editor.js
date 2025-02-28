@@ -374,7 +374,7 @@ class Editor {
         if (showIntro) {
             const introText = 'noter: write together'
             return new Promise(async (resolve) => {
-                await this.typeEffect(introText)
+                await this.typeEffect(introText, 'together')
                 await this.deleteEffect(introText)
                 await this.loadNotes()
                 this.textarea.focus()
@@ -599,7 +599,7 @@ class Editor {
 
     /* typeEffect is here for an initial typing sequence, giving an impression
      * of a autonomous typing entity */
-    typeEffect(text) {
+    typeEffect(text, highlightString = 'together') {
         return new Promise((resolve) => {
             let index = 0
             const interval = setInterval(() => {
@@ -609,14 +609,13 @@ class Editor {
                     this.updateStatusBar()
                 } else {
                     clearInterval(interval)
-                    const highlightStart = text.indexOf('together')
-                    const highlightEnd = highlightStart + 'together'.length
+                    const highlightStart = text.indexOf(highlightString)
+                    const highlightEnd = highlightStart + highlightString.length
                     this.textarea.setSelectionRange(
                         highlightStart,
                         highlightEnd
                     )
                     this.textarea.focus()
-
                     setTimeout(() => {
                         this.textarea.setSelectionRange(0, 0)
                         resolve(text)
