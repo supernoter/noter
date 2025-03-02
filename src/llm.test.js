@@ -102,19 +102,17 @@ global.fetch = jest.fn((url, options) => {
                             return () => {
                                 if (callCount === 0) {
                                     callCount++
+                                    const testData = `data: {"choices":[{"delta":{"content":"This"}}]}\n\n`
                                     return Promise.resolve({
                                         done: false,
-                                        value: Buffer.from(
-                                            `data: {"id":"chatcmpl-123","object":"chat.completion.chunk","created":1694268190,"model":"dummy","system_fingerprint":"fp_44709d6fcb","choices":[{"index":0,"delta":{"content":"This"},"logprobs":null,"finish_reason":null}]}\n\n`
-                                        ),
+                                        value: Buffer.from(testData),
                                     })
                                 } else if (callCount === 1) {
                                     callCount++
+                                    const testData = `data: {"choices":[{"delta":{"content":" is a test"}}]}\n\n`
                                     return Promise.resolve({
                                         done: false,
-                                        value: Buffer.from(
-                                            'data: {"id":"chatcmpl-123","object":"chat.completion.chunk","created":1694268190,"model":"dummy","system_fingerprint":"fp_44709d6fcb","choices":[{"index":0,"delta":{"content":" is a test"},"logprobs":null,"finish_reason":null}]}\n\n'
-                                        ),
+                                        value: Buffer.from(testData),
                                     })
                                 } else {
                                     return Promise.resolve({ done: true })
@@ -157,7 +155,7 @@ global.fetch = jest.fn((url, options) => {
     }
 
     // Default or unmatched URLs
-    return Promise.reject(new Error(`Unhandled fetch url: ${url}`))
+    return Promise.reject(new Error(`unhandled fetch url: ${url}`))
 })
 
 describe('llm module', () => {
