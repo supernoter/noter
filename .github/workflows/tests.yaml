@@ -18,7 +18,7 @@ jobs:
       - name: Cache apt packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: xvfb libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6
+          packages: xvfb libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libxtst6
           version: 1.0
 
       - name: Use Node.js ${{ matrix.node-version }}
@@ -35,7 +35,7 @@ jobs:
       - name: Install xvfb
         run: |
           sudo apt-get update
-          sudo apt-get install -y xvfb libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6
+          sudo apt-get install -y xvfb libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libxtst6
 
       - name: Cache Playwright browsers
         uses: actions/cache@v3
