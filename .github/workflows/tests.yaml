@@ -1,0 +1,36 @@
+name: Run Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install --include=dev
+
+    - name: Install xvfb
+	  run: sudo apt-get install xvfb
+
+    - name: Run tests with virtual display
+      run: xvfb-run --auto-servernum make test
+
+    - name: Upload test coverage
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: coverage/
+      if: always()  # This ensures coverage is uploaded even if tests fail
