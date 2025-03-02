@@ -34,7 +34,7 @@ const path = require('path')
         await window.waitForTimeout(200)
         await electronApp.close()
 
-        console.log('test completed successfully!')
+        console.log('✅ [simple] test completed successfully!')
     } catch (error) {
         console.error('test failed:', error)
         process.exit(1)

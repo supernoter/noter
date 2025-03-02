@@ -18,8 +18,16 @@ let windowHandler
 // Reference to configuration interface
 let configInterface
 
+// getNotesDirectory reacts on an enviroment variable, that can be set in tests.
+const getNotesDirectory = () => {
+    if (process.env.NOTER_TEST_DIR) {
+        return process.env.NOTER_TEST_DIR
+    }
+    return path.join(app.getPath('documents'), 'noter')
+}
+
 // Create path for all the user notes
-const notesDir = path.join(app.getPath('documents'), 'noter')
+const notesDir = getNotesDirectory()
 
 // Content for the first note.
 const WELCOME_NOTE_TEXT = `# Welcome to NOTER!

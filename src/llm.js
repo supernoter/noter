@@ -1,8 +1,8 @@
 // Llm wraps interaction with an LLM using OpenAI API specification
 class Llm {
-    constructor(apiEndpoint = null, model = null) {
-        const config = window.api.getConfig()
-        console.log(config)
+    constructor(options = {}) {
+        const { apiEndpoint = null, model = null, api = window.api } = options
+        const config = api.getConfig ? api.getConfig() : {}
         const baseEndpoint =
             apiEndpoint ||
             config.ollama_host ||

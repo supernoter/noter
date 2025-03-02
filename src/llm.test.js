@@ -3,7 +3,14 @@ require('whatwg-fetch')
 
 beforeEach(() => {
     Object.defineProperty(window, 'api', {
-        value: { OLLAMA_HOST: 'http://localhost:11434' },
+        value: {
+            OLLAMA_HOST: 'http://localhost:11434',
+            NOTER_OLLAMA_MODEL: 'dummy',
+            getConfig: jest.fn().mockReturnValue({
+                ollama_host: null,
+                ollama_model_name: null,
+            }),
+        },
         writable: true,
     })
 })
@@ -98,7 +105,7 @@ global.fetch = jest.fn((url, options) => {
                                     return Promise.resolve({
                                         done: false,
                                         value: Buffer.from(
-                                            'data: {"id":"chatcmpl-123","object":"chat.completion.chunk","created":1694268190,"model":"dummy","system_fingerprint":"fp_44709d6fcb","choices":[{"index":0,"delta":{"content":"This"},"logprobs":null,"finish_reason":null}]}\n\n'
+                                            `data: {"id":"chatcmpl-123","object":"chat.completion.chunk","created":1694268190,"model":"dummy","system_fingerprint":"fp_44709d6fcb","choices":[{"index":0,"delta":{"content":"This"},"logprobs":null,"finish_reason":null}]}\n\n`
                                         ),
                                     })
                                 } else if (callCount === 1) {
@@ -155,44 +162,62 @@ global.fetch = jest.fn((url, options) => {
 
 describe('llm module', () => {
     test('urlFor joins urls', () => {
-        const llm = new mod.Llm('https://example.com', 'dummy')
+        const llm = new mod.Llm({ apiEndpoint: 'https://example.com' })
         const path = 'a/b/c'
         const expected = 'https://example.com/v1/a/b/c'
         expect(llm.urlFor(path)).toBe(expected)
     })
 
     test('dummy model is available', async () => {
-        const llm = new mod.Llm(null, 'dummy')
+        const llm = new mod.Llm({
+            apiEndpoint: 'https://example.com',
+            model: 'dummy',
+        })
         const isModelAvailable = await llm.checkModelAvailability()
         expect(isModelAvailable).toBe(true)
     })
 
     test('unavailable model fails the check, but falls back to an available model', async () => {
-        const llm = new mod.Llm(null, 'nosuchmodel')
+        const llm = new mod.Llm({
+            apiEndpoint: 'https://example.com',
+            model: 'nosuchmodel',
+        })
         const isModelAvailable = await llm.checkModelAvailability()
         expect(isModelAvailable).toBe(true)
     })
 
     test('model status of unavailable model is null', async () => {
-        const llm = new mod.Llm(null, 'nosuchmodel')
+        const llm = new mod.Llm({
+            apiEndpoint: 'https://example.com',
+            model: 'nosuchmodel',
+        })
         expect(llm.getModelStatus()).toBe(null)
     })
 
     test('model status of available model is currently its name', async () => {
-        const llm = new mod.Llm(null, 'dummy')
+        const llm = new mod.Llm({
+            apiEndpoint: 'https://example.com',
+            model: 'dummy',
+        })
         await llm.checkModelAvailability()
         expect(llm.getModelStatus().currentModel).toBe('dummy')
     })
 
     test('generateText returns content for non-streaming response', async () => {
-        const llm = new mod.Llm(null, 'dummy')
+        const llm = new mod.Llm({
+            apiEndpoint: 'https://example.com',
+            model: 'dummy',
+        })
         await llm.checkModelAvailability()
         const response = await llm.generateText('Test prompt')
         expect(response).toBe('This is a test response')
     })
 
     test('generateText handles streaming response correctly', async () => {
-        const llm = new mod.Llm(null, 'dummy')
+        const llm = new mod.Llm({
+            apiEndpoint: 'https://example.com',
+            model: 'dummy',
+        })
         await llm.checkModelAvailability()
 
         const mockOnToken = jest.fn()
