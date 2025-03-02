@@ -5,7 +5,7 @@
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "test": "jest",
+        "test": "jest --collect-coverage",
         "test:app": "npm-run-all --serial test:app:*",
         "test:app:simple": "node test/integration/simple-test.js",
         "test:app:get-notes": "node test/integration/get-notes-test.js",
@@ -91,7 +91,7 @@
             "^.+\\.js$": "babel-jest"
         },
         "transformIgnorePatterns": [
-            "node_modules/(?!(electron|other-es-modules)/)"
+            "node_modules/(?!(marked|jspdf|html2canvas|other-es-modules)/)"
         ],
         "testEnvironment": "jsdom",
         "roots": [
@@ -102,7 +102,12 @@
         ],
         "moduleDirectories": [
             "node_modules"
-        ]
+        ],
+        "moduleNameMapper": {
+            "./node_modules/marked/lib/marked.esm.js": "<rootDir>/__mocks__/markedMock.js",
+            "./node_modules/jspdf/dist/jspdf.umd.min.js": "<rootDir>/__mocks__/jspdfMock.js",
+            "./node_modules/html2canvas/dist/html2canvas.esm.js": "<rootDir>/__mocks__/html2canvasMock.js"
+        }
     },
     "prettier": {
         "trailingComma": "es5",

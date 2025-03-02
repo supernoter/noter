@@ -27,7 +27,6 @@ NOTER is a markdown editor with PDF export and LLM support. Learn more at [super
 * **CTRL-h** or **F1**: Toggle this help view
 * **CTRL-p**: Toggle preview mode
 * **CTRL-i**: Switch to next available LLM model
-* **CTRL-a**: Rephrase selected text to improve clarity and readability
 
 ----
 
@@ -236,11 +235,6 @@ class EditState extends EditorState {
         if (e.ctrlKey && e.key === 'j') {
             e.preventDefault()
             this.editor.switchModel()
-            return true
-        }
-        if (e.ctrlKey && e.key === 'P') {
-            e.preventDefault()
-            this.editor.rephraseSelectedText()
             return true
         }
 
@@ -727,70 +721,6 @@ class Editor {
         } catch (error) {
             console.error('error switching model:', error)
             this.updateStatusBar()
-        }
-    }
-
-    async rephraseSelectedText() {
-        // Get the selected text
-        const selectionStart = this.textarea.selectionStart
-        const selectionEnd = this.textarea.selectionEnd
-
-        if (selectionStart === selectionEnd) {
-            // No text selected, show a notification in the status bar
-            const prevStatusBar = this.statusBar.innerHTML
-            this.statusBar.innerHTML = `${this.getBaseStatus()} · Please select text to rephrase`
-            setTimeout(() => (this.statusBar.innerHTML = prevStatusBar), 2000)
-            return
-        }
-
-        const selectedText = this.textarea.value.substring(
-            selectionStart,
-            selectionEnd
-        )
-
-        // Show processing in the status bar
-        const prevStatusBar = this.statusBar.innerHTML
-        this.statusBar.innerHTML = `${this.getBaseStatus()} · Rephrasing text...`
-
-        try {
-            // Define system prompt
-            const systemPrompt =
-                'You are a skilled writing assistant. Improve the clarity, conciseness, ' +
-                'and readability of the text while preserving its original meaning. ' +
-                'Only return the improved text with no explanations.'
-
-            // Get rephrased text from LLM
-            const rephrased = await this.llm.rephraseText(
-                selectedText,
-                systemPrompt
-            )
-            this.llmCharCount += rephrased.length
-
-            // Insert the rephrased text right after the original selection
-            // This creates a comparison view without modifying the original
-            const content = this.textarea.value
-            const newContent =
-                content.substring(0, selectionEnd) +
-                '\n\n--- Rephrased version ---\n' +
-                rephrased +
-                '\n---\n\n' +
-                content.substring(selectionEnd)
-
-            // Update the content while preserving cursor position
-            this.textarea.value = newContent
-
-            // Set cursor at beginning of the rephrased text for easy comparison
-            const comparisonStart =
-                selectionEnd + '\n\n--- Rephrased version ---\n'.length
-            this.textarea.setSelectionRange(comparisonStart, comparisonStart)
-            this.textarea.focus()
-
-            // Update status bar
-            this.updateStatusBar()
-        } catch (error) {
-            // Show error in status bar
-            this.statusBar.innerHTML = `${this.getBaseStatus()} · Rephrasing failed: ${error.message}`
-            setTimeout(() => (this.statusBar.innerHTML = prevStatusBar), 3000)
         }
     }
 }

@@ -38,6 +38,7 @@ clean:
 	rm -rf dist
 	rm -f .DS_Store
 	rm -f noter-testrun-*png
+	rm -rf coverage
 
 .PHONY: test
 test:
