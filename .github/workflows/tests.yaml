@@ -51,8 +51,19 @@ jobs:
         run: npx playwright install --with-deps chromium
         working-directory: ./src
 
-      - name: Run tests with virtual display
-        run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" make test
+      - name: Run unit tests
+        run: npm test
+        working-directory: ./src
+
+      - name: Run integration tests
+        env:
+          ELECTRON_ENABLE_LOGGING: 1
+          DEBUG: pw:api
+          DISPLAY: ':99.0'
+        run: |
+          Xvfb :99 -screen 0 1280x960x24 &
+          sleep 3
+          npm run test:app
         working-directory: ./src
 
       - name: Upload test coverage
