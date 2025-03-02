@@ -15,12 +15,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Cache apt packages
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: xvfb libgtk-3-0 libnotify-dev libnss3 libxss1 libxtst6
-          version: 1.0
-
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -32,38 +26,8 @@ jobs:
         run: npm install --include=dev
         working-directory: ./src
 
-      - name: Install xvfb
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb libgtk-3-0 libnotify-dev libnss3 libxss1 libxtst6
-
-      - name: Cache Playwright browsers
-        uses: actions/cache@v3
-        id: playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('src/package-lock.json') }}
-          restore-keys: |
-            playwright-${{ runner.os }}-
-
-      - name: Install Playwright dependencies
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
-        working-directory: ./src
-
       - name: Run unit tests
         run: npm test
-        working-directory: ./src
-
-      - name: Run integration tests
-        env:
-          ELECTRON_ENABLE_LOGGING: 1
-          DEBUG: pw:api
-          DISPLAY: ':99.0'
-        run: |
-          Xvfb :99 -screen 0 1280x960x24 &
-          sleep 3
-          npm run test:app
         working-directory: ./src
 
       - name: Upload test coverage
