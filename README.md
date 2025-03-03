@@ -8,7 +8,7 @@ be incomplete or missing.
 
 Learn more at [supernoter.xyz](https://supernoter.xyz).
 
-![](static/intro-beta.webm)
+![](https://github.com/supernoter/noter/raw/refs/heads/main/docs/static/intro-beta.gif)
 
 ## Install
 
