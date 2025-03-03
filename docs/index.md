@@ -46,7 +46,7 @@ may need to pass security warnings in order to run the application.
 
 # Screenshots
 
-![](static/screenshot-2025-03-03-024643-theme-iss-s.png)
+![](static/screenshot-2025-03-03-024643-theme-iss.png)
 
 ![](static/screenshot-2025-03-03-010337-noter-statusbar.png)
 
@@ -58,14 +58,15 @@ Access help within the editor with CTRL-h or F1.
 
 | Keyboard Shortcut | Functionality                                                   |
 |-------------------|-----------------------------------------------------------------|
-| CTRL-e            | Export note to PDF                                              |
-| CTRL-b            | Toggle sidebar                                                  |
-| CTRL-g            | Call out to the configured LLM and insert response to a prompt. |
-| CTRL-h, F1        | Toggle help                                                     |
-| CTRL-n            | Create a new file                                               |
-| CTRL-o            | Open an existing file                                           |
-| CTRL-p            | Toggle preview                                                  |
-| CTRL-s            | Save file                                                       |
+| CTRL-E            | Export note to PDF                                              |
+| CTRL-B            | Toggle sidebar                                                  |
+| CTRL-G            | Call out to the configured LLM and insert response to a prompt  |
+| CTRL-H, F1        | Toggle help                                                     |
+| CTRL-N            | Create a new note                                               |
+| CTRL-O            | Open an existing file                                           |
+| CTRL-P            | Toggle HTML preview                                             |
+| CTRL-S            | Save file                                                       |
+| CTRL-SHIFT-S      | Save file as ...                                                |
 | CTRL-+            | Increase font size                                              |
 | CTRL-- (minus)    | Decreate font size                                              |
 
