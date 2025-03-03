@@ -34,6 +34,13 @@ may need to pass security warnings in order to run the application.
 * load and save **any text** document
 * inline **help**
 
+We value privacy and NOTER comes with all assets like fonts packaged and we
+also do not track you on this website, nor does NOTER connect to any other
+server except for the LLM endpoint, which you can run locally with
+[ollama](https://ollama.com) as well. In 2025, where almost any interaction on
+the web is tracked, enjoy a moment of calm with a classic desktop application,
+that respects your online freedom.
+
 # Demo
 
 <div class="video-container">
