@@ -29,7 +29,7 @@ may need to pass security warnings in order to run the application.
 * custom **theme** configuration
 * export markdown notes directly to good looking **PDF** ([example](https://supernoter.xyz/export.pdf))
 * **navigate your notes** (in a default notes folder) quickly with sidebar and filename filter
-* seamless integration with open source large language models, such as provided by [ollama](https://ollama.com)
+* seamless integration with open source **large language models**, such as provided by [ollama](https://ollama.com)
 * informative **status bar** shows live character count and more
 * load and save **any text** document
 * inline **help**
@@ -46,10 +46,10 @@ that respects your online freedom.
 # Demo
 
 <div class="video-container">
-  <video loop muted autoplay playsinline preload="auto" poster="/static/intro-fast.jpg" id="intro">
-    <source src="/static/intro-fast.webm" type="video/webm" />
-    <source src="/static/intro-fast.mp4" type="video/mp4" />
-    <source src="/static/intro-fast.ogg" type="video/ogg" />
+  <video loop muted autoplay playsinline preload="auto" poster="/static/intro-beta.jpg" id="intro">
+    <source src="/static/intro-beta.webm" type="video/webm" />
+    <source src="/static/intro-beta.mp4" type="video/mp4" />
+    <source src="/static/intro-beta.gif" type="image/gif" />
   </video>
 </div>
 
@@ -138,8 +138,7 @@ Changes are applied at editor startup time. Below is an example config file:
 
 # Authors
 
-NOTER is brought to you in Winter 2024/2025 by temporary working group
-consisting of [Felix](https://github.com/chombef81),
+NOTER is brought to you in Winter 2024/2025 by temporary working group 🌍 consisting of [Felix](https://github.com/chombef81),
 [Martin](https://github.com/miku),
 [Guilherme](https://github.com/Guilherme-Elias),
 [Dennis](https://github.com/santorini19970530),
