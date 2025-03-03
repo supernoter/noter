@@ -1,13 +1,13 @@
 ---
 title: NOTER - write together
 date: February 3, 2025
-header: NOTER is a minimalistic, themable markdown editor that seamlessly integrates with large-language models, while respecting your privacy.
+header: NOTER is a minimalistic, themeable markdown editor that seamlessly integrates with large-language models, while respecting your privacy.
 ---
 
 # About
 
 NOTER is an [open source](https://github.com/supernoter/noter), minimalistic,
-themable markdown editor that seamlessly integrates with [large-language models](https://en.wikipedia.org/wiki/Large_language_model) (LLM).
+themeable markdown editor that seamlessly integrates with [large-language models](https://en.wikipedia.org/wiki/Large_language_model) (LLM).
 If you happen to run [ollama](https://ollama.com/) locally, NOTER will
 automatically connect to the instance. It is currently in
 [beta](https://en.wikipedia.org/wiki/Software_release_life_cycle#Beta) stage:

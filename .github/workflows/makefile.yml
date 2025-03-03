@@ -47,8 +47,8 @@ jobs:
         run: |
           echo '# NOTER ${{ github.ref_name }}
 
-          This is the latest release of NOTER, the simple, themable,
-          llm-enhanced markdown editor.
+          This is the latest release of NOTER, the simple, themeable,
+        llm-enhanced markdown editor. Learn more at [supernoter.xyz](https://supernoter.xyz).
           ' > ${{ github.workspace }}-CHANGELOG.txt
       - name: Release
         # https://github.com/softprops/action-gh-release
