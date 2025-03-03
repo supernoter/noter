@@ -10,15 +10,33 @@ NOTER is an [open source](https://github.com/supernoter/noter), minimalistic,
 themable markdown editor that seamlessly integrates with large-language models.
 If you happen to run [ollama](https://ollama.com/) locally, NOTER will
 automatically connect to the instance. It is currently in
-[alpha](https://en.wikipedia.org/wiki/Software_release_life_cycle#Alpha) stage:
-you can download it and run it, but most functionality is still missing and the
-code is not thoroughly tested yet.
+[beta](https://en.wikipedia.org/wiki/Software_release_life_cycle#Beta) stage:
+you can download it, run it and use it, but some functionality may be
+incomplete or missing.
 
 # Installation
 
-NOTER is available for MacOS, Windows and Linux - you can download it from our
-[releases page](https://github.com/supernoter/noter/releases/latest).
+NOTER is available for MacOS, Windows and Linux (deb, rpm, AppImage) - you can
+download it from our [releases
+page](https://github.com/supernoter/noter/releases/latest).
 
+Note that we currently do not sign the MacOS and Windows binaries and that you
+may need to pass security warnings in order to run the application.
+
+# Features
+
+* edit **markdown** and **preview** rendered markdown
+* custom **theme** configuration
+* export markdown notes directly to good looking **PDF**
+* **navigate your notes** (in a default notes folder) quickly with sidebar and filename filter
+* seamless integration with open source large language models, such as provided by [ollama](https://ollama.com)
+* informative **status bar** shows live character count and more
+* load and save **any text** document
+* inline **help**
+
+# Screenshots
+
+![Custom background](static/screenshot-2025-03-03-024643-theme-iss.png)
 
 # Demo
 
@@ -51,8 +69,13 @@ Access help within the editor with CTRL-h or F1.
 
 ## Configuration
 
-You can customize the editor in many ways, using a `config.json` file (in the
-current directory). Changes are applied at editor startup time.
+You can customize the editor in many ways, using a `config.json` file located in standard locations for different platforms:
+
+* %APPDATA% on Windows
+* [$XDG_CONFIG_HOME](https://wiki.archlinux.org/title/XDG_Base_Directory) or ~/.config on Linux
+* `~/Library/Application Support/noter` on MacOS
+
+Changes are applied at editor startup time.
 
 ```json
 {
@@ -91,7 +114,9 @@ current directory). Changes are applied at editor startup time.
     "background": {
       "colour": "blue"
     }
-  }
+  },
+  "ollama_host": "http://localhost:11434",
+  "ollama_model_name": "gemma"
 }
 ```
 
