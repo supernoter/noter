@@ -1,0 +1,40 @@
+{
+  "window": {
+    "opacity": 1,
+    "width": 900,
+    "height": 550
+  },
+  "font": {
+    "colour": "blue",
+    "size": "16px",
+    "family": "monospace, monospace"
+  },
+  "background": {
+    "colour": "white",
+    "gradient": null,
+    "image": null,
+    "opacity": "100%"
+  },
+  "status-bar": {
+    "font": {
+      "colour": "black",
+      "size": "14px",
+      "family": "Arial"
+    },
+    "background": {
+      "colour": "white"
+    }
+  },
+  "preview": {
+    "font": {
+      "colour": "black",
+      "size": "20px",
+      "family": "Arial"
+    },
+    "background": {
+      "colour": "blue"
+    }
+  },
+  "ollama_host": "http://localhost:11434",
+  "ollama_model_name": "gemma"
+}

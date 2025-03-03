@@ -34,10 +34,6 @@ may need to pass security warnings in order to run the application.
 * load and save **any text** document
 * inline **help**
 
-# Screenshots
-
-![Custom background](static/screenshot-2025-03-03-024643-theme-iss-s.png)
-
 # Demo
 
 <div class="video-container">
@@ -47,6 +43,11 @@ may need to pass security warnings in order to run the application.
     <source src="/static/intro-fast.ogg" type="video/ogg" />
   </video>
 </div>
+
+# Screenshots
+
+![](static/screenshot-2025-03-03-024643-theme-iss-s.png)
+
 
 # Reference
 
@@ -69,13 +70,15 @@ Access help within the editor with CTRL-h or F1.
 
 ## Configuration
 
-You can customize the editor in many ways, using a `config.json` file located in standard locations for different platforms:
+You can customize the editor in many ways, using a
+[config.json](https://supernoter.xyz/config.json) file located in standard
+locations for different platforms:
 
-* %APPDATA% on Windows
+* [%APPDATA%](https://superuser.com/questions/632891/what-is-appdata) on Windows
 * [$XDG_CONFIG_HOME](https://wiki.archlinux.org/title/XDG_Base_Directory) or ~/.config on Linux
 * `~/Library/Application Support/noter` on MacOS
 
-Changes are applied at editor startup time.
+Changes are applied at editor startup time. Below is an example config file:
 
 ```json
 {

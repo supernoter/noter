@@ -66,6 +66,12 @@
         color: var(--text-color);
         background: var(--bg-color);
       }
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 1.5rem 0;
+      }
       .container {
         max-width: 800px;
         margin: 0 auto;
@@ -189,13 +195,6 @@ and more</li>
 <li>load and save <strong>any text</strong> document</li>
 <li>inline <strong>help</strong></li>
 </ul>
-<h1 id="screenshots"><a href="#screenshots" class="anchor"
-aria-hidden="true"></a>Screenshots</h1>
-<figure>
-<img src="static/screenshot-2025-03-03-024643-theme-iss-s.png"
-alt="Custom background" />
-<figcaption aria-hidden="true">Custom background</figcaption>
-</figure>
 <h1 id="demo"><a href="#demo" class="anchor"
 aria-hidden="true"></a>Demo</h1>
 <div class="video-container">
@@ -204,6 +203,9 @@ aria-hidden="true"></a>Demo</h1>
 <source src="/static/intro-fast.mp4" type="video/mp4" />
 <source src="/static/intro-fast.ogg" type="video/ogg" /> </video></p>
 </div>
+<h1 id="screenshots"><a href="#screenshots" class="anchor"
+aria-hidden="true"></a>Screenshots</h1>
+<p><img src="static/screenshot-2025-03-03-024643-theme-iss-s.png" /></p>
 <h1 id="reference"><a href="#reference" class="anchor"
 aria-hidden="true"></a>Reference</h1>
 <p>Access help within the editor with CTRL-h or F1.</p>
@@ -265,17 +267,20 @@ aria-hidden="true"></a>Keyboard Shortcuts</h2>
 </table>
 <h2 id="configuration"><a href="#configuration" class="anchor"
 aria-hidden="true"></a>Configuration</h2>
-<p>You can customize the editor in many ways, using a
-<code>config.json</code> file located in standard locations for
-different platforms:</p>
+<p>You can customize the editor in many ways, using a <a
+href="https://supernoter.xyz/config.json">config.json</a> file located
+in standard locations for different platforms:</p>
 <ul>
-<li>%APPDATA% on Windows</li>
+<li><a
+href="https://superuser.com/questions/632891/what-is-appdata">%APPDATA%</a>
+on Windows</li>
 <li><a
 href="https://wiki.archlinux.org/title/XDG_Base_Directory">$XDG_CONFIG_HOME</a>
 or ~/.config on Linux</li>
 <li><code>~/Library/Application Support/noter</code> on MacOS</li>
 </ul>
-<p>Changes are applied at editor startup time.</p>
+<p>Changes are applied at editor startup time. Below is an example
+config file:</p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;window&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
