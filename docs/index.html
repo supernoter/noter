@@ -11,35 +11,39 @@
         max-width: 100%;
         margin: 2rem 0;
       }
-
       .video-container video {
         width: 100%;
         height: auto;
         display: block;
       }
-
       table {
         width: 100%;
         border-collapse: collapse;
         margin: 1rem 0;
       }
-
       th {
         text-align: left;
         padding: 0.75rem;
         background: var(--secondary-bg);
         border-bottom: 2px solid var(--muted-color);
       }
-
       td {
         padding: 0.75rem;
         border-bottom: 1px solid var(--muted-color);
       }
-
       tr:nth-child(even) {
         background: var(--secondary-bg);
       }
-
+      /* List styling to fix bullet alignment */
+      ul,
+      ol {
+        padding-left: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      li {
+        margin-bottom: 0.5rem;
+      }
+      /* End of list styling */
       :root {
         --primary-color: #2563eb;
         --text-color: #1f2937;
@@ -48,13 +52,11 @@
         --muted-color: rgba(107, 114, 128, 0.2);
         --grid-color: rgba(107, 114, 128, 0.15);
       }
-
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
-
       body {
         font-family:
           system-ui,
@@ -64,13 +66,11 @@
         color: var(--text-color);
         background: var(--bg-color);
       }
-
       .container {
         max-width: 800px;
         margin: 0 auto;
         padding: 2rem 1rem;
       }
-
       header {
         text-align: center;
         margin-bottom: 0.5rem;
@@ -95,12 +95,10 @@
           -1px -1px;
         color: var(--text-color);
       }
-
       h1,
       h2 {
         position: relative;
       }
-
       h1 .anchor,
       h2 .anchor {
         position: absolute;
@@ -109,45 +107,36 @@
         opacity: 0;
         text-decoration: none;
       }
-
       h1 .anchor::before,
       h2 .anchor::before {
         content: "#";
         color: var(--primary-color);
       }
-
       h1:hover .anchor,
       h2:hover .anchor {
         opacity: 0.7;
       }
-
       h1 {
         color: var(--primary-color);
         margin-bottom: 0.4rem;
       }
-
       header h1 {
         font-size: clamp(2rem, 5vw, 4rem);
       }
-
       h2 {
         margin: 0.8rem 0 1rem;
       }
-
       p {
         margin-bottom: 1.5rem;
       }
-
       header p {
         padding: 0.25em;
         background: yellow;
       }
-
       @media (max-width: 640px) {
         .container {
           padding: 1rem;
         }
-
         header {
           padding: 1rem 0;
           margin-bottom: 2rem;
@@ -164,7 +153,6 @@ seamlessly integrates with large-language models, while respecting your
 privacy.</p>
       </div>
     </header>
-
     <main class="container"><h1 id="about"><a href="#about"
 class="anchor" aria-hidden="true"></a>About</h1>
 <p>NOTER is an <a href="https://github.com/supernoter/noter">open
@@ -204,7 +192,7 @@ and more</li>
 <h1 id="screenshots"><a href="#screenshots" class="anchor"
 aria-hidden="true"></a>Screenshots</h1>
 <figure>
-<img src="static/screenshot-2025-03-03-024643-theme-iss.png"
+<img src="static/screenshot-2025-03-03-024643-theme-iss-s.png"
 alt="Custom background" />
 <figcaption aria-hidden="true">Custom background</figcaption>
 </figure>

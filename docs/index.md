@@ -36,7 +36,7 @@ may need to pass security warnings in order to run the application.
 
 # Screenshots
 
-![Custom background](static/screenshot-2025-03-03-024643-theme-iss.png)
+![Custom background](static/screenshot-2025-03-03-024643-theme-iss-s.png)
 
 # Demo
 
