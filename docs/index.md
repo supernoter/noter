@@ -48,6 +48,7 @@ may need to pass security warnings in order to run the application.
 
 ![](static/screenshot-2025-03-03-024643-theme-iss-s.png)
 
+![](static/screenshot-2025-03-03-010337-noter-statusbar.png)
 
 # Reference
 
