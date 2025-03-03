@@ -27,7 +27,7 @@ may need to pass security warnings in order to run the application.
 
 * edit **markdown** and **preview** rendered markdown
 * custom **theme** configuration
-* export markdown notes directly to good looking **PDF**
+* export markdown notes directly to good looking **PDF** ([example](https://supernoter.xyz/export.pdf))
 * **navigate your notes** (in a default notes folder) quickly with sidebar and filename filter
 * seamless integration with open source large language models, such as provided by [ollama](https://ollama.com)
 * informative **status bar** shows live character count and more
