@@ -48,3 +48,6 @@ Or building packages:
 $ make build
 ```
 
+## Architecture
+
+![](static/NOTERLAYERS.png)
