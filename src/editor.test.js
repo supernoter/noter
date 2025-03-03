@@ -9,48 +9,42 @@ import {
 
 // Using jest.mock for modules, cf.
 // https://jestjs.io/docs/jest-object#jestmockmodulename-factory-options
-jest.mock(
-    './node_modules/jspdf/dist/jspdf.umd.min.js',
-    () => ({
-        __esModule: true,
-        default: {
-            jsPDF: jest.fn().mockImplementation(() => ({
-                // We mock out properties required by the use in the editor,
-                // like .internal.pageSize.width, ...
-                internal: {
-                    pageSize: {
-                        width: 210,
-                    },
+jest.mock('./node_modules/jspdf/dist/jspdf.umd.min.js', () => ({
+    __esModule: true,
+    default: {
+        jsPDF: jest.fn().mockImplementation(() => ({
+            // We mock out properties required by the use in the editor,
+            // like .internal.pageSize.width, ...
+            internal: {
+                pageSize: {
+                    width: 210,
                 },
-                // Mock implementation for generating HTML, cf.
-                // https://jestjs.io/docs/mock-function-api#mockfnmockimplementationfn
-                html: jest.fn().mockImplementation((element, options) => {
-                    if (options && options.callback) {
-                        options.callback({ save: jest.fn() })
-                    }
-                    return true
-                }),
-                save: jest.fn(),
-            })),
-        },
-    }),
-)
+            },
+            // Mock implementation for generating HTML, cf.
+            // https://jestjs.io/docs/mock-function-api#mockfnmockimplementationfn
+            html: jest.fn().mockImplementation((element, options) => {
+                if (options && options.callback) {
+                    options.callback({ save: jest.fn() })
+                }
+                return true
+            }),
+            save: jest.fn(),
+        })),
+    },
+}))
 
-jest.mock(
-    './node_modules/html2canvas/dist/html2canvas.esm.js',
-    () => ({
-        __esModule: true,
-        default: jest.fn().mockImplementation(() => {
-            return Promise.resolve({
-                width: 800,
-                height: 600,
-                toDataURL: jest
-                    .fn()
-                    .mockReturnValue('data:image/png;base64,mockBase64Data'),
-            })
-        }),
+jest.mock('./node_modules/html2canvas/dist/html2canvas.esm.js', () => ({
+    __esModule: true,
+    default: jest.fn().mockImplementation(() => {
+        return Promise.resolve({
+            width: 800,
+            height: 600,
+            toDataURL: jest
+                .fn()
+                .mockReturnValue('data:image/png;base64,mockBase64Data'),
+        })
     }),
-)
+}))
 
 // Mock window.api
 window.api = {
