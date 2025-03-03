@@ -13,7 +13,7 @@
         "test:app:content": "node test/integration/content-test.js",
         "build": "electron-builder --mac --windows --linux --publish never"
     },
-    "author": "ASP-G30-T7 <universe@supernoter.xyz>",
+    "author": "ASP-G30-T7 <noreply@supernoter.xyz>",
     "license": "MIT",
     "repository": {
         "type": "git",
