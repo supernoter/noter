@@ -16,11 +16,11 @@ incomplete or missing.
 
 # Installation
 
-NOTER is available for MacOS, Windows and Linux (deb, rpm, AppImage) - you can
-download it from our [releases
+NOTER is available for **MacOS**, **Windows** and **Linux** (deb, rpm, AppImage) - you can
+download our latest version from our [releases
 page](https://github.com/supernoter/noter/releases/latest).
 
-Note that we currently do not sign the MacOS and Windows binaries and that you
+Note that we currently *do not sign the MacOS and Windows binaries* and that you
 may need to pass security warnings in order to run the application.
 
 # Features
@@ -33,6 +33,8 @@ may need to pass security warnings in order to run the application.
 * informative **status bar** shows live character count and more
 * load and save **any text** document
 * inline **help**
+
+## A note on privacy
 
 We value privacy and NOTER comes with all assets like fonts packaged and we
 also do not track you on this website, nor does NOTER connect to any other
@@ -56,6 +58,8 @@ that respects your online freedom.
 ![](static/screenshot-2025-03-03-024643-theme-iss.png)
 
 ![](static/screenshot-2025-03-03-010337-noter-statusbar.png)
+
+![](static/screenshot-2025-02-26-104633-sidebar.png)
 
 # Reference
 
@@ -131,6 +135,14 @@ Changes are applied at editor startup time. Below is an example config file:
   "ollama_model_name": "gemma"
 }
 ```
+
+# Authors
+
+NOTER is brought to you by [Felix](https://github.com/chombef81),
+[Martin](https://github.com/miku),
+[Guilherme](https://github.com/Guilherme-Elias),
+[Dennis](https://github.com/santorini19970530),
+[Gio](https://github.com/gioRizzo1999) and [contributors](https://github.com/supernoter/noter/graphs/contributors).
 
 # Development notes
 
