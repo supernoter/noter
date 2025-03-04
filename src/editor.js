@@ -3,7 +3,7 @@ import * as jsPDF from './node_modules/jspdf/dist/jspdf.umd.min.js'
 import * as html2canvas from './node_modules/html2canvas/dist/html2canvas.esm.js'
 
 // PLACEHOLDER is the textarea placeholder text
-const PLACEHOLDER = `Let's go … and type CTRL-p to toggle preview, and CTRL-h for help`
+const PLACEHOLDER = `Let's go … and type CTRL-P to toggle preview, and CTRL-H for help`
 
 // HELP is the inline help contents of NOTER, accessed by CTRL-h or F1.
 const HELP = `# NOTER Help
@@ -14,19 +14,19 @@ NOTER is a markdown editor with PDF export and LLM support. Learn more at [super
 
 ----
 
-* **CTRL-n**: Create a New file
-* **CTRL-o**: Open a file
-* **CTRL-s**: Save the file
+* **CTRL-N**: Create a New file
+* **CTRL-O**: Open a file
+* **CTRL-S**: Save the file
 * **CTRL-SHIFT-s**: Save to a new file
-* **CTRL-e**: Export notes to PDF
+* **CTRL-E**: Export notes to PDF
 
 ----
 
-* **CTRL-b**: Open Navigation Sidebar
-* **CTRL-g**: Generate text for editor prompts
-* **CTRL-h** or **F1**: Toggle this help view
-* **CTRL-p**: Toggle preview mode
-* **CTRL-i**: Switch to next available LLM model
+* **CTRL-B**: Open Navigation Sidebar
+* **CTRL-G**: Generate text for editor prompts
+* **CTRL-H** or **F1**: Toggle this help view
+* **CTRL-P**: Toggle preview mode
+* **CTRL-I**: Switch to next available LLM model
 
 ----
 
@@ -67,6 +67,7 @@ class EditorState {
     }
 }
 
+// GenerateState is entered when the user requests LLM text
 class GenerateState extends EditorState {
     constructor(editor) {
         super(editor)
@@ -205,7 +206,6 @@ class EditState extends EditorState {
         this.editor.preview.style.display = 'none'
         this.editor.textarea.focus()
     }
-
     async handleKeyboardShortcuts(e) {
         if (e.ctrlKey && e.key === 'g') {
             e.preventDefault()
@@ -237,7 +237,6 @@ class EditState extends EditorState {
             this.editor.switchModel()
             return true
         }
-
         // Only count single alphanumeric keystrokes
         if (
             !e.ctrlKey &&
@@ -330,13 +329,13 @@ class Editor {
         // keystrokeCount counts the total number of keystrokes
         this.keystrokeCount = 0
         this.llmCharCount = 0
-
+        // LLM related fields
         this.llm = llm
         this.llmTriggerPrefix = '>> '
         this.llmResponsePrefix = '> '
-
+        // Help text
         this.helpText = HELP
-
+        // PDF export
         const { jsPDF } = window.jspdf
         this.#pdf_doc = new jsPDF({
             orientation: 'portrait',
@@ -352,7 +351,9 @@ class Editor {
     async init() {
         await this.initializeElements()
 
-        // dispatch an event, so customization could be applied
+        // dispatch an event, so customization could be applied; this is a
+        // workaround, because at DOMContentLoaded the elements may not all be
+        // there to customize
         const event = new Event('NoterEditorElementsLoaded')
         window.dispatchEvent(event)
 
@@ -367,11 +368,12 @@ class Editor {
                 .catch((error) => console.warn('model check failed:', error))
         }
 
-        // Enter the first editor state
+        // enter the first editor state
         this.state = new EditState(this)
         this.state.enterState()
         this.updateStatusBar()
 
+        // ensure textarea is empty
         this.textarea.value = ''
 
         // only show intro sequence, if --no-intro has not been passed
@@ -549,7 +551,7 @@ class Editor {
         this.setContent(content)
     }
 
-    // font size, with some limits
+    // changeFontSize changes the font size, with some limits
     changeFontSize(delta) {
         const currentSize = parseInt(
             window.getComputedStyle(this.textarea).fontSize,
@@ -560,7 +562,8 @@ class Editor {
         this.updateStatusBar()
     }
 
-    // Helper method to scroll to bottom
+    // scrollToBottom is a helper method to scroll to bottom (e.g. on LLM
+    // output); TODO: what is the llm output is generated mid document?
     scrollToBottom() {
         this.textarea.scrollTop = this.textarea.scrollHeight
     }
@@ -602,8 +605,8 @@ class Editor {
         }
     }
 
-    /* typeEffect is here for an initial typing sequence, giving an impression
-     * of a autonomous typing entity */
+    // typeEffect is here for an initial typing sequence, giving an impression
+    // of a autonomous typing entity
     typeEffect(text, highlightString = 'together') {
         return new Promise((resolve) => {
             let index = 0
@@ -630,7 +633,7 @@ class Editor {
         })
     }
 
-    /* deleteEffect takes back some text, part of the initial sequence */
+    // deleteEffect takes back some text, part of the initial sequence
     deleteEffect(text) {
         return new Promise((resolve) => {
             let index = text.length
@@ -647,12 +650,12 @@ class Editor {
         })
     }
 
-    // Get the current content of the editor
+    // getComputedStyle gets the current content of the editor
     getContent() {
         return this.textarea.value
     }
 
-    // Set new content for the editor
+    // setContent sets new content for the editor
     setContent(content) {
         this.textarea.value = content
         this.updateStatusBar()
@@ -697,7 +700,8 @@ class Editor {
         })
     }
 
-    // Add this method to the Editor class
+    // switchModel switches to the next model, and cycles if it reaches the end
+    // of the list. This feature is currently not documented.
     async switchModel() {
         if (!this.llm) {
             console.warn('LLM not configured')

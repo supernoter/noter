@@ -8,8 +8,6 @@
         <script src="./node_modules/jspdf/dist/jspdf.umd.min.js"></script>
         <link rel="stylesheet" href="./main.css" />
         <link rel="stylesheet" href="./noto.css" />
-        <!-- 2cf587e4-2811-4e48-b809-f3b1ab2a8c4e -->
-        <!-- b815eaf1-eab6-406e-97b7-25d18a69c7dd -->
     </head>
     <body>
         <div id="editor-container"></div>
@@ -17,7 +15,6 @@
             import { Editor } from './editor.js'
             import { Llm } from './llm.js'
             document.addEventListener('DOMContentLoaded', () => {
-                // Llm settings will be picked up from environment variables
                 const llm = new Llm()
                 const editor = new Editor('editor-container', llm)
                 editor

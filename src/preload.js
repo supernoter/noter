@@ -131,12 +131,14 @@ contextBridge.exposeInMainWorld('api', {
     getNotes: () => ipcRenderer.invoke('get-notes'),
     readNote: (filename) => ipcRenderer.invoke('read-note', filename),
     shouldShowIntro: () => ipcRenderer.invoke('should-show-intro'),
-    // Testing access to textarea, TODO: test and improve
+    // Direct textarea access
     getContent: () => document.querySelector('textarea').value,
     setContent: (value) => (document.querySelector('textarea').value = value),
+    // The filepath used to store the current contents.
     getEditorFilePath: () => {
         return storedFilePath
     },
+
     setEditorFilePath: (callback) => {
         // Listen for the event from main
         ipcRenderer.on('set-editor-filepath', (e, filePath) => {
@@ -149,6 +151,7 @@ contextBridge.exposeInMainWorld('api', {
     updateFilePath: (filePath) => {
         storedFilePath = filePath
     },
+    // Set editor content with IPC
     setEditorContent: (callback) => {
         ipcRenderer.on('set-editor-content', (e, v) => callback(v))
     },
@@ -158,8 +161,9 @@ contextBridge.exposeInMainWorld('api', {
     toggleSidebar: (callback) => {
         ipcRenderer.on('toggle-sidebar', (e) => callback())
     },
+    // Helper function
     basename: (filePath, ext) => path.basename(filePath, ext),
-
+    // Configuration
     getConfig: () => customizationHandler.getConfig(),
     updateConfig: (newConfig) => ipcRenderer.invoke('update-config', newConfig),
     reloadConfig: async () => {
