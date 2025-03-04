@@ -140,7 +140,7 @@ Changes are applied at editor startup time. Below is an example config file.
 
 # Authors
 
-NOTER was written in Winter 2025 by [The Distributed Temporary Working
+NOTER was written in winter 2025 by [The Distributed Temporary Working
 Group](https://github.com/supernoter).
 
 # Development notes
