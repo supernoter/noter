@@ -138,12 +138,8 @@ Changes are applied at editor startup time. Below is an example config file:
 
 # Authors
 
-NOTER is brought to you in Winter 2024/2025 by 🌍 [temporary working group](https://github.com/supernoter) consisting of [Felix](https://github.com/chombef81),
-[Martin](https://github.com/miku),
-[Guilherme](https://github.com/Guilherme-Elias),
-[Dennis](https://github.com/santorini19970530),
-[Gio](https://github.com/gioRizzo1999) and
-[contributors](https://github.com/supernoter/noter/graphs/contributors).
+NOTER is brought to you in Winter 2024/2025 by [The Temporary Working
+Group](https://github.com/supernoter).
 
 # Development notes
 
