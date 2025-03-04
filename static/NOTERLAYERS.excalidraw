@@ -1658,6 +1658,51 @@
       "originalText": "context\nbridge",
       "autoResize": true,
       "lineHeight": 1.25
+    },
+    {
+      "id": "L8TMc5mBbqt-4g1S-GoVD",
+      "type": "line",
+      "x": 1137,
+      "y": 526,
+      "width": 5,
+      "height": 13,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "an",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1826110317,
+      "version": 16,
+      "versionNonce": 1572268771,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1741088183950,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          -13
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": null,
+      "endBinding": null,
+      "startArrowhead": null,
+      "endArrowhead": null
     }
   ],
   "appState": {
