@@ -87,9 +87,11 @@ You can customize the editor in many ways, using a
 [config.json](https://supernoter.xyz/config.json) file located in standard
 locations for different platforms:
 
-* [%APPDATA%](https://superuser.com/questions/632891/what-is-appdata) on Windows
-* [$XDG_CONFIG_HOME](https://wiki.archlinux.org/title/XDG_Base_Directory) or ~/.config on Linux
-* `~/Library/Application Support/noter` on MacOS
+| OS      | Location of configuration file        |
+|---------|---------------------------------------|
+| Windows | [`%APPDATA%`](https://superuser.com/questions/632891/what-is-appdata)                          |
+| Linux   | [`$XDG_CONFIG_HOME`](https://wiki.archlinux.org/title/XDG_Base_Directory) or `~/.config`     |
+| MacOS   | `~/Library/Application Support/noter` |
 
 Changes are applied at editor startup time. Below is an example config file:
 

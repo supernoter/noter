@@ -292,15 +292,35 @@ aria-hidden="true"></a>Configuration</h2>
 <p>You can customize the editor in many ways, using a <a
 href="https://supernoter.xyz/config.json">config.json</a> file located
 in standard locations for different platforms:</p>
-<ul>
-<li><a
-href="https://superuser.com/questions/632891/what-is-appdata">%APPDATA%</a>
-on Windows</li>
-<li><a
-href="https://wiki.archlinux.org/title/XDG_Base_Directory">$XDG_CONFIG_HOME</a>
-or ~/.config on Linux</li>
-<li><code>~/Library/Application Support/noter</code> on MacOS</li>
-</ul>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 81%" />
+</colgroup>
+<thead>
+<tr>
+<th>OS</th>
+<th>Location of configuration file</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows</td>
+<td><a
+href="https://superuser.com/questions/632891/what-is-appdata"><code>%APPDATA%</code></a></td>
+</tr>
+<tr>
+<td>Linux</td>
+<td><a
+href="https://wiki.archlinux.org/title/XDG_Base_Directory"><code>$XDG_CONFIG_HOME</code></a>
+or <code>~/.config</code></td>
+</tr>
+<tr>
+<td>MacOS</td>
+<td><code>~/Library/Application Support/noter</code></td>
+</tr>
+</tbody>
+</table>
 <p>Changes are applied at editor startup time. Below is an example
 config file:</p>
 <div class="sourceCode" id="cb1"><pre
