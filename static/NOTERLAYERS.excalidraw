@@ -1449,7 +1449,7 @@
       "height": 204,
       "angle": 0,
       "strokeColor": "#1e1e1e",
-      "backgroundColor": "#e7f5ff",
+      "backgroundColor": "#fff9db",
       "fillStyle": "solid",
       "strokeWidth": 2,
       "strokeStyle": "solid",
@@ -1462,8 +1462,8 @@
         "type": 3
       },
       "seed": 1543723549,
-      "version": 68,
-      "versionNonce": 1414379581,
+      "version": 70,
+      "versionNonce": 882540364,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1471,7 +1471,7 @@
           "id": "rSlY7i7L5KVLbO4sMyHJ5"
         }
       ],
-      "updated": 1741039003332,
+      "updated": 1741076651182,
       "link": null,
       "locked": false
     },
@@ -1645,7 +1645,7 @@
       "version": 17,
       "versionNonce": 842524146,
       "isDeleted": false,
-      "boundElements": null,
+      "boundElements": [],
       "updated": 1741039150428,
       "link": null,
       "locked": false,
