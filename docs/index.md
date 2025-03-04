@@ -138,7 +138,7 @@ Changes are applied at editor startup time. Below is an example config file:
 
 # Authors
 
-NOTER is brought to you in Winter 2024/2025 by [The Temporary Working
+NOTER was written in Winter 2025 by [The Distributed Temporary Working
 Group](https://github.com/supernoter).
 
 # Development notes
