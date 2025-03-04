@@ -51,6 +51,15 @@
         --secondary-bg: #f3f4f6;
         --muted-color: rgba(107, 114, 128, 0.2);
         --grid-color: rgba(107, 114, 128, 0.15);
+        --code-bg: #f8fafc;
+        --code-text: #24292e;
+        --code-border: #e1e4e8;
+        --code-highlight: #f1f8ff;
+        --code-comment: #6a737d;
+        --code-keyword: #d73a49;
+        --code-string: #032f62;
+        --code-function: #6f42c1;
+        --code-number: #005cc5;
       }
       * {
         margin: 0;
@@ -139,6 +148,93 @@
         padding: 0.25em;
         background: yellow;
       }
+
+      /* Code styling */
+      pre {
+        background-color: var(--code-bg);
+        border: 1px solid var(--code-border);
+        border-radius: 6px;
+        padding: 1rem;
+        margin: 1.5rem 0;
+        overflow-x: auto;
+        position: relative;
+      }
+
+      code {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+          monospace;
+        font-size: 0.9em;
+        color: var(--code-text);
+      }
+
+      /* Inline code */
+      p code,
+      li code,
+      td code {
+        background-color: var(--code-bg);
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        border: 1px solid var(--code-border);
+      }
+
+      /* Code blocks language label */
+      pre::before {
+        content: attr(data-language);
+        position: absolute;
+        top: 0;
+        right: 1rem;
+        padding: 0.1rem 0.5rem;
+        font-size: 0.7em;
+        color: var(--text-color);
+        background: var(--code-border);
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        opacity: 0.7;
+      }
+
+      /* Syntax highlighting */
+      .hljs-comment,
+      .hljs-quote {
+        color: var(--code-comment);
+        font-style: italic;
+      }
+
+      .hljs-keyword,
+      .hljs-selector-tag {
+        color: var(--code-keyword);
+        font-weight: bold;
+      }
+
+      .hljs-string,
+      .hljs-attr {
+        color: var(--code-string);
+      }
+
+      .hljs-function,
+      .hljs-name {
+        color: var(--code-function);
+      }
+
+      .hljs-number,
+      .hljs-literal {
+        color: var(--code-number);
+      }
+
+      .hljs-title,
+      .hljs-section {
+        color: var(--code-function);
+      }
+
+      .hljs-tag {
+        color: var(--code-keyword);
+      }
+
+      .hljs-attr {
+        color: var(--code-function);
+      }
+
+      /* End of code styling */
+
       @media (max-width: 640px) {
         .container {
           padding: 1rem;
@@ -158,5 +254,24 @@
       </div>
     </header>
     <main class="container">$body$</main>
+
+    <!-- Optional: Add highlight.js for syntax highlighting -->
+    <script src="/static/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Add data-language attribute to code blocks based on class
+        document.querySelectorAll("pre code").forEach((block) => {
+          const classes = block.className.split(" ");
+          const languageClass = classes.find((c) => c.startsWith("language-"));
+          if (languageClass) {
+            const language = languageClass.replace("language-", "");
+            block.parentElement.setAttribute("data-language", language);
+          }
+
+          // Initialize highlight.js
+          hljs.highlightElement(block);
+        });
+      });
+    </script>
   </body>
 </html>
