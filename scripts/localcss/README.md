@@ -141,7 +141,7 @@ dist/
 │               ├── -F62fjtqLzI2JPCgQBnw7HFYxQgP6lY.woff2
 │               ├── -F62fjtqLzI2JPCgQBnw7HFYzggP6lY.woff2
 │               └── -F62fjtqLzI2JPCgQBnw7HFYzwgP6lY.woff2
-└── style.css
+└── noto.css
 
 5 directories, 125 files
 ```
