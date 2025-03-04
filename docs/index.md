@@ -63,7 +63,7 @@ that respects your online freedom.
 
 # Reference
 
-Access help within the editor with CTRL-h or F1.
+Access help within the editor with CTRL-H or F1.
 
 ## Keyboard Shortcuts
 
@@ -85,7 +85,7 @@ Access help within the editor with CTRL-h or F1.
 
 You can customize the editor in many ways, using a
 [config.json](https://supernoter.xyz/config.json) file located in standard
-locations for different platforms:
+locations for different platforms.
 
 | OS      | Location of configuration file        |
 |---------|---------------------------------------|
@@ -93,7 +93,7 @@ locations for different platforms:
 | Linux   | [`$XDG_CONFIG_HOME`](https://wiki.archlinux.org/title/XDG_Base_Directory) or `~/.config`     |
 | MacOS   | `~/Library/Application Support/noter` |
 
-Changes are applied at editor startup time. Below is an example config file:
+Changes are applied at editor startup time. Below is an example config file.
 
 ```json
 {
