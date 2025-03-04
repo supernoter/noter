@@ -51,7 +51,3 @@ $ make build
 ## Architecture
 
 ![](static/NOTERLAYERS.png)
-
-## Misc
-
-* Post on [r/NoteTaking](https://old.reddit.com/r/NoteTaking/comments/1j378nt/noter_markdown_notes_with_local_llm_support/) (2025-03-04)
