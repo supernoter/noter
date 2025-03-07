@@ -194,6 +194,7 @@ contextBridge.exposeInMainWorld('api', {
     },
 })
 
+// TODO: implement this
 ipcRenderer.on('change-theme', (event, themeName) => {
     // document.body.className = themeName;
     console.log(`You chose ${themeName}'s theme! Great choice!`)
