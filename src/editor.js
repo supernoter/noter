@@ -482,21 +482,32 @@ class Editor {
         })
     }
 
-    // handleKeyboardShortcuts takes and event and dispatches various actions.
-    handleKeyboardShortcuts(e) {
-        if (this.state.handleKeyboardShortcuts(e)) {
-            return // state already handled the shortcut
-        }
-        // handle common shortcuts across all states
-        if (e.ctrlKey && (e.key === '=' || e.key === '+')) {
-            e.preventDefault()
-            this.changeFontSize(1)
-        } else if (e.ctrlKey && e.key === '-') {
-            e.preventDefault()
-            this.changeFontSize(-1)
-        } else if (e.ctrlKey && e.key === 'b') {
-            e.preventDefault()
-            this.toggleNavigationBar()
+    async handleKeyboardShortcuts(e) {
+        try {
+            // Handle both async and non-async state handlers
+            const stateHandled = this.state.handleKeyboardShortcuts(e)
+            const result =
+                stateHandled instanceof Promise
+                    ? await stateHandled
+                    : stateHandled
+
+            if (result) {
+                return // State handled it
+            }
+
+            // Common shortcuts
+            if (e.ctrlKey && (e.key === '=' || e.key === '+')) {
+                e.preventDefault()
+                this.changeFontSize(1)
+            } else if (e.ctrlKey && e.key === '-') {
+                e.preventDefault()
+                this.changeFontSize(-1)
+            } else if (e.ctrlKey && e.key === 'b') {
+                e.preventDefault()
+                this.toggleNavigationBar()
+            }
+        } catch (error) {
+            console.error('Error handling keyboard shortcut:', error)
         }
     }
 
