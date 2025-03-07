@@ -64,6 +64,14 @@ This may require additional packages installed and it may take a few minutes.
 $ make build
 ```
 
+## Cleanup all artifacts
+
+To cleanup all build artifacts.
+
+```
+$ make clean
+```
+
 ## Find and update outdated dependencies
 
 To find and update outdated dependencies, run:
