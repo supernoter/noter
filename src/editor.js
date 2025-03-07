@@ -10,9 +10,18 @@ const HELP = `# NOTER Help
 
 NOTER is a markdown editor with PDF export and LLM support. Learn more at [supernoter.xyz](https://supernoter.xyz).
 
+## Text generation with LLM
+
+To invoke LLM text generation use a specific prefix (">>"), write the prompt
+(anything up to the next newline) and hit CTRL-G.
+
+Example:
+
+    >> This text is sent to the LLM.
+
 ## Keyboard Shortcuts
 
-----
+### File handline
 
 * **CTRL-N**: Create a New file
 * **CTRL-O**: Open a file
@@ -20,16 +29,13 @@ NOTER is a markdown editor with PDF export and LLM support. Learn more at [super
 * **CTRL-SHIFT-s**: Save to a new file
 * **CTRL-E**: Export notes to PDF
 
-----
+### Other
 
 * **CTRL-B**: Open Navigation Sidebar
 * **CTRL-G**: Generate text for editor prompts
 * **CTRL-H** or **F1**: Toggle this help view
 * **CTRL-P**: Toggle preview mode
 * **CTRL-I**: Switch to next available LLM model
-
-----
-
 * **CTRL-+**: Increase font size
 * **CTRL--**: Decrease font size
 
