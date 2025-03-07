@@ -16,7 +16,7 @@ You can download the [latest release from
 GitHub](https://github.com/supernoter/noter/releases/latest). We provide
 packages for MacOS, Windows and various Linux distributions.
 
-> Note that we currently do not sign the MacOS and Windows binaries and that
+> ⚠️  Note that we currently do not sign the MacOS and Windows binaries and that
 > you may need to pass security warnings in order to run the application.
 
 ## Development
