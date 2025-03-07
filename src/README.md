@@ -48,6 +48,14 @@ To only run the integration tests:
 $ npm run test:app
 ```
 
+## Formatting code
+
+We use [prettier](https://prettier.io/) to format all code, HTML and CSS:
+
+```
+$ make fmt
+```
+
 ## Build packages
 
 This may require additional packages installed and it may take a few minutes.
