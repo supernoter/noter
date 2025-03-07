@@ -92,11 +92,11 @@ More on this here: [SO: How to update package-lock.json without doing npm instal
 
 NOTER reads a config file at startup. The location of the config file follows common platform patterns:
 
-| OS      | Location of configuration file        |
-|---------|---------------------------------------|
-| Windows | [`%APPDATA%`](https://superuser.com/questions/632891/what-is-appdata)                          |
-| Linux   | [`$XDG_CONFIG_HOME`](https://wiki.archlinux.org/title/XDG_Base_Directory) or `~/.config`     |
-| MacOS   | `~/Library/Application Support/noter` |
+| OS      | Location of configuration file                                                           |
+| ------- | ---------------------------------------------------------------------------------------- |
+| Windows | [`%APPDATA%`](https://superuser.com/questions/632891/what-is-appdata)                    |
+| Linux   | [`$XDG_CONFIG_HOME`](https://wiki.archlinux.org/title/XDG_Base_Directory) or `~/.config` |
+| MacOS   | `~/Library/Application Support/noter`                                                    |
 
 An example configuration file can be found here:
 [supernoter.xyz/config.json](https://supernoter.xyz/config.json) and also in
@@ -117,3 +117,4 @@ You can adjust this setting in the configuration file:
   "ollama_model_name": "gemma"
 }
 
+```
