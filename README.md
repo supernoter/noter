@@ -48,7 +48,7 @@ Or building packages:
 $ make build
 ```
 
-More on setup and development in the [src/README.md](src/README.md).
+More on setup and development in the [src/README.md](src/).
 
 ## Architecture
 
