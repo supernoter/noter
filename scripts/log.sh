@@ -9,6 +9,7 @@ S=$(mktemp).png
 termshot -f "$S" -c -- git cal
 
 echo "# VERSION CONTROL LOG ($(git rev-parse --short HEAD) - $(date))" >> $T
+echo >> "$T"
 
 cat >> "$T" <<'EOM'
 
@@ -19,6 +20,7 @@ Generated with
 
 ```
 $ date
+$ git remote -v
 $ git summary
 $ git log --stat
 ```
@@ -38,6 +40,8 @@ echo '```' >> "$T"
 date >> "$T"
 echo >> "$T"
 
+git remote -v >> "$T"
+echo >> "$T"
 
 git summary >> "$T"
 echo >> "$T"
