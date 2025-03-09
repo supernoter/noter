@@ -1,0 +1,9 @@
+SHELL = /bin/bash
+
+VERSION-CONTROL-LOGS-FOR-NOTER.pdf: log.sh
+	bash log.sh VERSION-CONTROL-LOGS-FOR-NOTER.pdf
+	cp VERSION-CONTROL-LOGS-FOR-NOTER.pdf ..
+
+.PHONY: clean
+clean:
+	rm -f VERSION-CONTROL-LOGS-FOR-NOTER.pdf
