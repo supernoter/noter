@@ -6,7 +6,7 @@ locally, NOTER will automatically connect to the instance. It is currently in
 [beta](https://en.wikipedia.org/wiki/Software_release_life_cycle#Beta) stage: you can download it, run it and use it, but some functionality may
 be incomplete or missing.
 
-Learn more at [supernoter.xyz](https://supernoter.xyz).
+Learn more at [supernoter.xyz](https://supernoter.xyz). You appreciate your feedback at [product hunt](https://www.producthunt.com/posts/noter-4).
 
 ![](https://github.com/supernoter/noter/raw/refs/heads/main/docs/static/intro-beta.gif)
 
