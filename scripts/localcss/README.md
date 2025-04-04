@@ -1,8 +1,9 @@
 # localcss
 
 Download a CSS file and all referenced assets, like fonts. A css file is
-created that you can include in your HTML, the referenced assets are places in
-a separate directory.
+created that you can include in your HTML, the referenced assets are placed in
+a separate directory. Originally written to package and ship custom fonts for
+PDF export for NOTER.
 
 ```
 $ localcss -d dist -f noto.css -u "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap"
