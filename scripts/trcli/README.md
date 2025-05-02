@@ -14,4 +14,4 @@ of the last three days.
 
 ![](../../static/trcli-demo.gif)
 
-Refs: [chat/79da6368-24b9-4d17-bbf7-df57b0219b3b](https://claude.ai/chat/79da6368-24b9-4d17-bbf7-df57b0219b3b
+Refs: [chat/79da6368-24b9-4d17-bbf7-df57b0219b3b](https://claude.ai/chat/79da6368-24b9-4d17-bbf7-df57b0219b3b)
