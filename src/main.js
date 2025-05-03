@@ -6,6 +6,9 @@ const menu = require('./menu')
 const createWindowHandler = require('./WindowHandler')
 const createConfigurationInterface = require('./ConfigurationInterface')
 
+// https://github.com/electron/electron/issues/46538#issuecomment-2808806722
+app.commandLine.appendSwitch('gtk-version', '3');
+
 // Parse command line arguments
 const argv = process.argv.slice(1) // Remove the first element (path to electron executable)
 // showIntro is a boolean flag; if set, no intro text animation is shown
