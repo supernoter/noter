@@ -1,6 +1,6 @@
 {
     "name": "noter",
-    "version": "0.3.12",
+    "version": "0.3.13",
     "description": "noter note-taking application with a dash of AI",
     "main": "main.js",
     "scripts": {
