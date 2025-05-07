@@ -38,7 +38,7 @@
     ],
     "devDependencies": {
         "@babel/core": "^7.27.1",
-        "@babel/preset-env": "^7.27.1",
+        "@babel/preset-env": "^7.27.2",
         "babel-jest": "^29.7.0",
         "electron": "^36.1.0",
         "electron-builder": "^26.0.12",
