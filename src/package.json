@@ -1,6 +1,6 @@
 {
     "name": "noter",
-    "version": "0.3.21",
+    "version": "0.3.22",
     "description": "noter note-taking application with a dash of AI",
     "main": "main.js",
     "scripts": {
@@ -37,10 +37,10 @@
         }
     ],
     "devDependencies": {
-        "@babel/core": "^7.28.0",
-        "@babel/preset-env": "^7.28.0",
+        "@babel/core": "^7.28.3",
+        "@babel/preset-env": "^7.28.3",
         "babel-jest": "^30.0.5",
-        "electron": "^37.2.5",
+        "electron": "^37.3.0",
         "electron-builder": "^26.0.12",
         "jest": "^30.0.5",
         "jest-environment-jsdom": "^30.0.5",
@@ -52,7 +52,7 @@
     "dependencies": {
         "html2canvas": "^1.4.1",
         "jspdf": "^3.0.1",
-        "marked": "^16.1.2"
+        "marked": "^16.2.0"
     },
     "build": {
         "appId": "xyz.supernoter.noter",
