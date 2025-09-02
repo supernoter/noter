@@ -54,8 +54,3 @@ More on setup and development in the [src/README.md](src/).
 
 ![](static/NOTERLAYERS.png)
 
-## Extra
-
-In some distributions, you will find a top level git submodule directory in
-this repo: **cm2020_oct24_team30** - which contains additional project
-management files and reports.
