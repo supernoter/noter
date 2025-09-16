@@ -1,6 +1,6 @@
 {
     "name": "noter",
-    "version": "0.3.25",
+    "version": "0.3.26",
     "description": "noter note-taking application with a dash of AI",
     "main": "main.js",
     "scripts": {
@@ -52,7 +52,7 @@
     "dependencies": {
         "html2canvas": "^1.4.1",
         "jspdf": "^3.0.2",
-        "marked": "^16.2.1"
+        "marked": "^16.3.0"
     },
     "build": {
         "appId": "xyz.supernoter.noter",
