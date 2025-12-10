@@ -2,7 +2,7 @@
 
 This is the source code for the Electron.js application NOTER, a markdown
 note-taking application. User documentation can be found at
-[supernoter.xyz](https://supernoter.xyz).
+[supernoter.xyz](http://web.archive.org/web/20250714111623/https://supernoter.xyz/).
 
 ## Install dependencies
 
@@ -99,7 +99,7 @@ NOTER reads a config file at startup. The location of the config file follows co
 | MacOS   | `~/Library/Application Support/noter`                                                    |
 
 An example configuration file can be found here:
-[supernoter.xyz/config.json](https://supernoter.xyz/config.json) and also in
+[supernoter.xyz/config.json](http://web.archive.org/web/20251210132139/https://supernoter.xyz/config.json) and also in
 the local documentation directory.
 
 ## Using a local LLM in conjuction with NOTER

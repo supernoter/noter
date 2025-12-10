@@ -27,7 +27,7 @@ may need to pass security warnings in order to run the application.
 
 * edit **markdown** and **preview** rendered markdown
 * custom **theme** configuration
-* export markdown notes directly to good looking **PDF** ([example](https://supernoter.xyz/export.pdf))
+* export markdown notes directly to good looking **PDF** ([example](http://web.archive.org/web/20250619194225/https://supernoter.xyz/export.pdf))
 * **navigate your notes** (in a default notes folder) quickly with sidebar and filename filter
 * seamless integration with open source **large language models**, such as provided by [ollama](https://ollama.com)
 * informative **status bar** shows live character count and more
@@ -84,7 +84,7 @@ Access help within the editor with CTRL-H or F1.
 ## Configuration
 
 You can customize the editor in many ways, using a
-[config.json](https://supernoter.xyz/config.json) file located in standard
+[config.json](http://web.archive.org/web/20251210132139/https://supernoter.xyz/config.json) file located in standard
 locations for different platforms.
 
 | OS      | Location of configuration file        |

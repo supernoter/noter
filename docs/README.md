@@ -1,7 +1,7 @@
 # docs
 
 Documentation and website. The website is served on
-[supernoter.xyz](https://supernoter.xyz/), via [GitHub
+[supernoter.xyz](http://web.archive.org/web/20250714111623/https://supernoter.xyz/), via [GitHub
 Pages](https://pages.github.com/).
 
 ## Requirements
@@ -28,5 +28,5 @@ pandoc \
 ```
 
 Push changes on main branch to GitHub and wait a few minutes for the changes to
-appear on [supernoter.xyz](https://supernoter.xyz/).
+appear on [supernoter.xyz](http://web.archive.org/web/20250714111623/https://supernoter.xyz/).
 
